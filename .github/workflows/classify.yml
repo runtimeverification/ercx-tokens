@@ -1,0 +1,53 @@
+name: classify
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_set_name:
+        description: 'Test set (buggy-top-100, bigquery-top-100, etherscan-top-1000)'
+        required: true
+        default: 'buggy-top-100'
+      test_set_start_index:
+        description: 'Index of the first token to classify'
+        required: true
+        default: '0'
+      test_set_count:
+        description: 'Number of tokens to classify'
+        required: true
+        default: '100'
+
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  check:
+    strategy:
+      fail-fast: true
+
+    name: Foundry project
+    runs-on: [self-hosted, linux, normal]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Run Forge build
+        run: |
+          forge --version
+          forge build --sizes
+        id: build
+
+      - name: Run classifier
+        uses: runtimeverification/ercx-classify-action@main
+        with:
+          infura_api_key: ${{ secrets.INFURA_API_KEY }}
+          test_set_name: '${{ github.event.inputs.test_set_name }}'
+          test_set_start_index: '${{ github.event.inputs.test_set_start_index }}'
+          test_set_count: '${{ github.event.inputs.test_set_count }}'
+  

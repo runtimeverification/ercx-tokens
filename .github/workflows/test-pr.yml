@@ -1,0 +1,36 @@
+name: test
+
+on: push
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  check:
+    strategy:
+      fail-fast: true
+
+    name: Foundry project
+    runs-on: [self-hosted, linux, flyweight]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly-ca67d15f4abd46394b324c50e21e66f306a1162d
+
+      - name: Run Forge build
+        run: |
+          forge --version
+          forge build --sizes
+        id: build
+
+      - name: Run golden test
+        uses: ./.github/actions/ercx-test-action
+        with:
+          etherscan_api_key: ${{ secrets.ETHERSCAN_API_KEY }}
+          infura_api_key: ${{ secrets.INFURA_API_KEY }}
+
