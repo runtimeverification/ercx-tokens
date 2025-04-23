@@ -1,7 +1,7 @@
-# ERCx Library
+# ERCx Token Library
 
-ERCx library is a re-usable collection of foundry tests. 
-The following tables summarizes the number of tests in every category 
+ERCx token library is a re-usable collection of Foundry tests for several ERC token standards. 
+The following tables summarize the number of tests in every category 
 (for Light and Heavy versions of the test suites), for each ERC/EIP standard:
 
 #### Light 
@@ -44,10 +44,10 @@ Please exercise caution when interpreting the results for these tests.
 The "Light" version runs with fixed dummy user addresses, i.e., the set of users, `alice`, `bob` and `carol`
 are fixed and used for all tests in each test suite. On the other hand, the "Heavy" version runs with fuzzed dummy user addresses, 
 i.e., the set of users, `alice`, `bob` and `carol` used changes for each test.
-  > **NOTE:** Currently, the repository only has the "HEAVY" version for ERC-20 test suite and it only consists of 
+  > **NOTE:** Currently, the repository only has the "HEAVY" version for ERC20 test suite and it only consists of 
 MANDATORY checks. If not indicated, it is assumed that the "Light" version of the test suite is used. 
 
-- For ERC-4626 test suite, there are several tests with the phrase "up to `delta`-approximation" in their
+- For ERC4626 test suite, there are several tests with the phrase "up to `delta`-approximation" in their
 test descriptions. These are the tests where calling of functions such as `deposit`, `withdraw`, etc, are 
 being carried out and conversation of shares to assets, and vice-versa, will take place. As math operations 
 in Solidity is done entirely using fixed-point (i.e., no decimal value), rounding errors may occur if the 
@@ -67,26 +67,26 @@ at this value if the contract follows the required rounding rules.
 * [Usage](#usage)
     * [Do I need to set up anything before running the ERCx tests?](#do-i-need-to-set-up-anything-before-running-the-ERCx-tests)
     * [I have a token-address. How can I run the ERCx tests on it?](#i-have-a-token-address-how-can-i-run-the-ERCx-tests-on-it)
-    * [How can I run the ERCx tests on my source-code?](#how-can-i-run-the-tests-on-my-source-code)
+    * [How can I run the ERCx tests on my source code?](#how-can-i-run-the-tests-on-my-source-code)
 * [FAQ](#faq)
     * [Why do I need an RPC-endpoint?](#why-do-i-need-an-rpc-endpoint)
     * [What are golden tests?](#what-are-golden-tests)
 
 ## Installation
 
-The ERCx library requires [foundry](https://book.getfoundry.sh/getting-started/installation).
-If you have it, you can install `ERCx` by running the following command:
+The ERCx token library requires [Foundry](https://book.getfoundry.sh/getting-started/installation).
+If you have Foundry installed, you can install the library by running the following command:
 
 ~~~sh
-forge install runtimeverification/ercx-library
+forge install runtimeverification/ercx-tokens
 ~~~
 
 ## Usage
 
-This section assumes that you already have foundry and ercx installed. There are two ways to execute the test-suite.
+This section assumes that you already have Foundry and ERCx library installed. There are two ways to execute the test-suite.
 
-1. Post-deployment: Run the test-suite on any ERC token for which you have the Ethereum-address.
-2. Pre-deployment: Run the test-suite on the Solidity source-code of an ERC token.
+1. Post-deployment: Run the test suite on any ERC token for which you have the Ethereum-address.
+2. Pre-deployment: Run the test suite on the Solidity source code of an ERC token.
 
 Before running any of the test suite, you may need to do some minor tweaks to some of the test files.
 
@@ -131,7 +131,7 @@ Thus, if you wish to address the issue like what you can do for the ERC20 test s
     > You can retrieve it by calling an query on the `asset()` function through the contract's [Etherscan](https://etherscan.io/) token page 
     or some API endpoint.
 
-2. Retrieve the top **asset** holder (or some account that holds assets) of the asset contract taht you retrieved in the previous step.
+2. Retrieve the top **asset** holder (or some account that holds assets) of the asset contract that you retrieved in the previous step.
     > You can retrieve it under the "Holders" tab of the asset contract's [Etherscan](https://etherscan.io/) token page or by calling some API endpoint such as the one provided by [Chainbase](https://docs.chainbase.com/reference/gettoptokenholders).
 
 3. Assign the `address` variable `topTokenHolder` in line 111 of `src/ERCAbstract.sol` with the address that you have retrieved, 
@@ -166,12 +166,12 @@ Example: `uint256 tokenIdWithOwner = 1;` and `uint256[3] tokenIdsWithOwners = [1
 Now the test suite is ready to be run.
 
 
-### I have a token-address. How can I run the ERCx tests on it?
+### I have a token address. How can I run the ERCx tests on it?
 
-If you have the address of an ERC-token you can run all tests without writing a single line of code. 
+If you have the address of an ERC token you can run all tests without writing a single line of code. 
 You can set these values via the `ERCx_ADDRESS` and `FORK_URL` environment-variables. 
-The following shows an example of how you can run all tests from the "Light" version of the ERC-20 test suite 
-on the ERC-20 token, [Dai Stablecoin (DAI)](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f):
+The following shows an example of how you can run all tests from the "Light" version of the ERC20 test suite 
+on the ERC20 token, [Dai Stablecoin (DAI)](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f):
 
 ~~~sh
 export INFURA_API_KEY=0123456789
@@ -186,14 +186,14 @@ forge test \
 
 > **Note:** 
 > 1. You can replace the ERC standard "20" to other ERC standard that we support if you wish to run other ERC test suite for the provided address.
-> 2. For ERC-20 test suite, you can choose to launch the "Heavy" version of the test suite by replacing "Light" in `ERC20PostDeploymentLightTest` with `Heavy`. 
+> 2. For ERC20 test suite, you can choose to launch the "Heavy" version of the test suite by replacing "Light" in `ERC20PostDeploymentLightTest` with `Heavy`. 
 As for non-ERC20 test suites, only the "Light" versions of the test suites are available. 
 Thus, you can remove the word "Light" completely, e.g., `ERC4626PostDeploymentTest`. 
 > 3. You can ignore the results of `testFail_` where `_` can be either `Name`, `Symbol` or `Decimals` as they are meant for user to retrieve these metadata. If you wish to retrieve any of these metadata, say `name`, you can run the code, `forge test --ffi --fork-url  $FORK_URL --match-path test/ERC4626PostDeploymentTest.sol --match-test testFailName --json` and look at the value under the key "reason".
 
-If you are a developer and your token is not deployed yet, you can execute the tests directly on your source-code. See the following section for more details.
+If you are a developer and your token is not deployed yet, you can execute the tests directly on your source code. See the following section for more details.
 
-### How can I run the tests on my source-code?
+### How can I run the tests on my source code?
 
 Let's assume you have a custom ERC20 implementation in a file called `src/MyERC20.sol`.
 The next step is to create a corresponding test-file `test/MyERC20Test.t.sol`.
@@ -221,9 +221,9 @@ That's it! You're all set up! You can now run the entire ERC20 test suite by cal
 forge test --match-path test/MyERC20Test.t.sol --ffi
 ~~~
 
-> **Note:** Similarly, you can replace the ERC standard "20" to other ERC standard that we support if you wish to run other ERC test suite on your source-code contracts.
+> **Note:** Similarly, you can replace the ERC standard "20" to other ERC standard that we support if you wish to run other ERC test suite on the source code of your contracts.
 
-You can also test deployed tokens by pointing to their Ethereum mainnet adddess. See [I have a token-address. How can I run the ERCx tests on it?](#i-have-a-token-address-how-can-i-run-the-ERCx-tests-on-it) for more detailed instructions.
+You can also test deployed tokens by pointing to their Ethereum mainnet address. See [I have a token address. How can I run the ERCx tests on it?](#i-have-a-token-address-how-can-i-run-the-ERCx-tests-on-it) for more detailed instructions.
 
 
 ## FAQ
@@ -258,3 +258,12 @@ export FORK_URL=https://mainnet.infura.io/v3/$INFURA_API_KEY
 ~~~
 
 Note that we did not include tests from the AddOn level for all golden tests.
+
+## Contributors
+
+- [@jinxinglim](https://github.com/jinxinglim)
+- [@yfalcone](https://github.com/yfalcone)
+- [@RaoulSchaffranek](https://github.com/RaoulSchaffranek)
+- [@duytai](https://github.com/duytai)
+- [@Sta1400](https://github.com/Sta1400)
+- [@JuanCoRo](https://github.com/JuanCoRo)
