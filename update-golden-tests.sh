@@ -1,7 +1,7 @@
 #!/bin/bash
 set -exuo pipefail
 
-foundryup --version nightly-ca67d15f4abd46394b324c50e21e66f306a1162d
+foundryup --install nightly-ca67d15f4abd46394b324c50e21e66f306a1162d
 
 FOUNDRY_PROFILE=default
 for TEST in test/golden/*.sol; do

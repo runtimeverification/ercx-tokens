@@ -27,8 +27,8 @@ if [ ${#tokens[@]} -ne ${#expected_results[@]} ]; then
     exit 1
 fi
 
-# Updating Foundry. The output is sielenced.
-foundryup --version nightly-ca67d15f4abd46394b324c50e21e66f306a1162d > /dev/null
+# Updating Foundry. The output is silenced.
+foundryup --install nightly-ca67d15f4abd46394b324c50e21e66f306a1162d > /dev/null
 
 # Constants
 FINAL_RESULT_FILE="results.txt"
