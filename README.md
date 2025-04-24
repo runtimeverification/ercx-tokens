@@ -1,8 +1,7 @@
-# ERCx Library
+# ERCx Token Test Library
 
-ERCx library is a re-usable collection of foundry tests. 
-The following tables summarizes the number of tests in every category 
-(for Light and Heavy versions of the test suites), for each ERC/EIP standard:
+ERCx library is a reusable collection of Foundry tests for several ERC token standards. 
+The following tables summarize the number of tests in every category (for Light and Heavy versions of the test suites), for each ERC/EIP standard:
 
 #### Light 
 
@@ -24,42 +23,27 @@ The following tables summarizes the number of tests in every category
 
 #### Brief descriptions of each test set are as follows: 
 
-**Standard:** consists of testing functions that test for properties extracted from the standard, which include properties that contain the key words, *MUST* and *SHOULD*, 
-and more generally properties that can be extracted from the respective EIP specification.
+**Standard:** contains tests that check properties extracted from the standard, which include properties that contain the key words *MUST* and *SHOULD* and, more generally, properties that can be extracted from the respective EIP specification.
 
-**Security:** consists of the security properties, including desirable properties for the sane functioning of the token and properties 
-of add-on functions commonly created and used by developers.
+**Security:** contains security properties, including desirable properties for the sane functioning of the token and properties of add-on functions commonly created and used by developers.
 
-**Features:** consists of testing functions that test for properties that are neither desirable nor undesirable but instead implementation choices.
+**Features:** contains tests that check properties which reflect implementation choices, rather than correctness or incorrectness.
 
 #### Additional information about the test suites:
 
 - A test is skipped if its result is inconclusive as certain conditions are not met while testing the said property test. 
-Some possible reasons for a test to be skipped are failure to deal tokens to dummy users before running the test and 
-failure to call the required function before making the property check especially in cases where large values of inputs are used 
-in the test. Note that skipped tests from non-ABI levels are still important property tests that a token should satisfy. 
-Please exercise caution when interpreting the results for these tests.
+Some reasons for a test to be skipped include to setup issues, such as not failure to deal tokens to dummy users beforehand, or failing to invoke prerequisite functions before checking a property — particularly when large input values are involved.
+Note that skipped tests from non-ABI levels are still important property tests that a token should satisfy.  Please exercise caution when interpreting the results for these tests.
 
 - For each standard, there are two versions, "Light" and "Heavy", of the test suites which you can run. 
-The "Light" version runs with fixed dummy user addresses, i.e., the set of users, `alice`, `bob` and `carol`
-are fixed and used for all tests in each test suite. On the other hand, the "Heavy" version runs with fuzzed dummy user addresses, 
-i.e., the set of users, `alice`, `bob` and `carol` used changes for each test.
-  > **NOTE:** Currently, the repository only has the "HEAVY" version for ERC-20 test suite and it only consists of 
-MANDATORY checks. If not indicated, it is assumed that the "Light" version of the test suite is used. 
+The "Light" version runs with fixed dummy user addresses, i.e., the set of users, `alice`, `bob`, and `carol`, is fixed and used for all tests in each test suite. On the other hand, the "Heavy" version involves fuzzed user addresses, i.e., the addresses of users `alice`, `bob`, and `carol` change.
+  > **NOTE:** Currently, the repository only has the "HEAVY" version for the ERC20 test suite, and it only contains MANDATORY checks. If not indicated, it is assumed that the "Light" version of the test suite is used. 
 
-- For ERC-4626 test suite, there are several tests with the phrase "up to `delta`-approximation" in their
-test descriptions. These are the tests where calling of functions such as `deposit`, `withdraw`, etc, are 
-being carried out and conversation of shares to assets, and vice-versa, will take place. As math operations 
-in Solidity is done entirely using fixed-point (i.e., no decimal value), rounding errors may occur if the 
-contract does not follow the required rounding rules stated in the [EIP-4626](https://eips.ethereum.org/EIPS/eip-4626) 
-standard. However, in the event where the contract does not follow the required rounding rules, there is a 
-global `uint256` variable, `delta`, for the test suite where the user can set to provide some leeway for 
-such errors. This `delta` value represents the maximum approximation error size (an absolute value given in 
-the smallest unit such as Wei) whenever equality assertion check is carried out. For example, `x - y <= delta` 
-is being checked whenever there is a check for `x == y`. It is important to note that `delta` should only be 
-set to a reasonable small value so that the adversarial profit of exploiting such rounding errors stays relatively 
-small compared to the gas cost. The default value of `delta` is set to 0 as all tests are supposed to pass 
-at this value if the contract follows the required rounding rules.
+- The ERC4626 test suite contains several tests that use the phrase "up to `delta`-approximation" in their descriptions. These tests involve calling functions such as `deposit`, `withdraw`, etc., where conversion of shares to assets, and vice-versa, take place.
+As all math operations in Solidity use integer arithmetic, rounding errors may occur and cause vulnerabilities if the contract does not follow the rounding rules outlined in [EIP-4626](https://eips.ethereum.org/EIPS/eip-4626).
+In the test suite, we use a global `uint256` variable `delta` in the test that for the user to define a desired leeway for such rounding errors.
+The value of `delta` represents the maximum approximation error size (an absolute value given in the smallest unit such as Wei) whenever the assertion check is performed.
+For example, `x - y <= delta` is being checked whenever there is a check for `x == y`. It is important to note that `delta` should only be set to a reasonably small value so that the adversarial profit of exploiting such rounding errors stays relatively small compared to the gas cost. The default value of `delta` is set to 0 as all tests are supposed to pass demonstrating that no rounding issues occur if the contract follows the required rounding rules.
 
 ## Table of Contents
 
@@ -67,111 +51,101 @@ at this value if the contract follows the required rounding rules.
 * [Usage](#usage)
     * [Do I need to set up anything before running the ERCx tests?](#do-i-need-to-set-up-anything-before-running-the-ERCx-tests)
     * [I have a token-address. How can I run the ERCx tests on it?](#i-have-a-token-address-how-can-i-run-the-ERCx-tests-on-it)
-    * [How can I run the ERCx tests on my source-code?](#how-can-i-run-the-tests-on-my-source-code)
+    * [How can I run the ERCx tests on my source code?](#how-can-i-run-the-tests-on-my-source-code)
 * [FAQ](#faq)
     * [Why do I need an RPC-endpoint?](#why-do-i-need-an-rpc-endpoint)
     * [What are golden tests?](#what-are-golden-tests)
 
 ## Installation
 
-The ERCx library requires [foundry](https://book.getfoundry.sh/getting-started/installation).
-If you have it, you can install `ERCx` by running the following command:
+The ERCx token library requires [Foundry](https://book.getfoundry.sh/getting-started/installation).
+If you have Foundry installed, you can install the library by running the following command:
 
 ~~~sh
-forge install runtimeverification/ercx-library
+forge install runtimeverification/ercx-tests
 ~~~
 
 ## Usage
 
-This section assumes that you already have foundry and ercx installed. There are two ways to execute the test-suite.
+This section assumes that you already have Foundry and ERCx library installed. There are two ways to execute the test suite.
 
-1. Post-deployment: Run the test-suite on any ERC token for which you have the Ethereum-address.
-2. Pre-deployment: Run the test-suite on the Solidity source-code of an ERC token.
-
-Before running any of the test suite, you may need to do some minor tweaks to some of the test files.
+1. Post-deployment: Run the test suite on any ERC token for which you have the deployment address.
+2. Pre-deployment: Run the test suite on the Solidity source code of an ERC token.
 
 ### Do I need to set up anything before running the ERCx tests?
 
-Depending on the test suite you wish to run, there might be some setting up to do before running it.
+Depending on the test suite you wish to run, there might be some setting up to do before running it, as described below.
 
 #### ERC20 test suite (Optional)
 
 The test suite will try to deal tokens to dummy users before running the tests. 
 It does so by reading and rewriting the storage slot of functions/variables such as `totalSupply()`
 and `balanceOf(user)`.
-For most contracts, this should not post an issue, however, there are some (e.g., deployed contracts such as USDC, stETH) 
+For most contracts, this should not pose an issue, however, there are some (e.g., deployed contracts such as USDC, stETH) 
 that will cause issues while retrieving and reading these storage slots.
-As a result, many of tests may fail due to errors such as `stdStorage find(StdStorage): Slot(s) not found.`.
-We have set up the ERC20 test suite such as we can resolve this issue by first, assigning a top token holder, 
-followed by using the account to transfer some tokens to the dummy users for testing. 
+As a result, some of the tests may fail due to errors such as `stdStorage find(StdStorage): Slot(s) not found.`.
+We have set up the ERC20 test suite such that we can resolve this issue by, first, assigning a top token holder, 
+followed by using this account to transfer some tokens to the dummy users for testing. 
 
-Thus, if you wish to address all the failing tests due to `stdStorage` issues, here is what you need to do:
+Thus, if you wish to address all failures caused by the to `stdStorage` issue, here is what you need to do:
 
-1. Retrieve the top token holder (or some account that holds tokens) of the contract that you want to test with.
+1. Retrieve the top token holder (or some account that holds tokens) of the contract that you want to test.
     > You can retrieve it under the "Holders" tab of the contract's [Etherscan](https://etherscan.io/) token page or by calling some API endpoint such as the one provided by [Chainbase](https://docs.chainbase.com/reference/gettoptokenholders).
 
-2. Assign the `address` variable `topTokenHolder` in line 111 of `src/ERCAbstract.sol` with the address that you have retrieved, 
+2. Assign the `address` variable `topTokenHolder` in line 111 of `src/ERCAbstract.sol` to the address that you have retrieved, 
 e.g., `address topTokenHolder = 0x...;`.
 
 Now the test suite is ready to be run and the `stdStorage` issue will be resolved.
 
 **NOTE:** The above instructions are optional as it is not needed if 
-(a) you are running the test suite on a source code contract, or
+(a) you are running the test suite on the source code of the contract, or
 (b) you did not encounter any `stdStorage` issue during your run of the test suite.
-
 
 #### ERC4626 test suite (Optional)
 
-Similar to ERC20 test suite, the ERC4626 test suite deal either assets or shares or both to dummy users 
-before running the tests. As a result, it may encounter the same `stdStorage` issue when running the tests.
+Similar to the ERC20 test suite, the ERC4626 test suite deals assets, shares, or both to dummy users before running the tests.
+As a result, you may encounter the same `stdStorage` issue when running the ERC4626 test suite.
 
-Thus, if you wish to address the issue like what you can do for the ERC20 test suite, here is what you can do:
+Thus, you can address this issue similarly to the ERC20 test suite. Here is what you can do:
 
-1. Retrieve the `asset` address of the ERC4626 contract that you are working on.
+1. Retrieve the `asset` address of the ERC4626 contract that you are working with.
     > You can retrieve it by calling an query on the `asset()` function through the contract's [Etherscan](https://etherscan.io/) token page 
     or some API endpoint.
 
-2. Retrieve the top **asset** holder (or some account that holds assets) of the asset contract taht you retrieved in the previous step.
+2. Retrieve the top **asset** holder (or some account that holds assets) of the asset contract that you retrieved in the previous step.
     > You can retrieve it under the "Holders" tab of the asset contract's [Etherscan](https://etherscan.io/) token page or by calling some API endpoint such as the one provided by [Chainbase](https://docs.chainbase.com/reference/gettoptokenholders).
 
-3. Assign the `address` variable `topTokenHolder` in line 111 of `src/ERCAbstract.sol` with the address that you have retrieved, 
+3. Assign the `address` variable `topTokenHolder` in line 111 of `src/ERCAbstract.sol` to the address that you have retrieved, 
 e.g., `address topTokenHolder = 0x...;`.
 
 Now the test suite is ready to be run and the `stdStorage` issue will be resolved.
 
-**NOTE:** The above instructions are optional as it is not needed if 
-(a) you are running the test suite on a source code contract, or
-(b) you did not encounter any `stdStorage` issue during your run of the test suite.
+**NOTE:** The above instructions are optional as not needed if 
+(a) you are running the test suite on the source code of the contract, or
+(b) you did not encounter any `stdStorage` issues during your run of the test suite.
 
 
 #### ERC721 test suite (Mandatory)
 
-As only NFTs with token IDs that have been minted with the permission of the owner/s and not destroyed 
-can be transferred from one to another, we could not randomly choose a token ID and assign it to 
-a dummy user. This is because the randomly chosen token ID might be banned from using.
+Since only NFTs with token IDs that have been properly minted (with the owner's permission) and not burned can be transferred, we cannot arbitrarily assign a random token ID to a dummy user — it might correspond to a non-existent, burned, or restricted token.
+Thus, to run the test suite against either token source code or deployed contract, we need to have at least 3 token IDs that have been minted and with owners to be assigned and used in the test suite. To do so, here is what you can do:
 
-Thus, to run the test suite regardless if it is for source code or deployed contract, 
-we need to have at least 3 token IDs that have been minted and with owners to be assigned
-and used in the test suite. To do so, here is what you can do:
-
-1. (a) For testing of source code contract, in the `constructor` of your main contract,
-mint at least 3 NFTs with non-zero token IDs and assign them to some valid address.
+1. (a) For testing source code, in the `constructor` of your main contract, mint at least 3 NFTs with non-zero token IDs and assign them to some valid address.
 (b) For testing of deployed contract, retrieve 3 token IDs that have owners.
     > You can retrieve this information via some API endpoint such as the one provided by [Chainbase](https://docs.chainbase.com/reference/getnftcollectionitems).
 
-2. Assign the variables `uint256 tokenIdWithOwner` and `uint256[3] tokenIdsWithOwners` 
-with the token IDs that you have retrieved in the previous step. 
+2. Assign variables `uint256 tokenIdWithOwner` and `uint256[3] tokenIdsWithOwners` to the token IDs that you have retrieved in the previous step. 
 Example: `uint256 tokenIdWithOwner = 1;` and `uint256[3] tokenIdsWithOwners = [1, 2, 3];`
 
 Now the test suite is ready to be run.
 
 
-### I have a token-address. How can I run the ERCx tests on it?
+### I have a token address. How can I run the ERCx tests on it?
 
-If you have the address of an ERC-token you can run all tests without writing a single line of code. 
-You can set these values via the `ERCx_ADDRESS` and `FORK_URL` environment-variables. 
-The following shows an example of how you can run all tests from the "Light" version of the ERC-20 test suite 
-on the ERC-20 token, [Dai Stablecoin (DAI)](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f):
+If you have the address of an ERC token, you can run all tests without writing a single line of code using the fork testing functionality.
+To facilitate that, you can set the token address and fork URL via the `ERCx_ADDRESS` and `FORK_URL` environment variables. 
+The following shows an example of how you can run all tests from the "Light" version of the ERC20 test suite 
+on the ERC20 token, [Dai Stablecoin (DAI)](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f):
 
 ~~~sh
 export INFURA_API_KEY=0123456789
@@ -185,20 +159,18 @@ forge test \
 ~~~
 
 > **Note:** 
-> 1. You can replace the ERC standard "20" to other ERC standard that we support if you wish to run other ERC test suite for the provided address.
-> 2. For ERC-20 test suite, you can choose to launch the "Heavy" version of the test suite by replacing "Light" in `ERC20PostDeploymentLightTest` with `Heavy`. 
-As for non-ERC20 test suites, only the "Light" versions of the test suites are available. 
+> 1. If you wish to run other ERC test suite for the provided address, you can replace the ERC standard "20" with another ERC standard that we support.
+> 2. For the ERC20 test suite, you can choose to launch the "Heavy" version of the test suite by replacing "Light" in `ERC20PostDeploymentLightTest` with `Heavy`. 
+As for non-ERC20 test suites, only the "Light" versions of these test suites are available. 
 Thus, you can remove the word "Light" completely, e.g., `ERC4626PostDeploymentTest`. 
-> 3. You can ignore the results of `testFail_` where `_` can be either `Name`, `Symbol` or `Decimals` as they are meant for user to retrieve these metadata. If you wish to retrieve any of these metadata, say `name`, you can run the code, `forge test --ffi --fork-url  $FORK_URL --match-path test/ERC4626PostDeploymentTest.sol --match-test testFailName --json` and look at the value under the key "reason".
+> 3. You can ignore the results of `testFail_` where `_` can be either `Name`, `Symbol` or `Decimals` as they are meant for the user to retrieve these metadata. If you wish to retrieve any of these metadata, say `name`, you can run the tests via `forge test --ffi --fork-url  $FORK_URL --match-path test/ERC4626PostDeploymentTest.sol --match-test testFailName --json` and look at the value under the key "reason".
 
-If you are a developer and your token is not deployed yet, you can execute the tests directly on your source-code. See the following section for more details.
+If you are a developer and your token is not deployed yet, you can execute the tests directly on your source code. See the following section for more details.
 
-### How can I run the tests on my source-code?
+### How can I run the tests on my source code?
 
 Let's assume you have a custom ERC20 implementation in a file called `src/MyERC20.sol`.
-The next step is to create a corresponding test-file `test/MyERC20Test.t.sol`.
-Put the following contents in the file:
-
+To run our tests on your contarct, you should create a corresponding test file `test/MyERC20Test.t.sol` with the following content:
 ~~~Solidity
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.6.2 <0.9.0;
@@ -214,47 +186,41 @@ contract MyERC20Test is ERC20Test {
 }
 ~~~
 
-The important thing here is that our test-contract inherits from `ERC20Test`.
-That's it! You're all set up! You can now run the entire ERC20 test suite by calling the following command:
+The key thing here is for test contract to inherit from `ERC20Test`.
+And that's it! You're all set up! You can now run the entire ERC20 test suite by calling the following command:
 
 ~~~sh
 forge test --match-path test/MyERC20Test.t.sol --ffi
 ~~~
 
-> **Note:** Similarly, you can replace the ERC standard "20" to other ERC standard that we support if you wish to run other ERC test suite on your source-code contracts.
+> **Note:** Similarly, you can replace the ERC standard "20" to other ERC standard that we support if you wish to run other ERC test suite on the source code of your contracts.
 
-You can also test deployed tokens by pointing to their Ethereum mainnet adddess. See [I have a token-address. How can I run the ERCx tests on it?](#i-have-a-token-address-how-can-i-run-the-ERCx-tests-on-it) for more detailed instructions.
+You can also test deployed tokens by pointing to their Ethereum mainnet address. See [I have a token address. How can I run the ERCx tests on it?](#i-have-a-token-address-how-can-i-run-the-ERCx-tests-on-it) for more detailed instructions.
 
 
 ## FAQ
 
 ### Why do I need an RPC-endpoint?
 
-When testing a token from a given Ethereum address we need to download the contract from the Ethereum mainnet. For this we rely on external web-service or RPC-endpoint. You can pick whatever RPC-endpoint you want, but notice that we don't test with all endpoints. We've run the most extensive tests with the [infura RPC-endpoint](https://app.infura.io/). Notice, that you need an [API key](https://docs.infura.io/infura/networks/ethereum/how-to/secure-a-project/project-id) if you want to use infura.
+When testing a token from a given Ethereum address, we need to fetch the contract from the Ethereum mainnet, which requires using an external web service or an RPC endpoint, such as [Infura](https://app.infura.io/). Notice that you usually need an API to interact with the RPC endpoint, which is usually provided by the service provider.
 
-Note that Foundry allows us to create a local testnet node for deploying and testing smart contracts, through the command [`anvil`](https://book.getfoundry.sh/reference/anvil/). It can also be used to fork other EVM compatible networks. This allows us to cache everything where possible and not hit the RPC endpoint every single time especially for running big test suites. To do so, open a new terminal and run `anvil --fork-url $FORK_URL`, where the `$FORK_URL` is the RPC endpoint of the forked node, e.g., `https://mainnet.infura.io/v3/$INFURA_API_KEY`. After which, on the terminal that you are running your test suite with, run `forge test` with `--fork-url http://127.0.0.1:8545` (8545 is the default port the server listens to) and any other appropriate option/s. 
+Note that Foundry also allows us to create a local testnet node for deploying and testing smart contracts, through the [`anvil`](https://book.getfoundry.sh/reference/anvil/) command. It can also be used to fork other EVM compatible networks. This feature allows us to cache the data where possible and minimize the interaction with the RPC endpoint, especially for running big test suites. To do so, you should open a new terminal window and run `anvil --fork-url $FORK_URL`, where the `$FORK_URL` is the RPC endpoint of the forked node, e.g., `https://mainnet.infura.io/v3/$INFURA_API_KEY`. After this, run `forge test` with `--fork-url http://127.0.0.1:8545` (8545 is the default port the server listens to) and any other appropriate options, in the terminal that you are running your test suite in. 
 
 ### What are golden tests?
 
-We use golden tests as regression tests. If a golden test fails you should investigate the source before you update the expected output file. If you conclude that the actual result from running the tests is correct, but the expected output file is outdated, then you can re-generate the expected output file. For example to update `USDT` you would use the following command:
+We use golden tests as regression tests using the script available in [test/scripts/run-tests.sh](test/scripts/run-tests.sh). The script executes the source-code tests available in the [test/local](test/local) folder and compare the result with the [expected output](test/scripts/expected-output.json).
 
-~~~sh
-export INFURA_API_KEY=0123456789
-export FORK_URL=https://mainnet.infura.io/v3/$INFURA_API_KEY
-NO_COLOR=1 forge test \
-    --silent \
-    --fork-url $FORK_URL \
-    --match-path test/golden/USDTTest.t.sol \
-    --ffi \
-    > test/golden/USDTTest.t.sol.out
-~~~
-
-If you need to update all golden tests you can use the `update-golden-tests.sh`-script:
-
-~~~sh
-export INFURA_API_KEY=0123456789
-export FORK_URL=https://mainnet.infura.io/v3/$INFURA_API_KEY
-./update-golden-tests.sh
-~~~
+If a test run fails, you should investigate the root cause before you update the expected output file. If you conclude that the actual result of running the tests is correct, but the expected output file is outdated, then you can re-generate the expected output file by running the following command: `./test/scripts/run-tests.sh --update-expected-output`. This will update the expected output file with the latest results of running the tests.
 
 Note that we did not include tests from the AddOn level for all golden tests.
+
+Additionally, you can see the examples of tests analyzing deployed contracts the source code of which is not available locally in the [test/remote](test/remote) folder. 
+
+## Contributors
+
+- [@jinxinglim](https://github.com/jinxinglim)
+- [@yfalcone](https://github.com/yfalcone)
+- [@RaoulSchaffranek](https://github.com/RaoulSchaffranek)
+- [@duytai](https://github.com/duytai)
+- [@Sta1400](https://github.com/Sta1400)
+- [@JuanCoRo](https://github.com/JuanCoRo)
