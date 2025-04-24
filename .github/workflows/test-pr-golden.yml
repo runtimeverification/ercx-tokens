@@ -1,4 +1,4 @@
-name: test
+name: ERCx Regression Tests
 
 on: push
 
@@ -6,10 +6,7 @@ env:
   FOUNDRY_PROFILE: ci
 
 jobs:
-  check:
-    strategy:
-      fail-fast: true
-
+  golden-tests:
     name: Local ERCx token tests
     runs-on: [self-hosted, linux, flyweight]
 
