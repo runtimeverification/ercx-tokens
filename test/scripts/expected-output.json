@@ -1,0 +1,2628 @@
+{
+  "test/local/ERC1155MockTest.t.sol:ERC1155MockTest": {
+    "tests": [
+      {
+        "name": "testBalanceOfBatchNotRevert(uint256[3])",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfBatchReturnsCorrectBalances(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfBatchUnequalArrayLengthsReverts(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfNotRevert(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfReturnsCorrectNonZeroBalance(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfReturnsCorrectZeroBalance(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testIsApprovedForAllNotRevert()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testIsApprovedForAllReturnsCorrectApprovalStatus(bool)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromAllZeroAmountsToContractEventEmission(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromAllZeroAmountsToEoaEventEmission(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromCompletesWhenCorrectContractReceiverReturn(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromIncreaseContractReceiverBalancesAsExpected(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromIncreaseEoaReceiverBalancesAsExpected(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromInsufficientBalancesReverts(uint256,uint256,uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromPositiveAmountsToContractEventEmission(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromPositiveAmountsToEoaEventEmission(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromRevertsIfFromIsZeroAddress(uint256[3],uint256[3],bytes)",
+        "status": "Failure",
+        "reason": "stdStorage find(StdStorage): No storage use detected for target.",
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromRevertsWhenContractReceiverThrowsError(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromRevertsWhenIncorrectContractReceiverReturn(uint256[3],uint256[3],bytes,bytes4)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromRevertsWhenNoApproval(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromSomeZeroAmountToContractEventEmission(uint256,uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromSomeZeroAmountToEoaEventEmission(uint256,uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromSucceedsWhenApproval(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromToContractDecreaseOwnerBalancesAsExpected(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromToEoaDecreaseOwnerBalancesAsExpected(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromToZeroAddressReverts(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeBatchTransferFromUnequalArrayLengthsReverts(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromCompletesWhenCorrectContractReceiverReturn(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromIncreaseContractReceiverBalanceAsExpected(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromIncreaseContractReceiverBalanceGtExpected(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromIncreaseContractReceiverBalanceLtExpected(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromIncreaseEoaReceiverBalanceAsExpected(uint256,uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromIncreaseEoaReceiverBalanceGtExpected(uint256,uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromIncreaseEoaReceiverBalanceLtExpected(uint256,uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromPositiveAmountToContractEventEmission(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromPositiveAmountToEoaEventEmission(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromRevertsIfFromIsZeroAddress(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": "stdStorage find(StdStorage): No storage use detected for target.",
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromRevertsWhenContractReceiverThrowsError(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromRevertsWhenIncorrectContractReceiverReturn(uint256,uint256,uint256,bytes,bytes4)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromRevertsWhenInsufficientBalance(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromRevertsWhenNoApproval(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromSucceedsWhenApproval(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromToContractDecreaseOwnerBalanceAsExpected(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromToContractDecreaseOwnerBalanceGtExpected(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromToContractDecreaseOwnerBalanceLtExpected(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromToEoaDecreaseOwnerBalanceAsExpected(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromToEoaDecreaseOwnerBalanceGtExpected(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromToEoaDecreaseOwnerBalanceLtExpected(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromToZeroAddressReverts(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromZeroAmountToContractEventEmission(uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSafeTransferFromZeroAmountToEoaEventEmission(uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSelfSafeBatchTransferFromSelfToSelfDoNotChangeOwnerBalances(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSelfSafeBatchTransferFromWithoutApproval(uint256[3],uint256[3],bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSelfSafeTransferFromSelfToSelfDecreasesOwnerBalance(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSelfSafeTransferFromSelfToSelfDoesNotChangeOwnerBalance(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSelfSafeTransferFromSelfToSelfIncreasesOwnerBalance(uint256,uint256,uint256,bytes)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSelfSafeTransferFromWithoutApproval(uint256,uint256,uint256,bytes)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSetApprovalForAllEventEmission(bool)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSetApprovalForAllNotRevert(bool)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSetApprovalForAllRevertsIfOperatorIsZeroAddress(bool)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSupportsInterfaceReturnsTrueWhenRequired()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      }
+    ]
+  },
+  "test/local/ERC20MockTest.t.sol:ERC20MockTest": {
+    "tests": [
+      {
+        "name": "testAddressZeroHasNoToken()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceDoesNotOverflowByMinting(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfCaller(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfNonCaller(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBatchTransferDoesNotOverflow(uint256,uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBatchTransferDoesNotOverflowByContractOwner(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromUpdatesAllowance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromUpdatesBalance(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromUpdatesTotalSupply(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromZeroTokenDoesNotUpdateAllowance(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromZeroTokenDoesNotUpdateBalances(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromZeroTokenDoesNotUpdateTotalSupply(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningUpdatesBalance(uint256,uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningUpdatesTotalSupply(uint256,uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningZeroTokenDoesNotUpdateBalance(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningZeroTokenDoesNotUpdateTotalSupply(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCanApproveMoreThanBalance(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotApprovePositiveAmountToZeroAddress(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotTransferFromMoreThanAllowanceLowerThanBalance(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotTransferFromMoreThanBalanceButLowerThanAllowance(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotTransferMoreThanBalance(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApprovePositiveToPositive(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApprovePositiveToZero(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApproveZeroToPositive(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApproveZeroToZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDealIntendedTokensToDummyUsers(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceAsExpected(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceBehaviorExact(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceBehaviorInexact(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceDoubleSpend(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceGtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceLtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferFromPotential(uint256[2],uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferFromPresent(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferPotential(uint256[2],uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferPresent(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceAsExpected(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceDoubleSpend(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceGtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceLtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testInfiniteApprovalConstant(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testInfiniteApprovalNotConstant(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaintainsApprovalLowerThanBalance(uint256,uint256,uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingToZeroAddressShouldFail(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingUpdatesBalance(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingUpdatesTotalSupply(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingZeroShouldNotChangeBalance()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingZeroShouldNotChangeTotalSupply()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMultipleTransferFromCannotExceedAllowance(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoApprovalCannotTransferFrom(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoExcessByMintingViaOverflow(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoSelfApprovalCannotSelfTransferFrom(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNonOwnerCannotChangeOwner()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNonWalletAddressCannotDisableTransfer()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNonWalletAddressCannotEnableTransfer()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testOverwriteApprovePositiveToPositive(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testOwnerCanChangeOwner()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testOwnerCannotOverflowSellBySettingPrice(uint256,uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApprovalEventEmission(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApproveAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApproveAllowsZeroTransferFrom(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApproveLeadsToAllowance(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveDecreaseAllowanceAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveDecreaseAllowanceAllowsZeroTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveDecreaseAllowanceEventEmission(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveIncreaseAllowanceAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveIncreaseAllowanceAllowsZeroTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveIncreaseAllowanceEventEmission(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveMultipleTransfer(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveMultipleTransferFrom(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfApprove(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfApproveTransferFrom(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfDecreaseAllowance(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfDecreaseAllowanceTransferFrom(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfIncreaseAllowance(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfIncreaseAllowanceTransferFrom(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfTransfer(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTotalTransferFromToOther(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTotalTransferToOther(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferEventEmission(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferFromEventEmission(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferFromToZeroShouldRevert(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferToZeroShouldRevert(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRevertsIfApprovalGreaterThanBalance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRevertsOnInfiniteApproval(uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testShouldNotChangeOwnership()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalSupplyConstantAfterTransfer(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalSupplyConstantAfterTransferFrom(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalSupplyDoesNotOverflowByMinting(uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferAreNotPossibleWhenPaused(uint256,uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferDoesNotUpdateOthersBalances(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromAreNotPossibleWhenPaused(uint256,uint256)",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDecreaseAllowanceAsExpected(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDecreaseAllowanceGtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDecreaseAllowanceLtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDoesNotUpdateOthersBalances(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWalletAddressCanDisableWalletTransfer()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWalletAddressCanEnableWalletTransfer()",
+        "status": "Skipped",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroAddressCannotApprovePositiveAmount(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroAddressCannotTransferPositiveAmount(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroApprovalEventEmission()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroApproveLeadsToAllowance()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroDecreaseAllowanceEventEmission()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroIncreaseAllowanceEventEmission()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroMultipleTransfer(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroMultipleTransferFrom(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfApprove(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfApproveTransferFrom(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfDecreaseAllowance(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfDecreaseAllowanceTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfIncreaseAllowance(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfIncreaseAllowanceTransferFrom(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfTransfer(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTotalTransferFromToOther(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTotalTransferToOther(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherEmitsEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherFromAndToSameAccountPossible(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherPossibleFromAndToDifferentAccounts(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherToSameAccountEmitsEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherToSelfPossible(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromBySelfPossible(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromBySelfToSelfEmitsEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromBySelfToSomeoneEmitsEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromToZeroShouldRevert(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToOthersEmitsEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToOthersPossible(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToSelfEmitsEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToSelfPossible(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToZeroShouldRevert(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      }
+    ]
+  },
+  "test/local/ERC4626MockTest.t.sol:ERC4626MockTest": {
+    "tests": [
+      {
+        "name": "testAssetDoesNotRevert()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToAssetsDoesNotRevertWhenNoIntOverflow(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToAssetsIntOverflowLimitFollowsSolmate()",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToAssetsNoVariationOnCaller(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToAssetsSharesDesirable(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToAssetsZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToAssetsZeroAmountReturnsZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToSharesAssetsDesirable(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToSharesDoesNotRevertWhenNoIntOverflow(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToSharesIntOverflowLimitFollowsSolmate()",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToSharesNoVariationOnCaller(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToSharesZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testConvertToSharesZeroAmountReturnsZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDealIntendedAssetsToDummyUsers(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDealIntendedSharesToDummyUsers(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecimalsCallable()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositDecreaseAllowanceCallerVaultAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositDecreaseCallerAssetsAsExpected(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositEmitDepositEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositFailsIfInsufficientAssetsAllowanceToVault(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositIncreaseReceiverSharesAsExpected(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositIncreaseTotalAssetsAsExpected(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositIncreaseTotalSharesAsExpected(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositRedeemDesirable(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositRevertsWhenAssetsGtMaxDeposit(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositSupportsEIP20ApproveTransferFromAssets(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositWithdrawDesirable(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testDepositZeroAmountReturnsZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxDepositDoesNotRevert()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxDepositNotHigherThanActualMax(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxDepositNotRelyBalanceOfAssets(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxDepositReturnMaxUint256IfNoLimit()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxMintDoesNotRevert()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxMintNotHigherThanActualMax(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxMintNotRelyBalanceOfAssets(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxMintReturnMaxUint256IfNoLimit()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxRedeemDoesNotRevert()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxRedeemEqBalanceOfShares(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxRedeemNotHigherThanActualMax(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxWithdrawDoesNotRevert()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxWithdrawEqConvertToAssetsOfBalanceOfShares(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaxWithdrawNotHigherThanActualMax(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintDecreaseAllowanceCallerVaultAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintDecreaseCallerAssetsAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintEmitDepositEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintFailsIfInsufficientAssetsAllowanceToVault(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintIncreaseReceiverSharesAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintIncreaseTotalAssetsAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintIncreaseTotalSharesAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintPositiveAmountReturnsGtZero(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintRedeemDesirable(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintRevertsWhenSharesGtMaxMint(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintSupportsEIP20ApproveTransferFromAssets(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintWithdrawDesirable(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNameCallable()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoDiscrepancyConvertToAssetsAndPreviewMint(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoDiscrepancyConvertToAssetsAndPreviewRedeem(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoDiscrepancyConvertToSharesAndPreviewDeposit(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoDiscrepancyConvertToSharesAndPreviewWithdraw(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewDepositIndependentOfCaller(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewDepositSameOrLessThanDeposit(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewDepositZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewDepositZeroAmountReturnsZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewMintIndependentOfCaller(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewMintPositiveAmountReturnsGtZero(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewMintSameOrMoreThanMint(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewMintZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewRedeemIndependentOfCaller(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewRedeemSameOrLessThanRedeem(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewRedeemZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewRedeemZeroAmountReturnsZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewWithdrawIndependentOfCaller(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewWithdrawPositiveAmountReturnsGtZero(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewWithdrawSameOrMoreThanWithdraw(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testPreviewWithdrawZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemDecreaseAllowanceOwnerCallerAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemDecreaseOwnerSharesAsExpected(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemDecreaseTotalSharesAsExpected(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemDepositDesirable(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemEmitWithdrawEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemIncreaseReceiverAssetsAsExpected(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemMintDesirable(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemRevertsWhenSharesGtMaxRedeem(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemSenderCanSpendBelowSharesAllowance(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemSenderCannotSpendAboveSharesAllowance(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemSupportsBurnSharesFromOwnerWhereOwnerApprovesMsgSender(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemSupportsBurnSharesFromOwnerWhereOwnerIsMsgSender(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testRedeemZeroAmountReturnsZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSharesIsTransferAble(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSharesIsTransferFromAble(uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testSymbolCallable()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalAssetsDoesNotRevert()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalAssetsGtTotalSupply()",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalAssetsGtVaultAssetsBalance()",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalAssetsGtZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalAssetsLtTotalSupply()",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalAssetsLtVaultAssetsBalance()",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalSupplyGtZero()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testVaultDecimalsGeAssetDecimals()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawDecreaseAllowanceOwnerCallerAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawDecreaseOwnerSharesAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawDecreaseTotalSharesAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawDepositDesirable(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawEmitWithdrawEvent(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawIncreaseReceiverAssetsAsExpected(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawMintDesirable(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawPositiveAmountReturnsGtZero(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawRevertsWhenAssetsGtMaxWithdraw(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawSenderCanSpendBelowSharesAllowance(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawSenderCannotSpendAboveSharesAllowance(uint256,uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawSupportsBurnSharesFromOwnerWhereOwnerApprovesMsgSender(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawSupportsBurnSharesFromOwnerWhereOwnerIsMsgSender(uint256,uint256)",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testWithdrawZeroAmountIsPossible()",
+        "status": "Success",
+        "reason": null,
+        "decoded_logs": []
+      }
+    ]
+  },
+  "test/local/ZeroAddressTest.t.sol:ZeroAddressTest": {
+    "tests": [
+      {
+        "name": "testAddressZeroHasNoToken()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceDoesNotOverflowByMinting(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfCaller(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBalanceOfNonCaller(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBatchTransferDoesNotOverflow(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBatchTransferDoesNotOverflowByContractOwner(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromUpdatesAllowance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromUpdatesBalance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromUpdatesTotalSupply(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromZeroTokenDoesNotUpdateAllowance(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromZeroTokenDoesNotUpdateBalances(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningFromZeroTokenDoesNotUpdateTotalSupply(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningUpdatesBalance(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningUpdatesTotalSupply(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningZeroTokenDoesNotUpdateBalance(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testBurningZeroTokenDoesNotUpdateTotalSupply(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCanApproveMoreThanBalance(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotApprovePositiveAmountToZeroAddress(uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotTransferFromMoreThanAllowanceLowerThanBalance(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotTransferFromMoreThanBalanceButLowerThanAllowance(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCannotTransferMoreThanBalance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApprovePositiveToPositive(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApprovePositiveToZero(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApproveZeroToPositive(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testCorrectOverwriteApproveZeroToZero()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testDealIntendedTokensToDummyUsers(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceAsExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceBehaviorExact(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceBehaviorInexact(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceDoubleSpend(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceGtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testDecreaseAllowanceLtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferFromPotential(uint256[2],uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferFromPresent(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferPotential(uint256[2],uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testFeeTakingTransferPresent(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceAsExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceDoubleSpend(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceGtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testIncreaseAllowanceLtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testInfiniteApprovalConstant(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testInfiniteApprovalNotConstant(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testMaintainsApprovalLowerThanBalance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingToZeroAddressShouldFail(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingUpdatesBalance(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingUpdatesTotalSupply(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingZeroShouldNotChangeBalance()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testMintingZeroShouldNotChangeTotalSupply()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testMultipleTransferFromCannotExceedAllowance(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoApprovalCannotTransferFrom(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoExcessByMintingViaOverflow(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testNoSelfApprovalCannotSelfTransferFrom(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testNonOwnerCannotChangeOwner()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testNonWalletAddressCannotDisableTransfer()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testNonWalletAddressCannotEnableTransfer()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testOverwriteApprovePositiveToPositive(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testOwnerCanChangeOwner()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testOwnerCannotOverflowSellBySettingPrice(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApprovalEventEmission(uint256)",
+        "status": "Failure",
+        "reason": "expected an emit, but no logs were emitted afterwards. you might have mismatched events or not enough events were emitted",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApproveAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApproveAllowsZeroTransferFrom(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveApproveLeadsToAllowance(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveDecreaseAllowanceAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveDecreaseAllowanceAllowsZeroTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveDecreaseAllowanceEventEmission(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveIncreaseAllowanceAllowsPositiveTransferFrom(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveIncreaseAllowanceAllowsZeroTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveIncreaseAllowanceEventEmission(uint256)",
+        "status": "Failure",
+        "reason": "expected an emit, but no logs were emitted afterwards. you might have mismatched events or not enough events were emitted",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveMultipleTransfer(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveMultipleTransferFrom(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfApprove(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfApproveTransferFrom(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfDecreaseAllowance(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfDecreaseAllowanceTransferFrom(uint256,uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfIncreaseAllowance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfIncreaseAllowanceTransferFrom(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveSelfTransfer(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTotalTransferFromToOther(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTotalTransferToOther(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferEventEmission(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferFromEventEmission(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferFromToZeroShouldRevert(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testPositiveTransferToZeroShouldRevert(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testRevertsIfApprovalGreaterThanBalance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testRevertsOnInfiniteApproval(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testShouldNotChangeOwnership()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalSupplyConstantAfterTransfer(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalSupplyConstantAfterTransferFrom(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTotalSupplyDoesNotOverflowByMinting(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferAreNotPossibleWhenPaused(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferDoesNotUpdateOthersBalances(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromAreNotPossibleWhenPaused(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDecreaseAllowanceAsExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDecreaseAllowanceGtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDecreaseAllowanceLtExpected(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testTransferFromDoesNotUpdateOthersBalances(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testWalletAddressCanDisableWalletTransfer()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testWalletAddressCanEnableWalletTransfer()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroAddressCannotApprovePositiveAmount(uint256)",
+        "status": "Failure",
+        "reason": null,
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroAddressCannotTransferPositiveAmount(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroApprovalEventEmission()",
+        "status": "Failure",
+        "reason": "expected an emit, but no logs were emitted afterwards. you might have mismatched events or not enough events were emitted",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroApproveLeadsToAllowance()",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroDecreaseAllowanceEventEmission()",
+        "status": "Failure",
+        "reason": "expected an emit, but no logs were emitted afterwards. you might have mismatched events or not enough events were emitted",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroIncreaseAllowanceEventEmission()",
+        "status": "Failure",
+        "reason": "expected an emit, but no logs were emitted afterwards. you might have mismatched events or not enough events were emitted",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroMultipleTransfer(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroMultipleTransferFrom(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfApprove(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfApproveTransferFrom(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfDecreaseAllowance(uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfDecreaseAllowanceTransferFrom(uint256,uint256,uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfIncreaseAllowance(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfIncreaseAllowanceTransferFrom(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroSelfTransfer(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTotalTransferFromToOther(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTotalTransferToOther(uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherEmitsEvent(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherFromAndToSameAccountPossible(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherPossibleFromAndToDifferentAccounts(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherToSameAccountEmitsEvent(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromByOtherToSelfPossible(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromBySelfPossible(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromBySelfToSelfEmitsEvent(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromBySelfToSomeoneEmitsEvent(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferFromToZeroShouldRevert(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToOthersEmitsEvent(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToOthersPossible(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToSelfEmitsEvent(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToSelfPossible(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      },
+      {
+        "name": "testZeroTransferToZeroShouldRevert(uint256,uint256)",
+        "status": "Failure",
+        "reason": "EvmError: Revert",
+        "decoded_logs": []
+      }
+    ]
+  }
+}

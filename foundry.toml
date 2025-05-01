@@ -4,7 +4,6 @@ out = 'out'
 libs = ['lib']
 fs_permissions = [{ access = "read", path = "./"}]
 
-evm_version='shanghai'
 memory_limit = 3355443200
 
 [fuzz]

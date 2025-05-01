@@ -1,0 +1,29 @@
+name: ERCx Regression Tests
+
+on: push
+
+env:
+  FOUNDRY_PROFILE: ci
+
+jobs:
+  golden-tests:
+    name: Local ERCx token tests
+    runs-on: [self-hosted, linux, flyweight]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: rc-1
+
+      - name: Run Forge build
+        run: |
+          forge --version
+          forge build --sizes
+
+      - name: Run source code analysis tests
+        run: ./test/scripts/run-tests.sh
