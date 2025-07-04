@@ -19,8 +19,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `convertToShares` of zero amount is not possible.
     /// @custom:ercx-categories assets, shares, zero amount
     /// @custom:ercx-concerned-function convertToShares
-    function testConvertToSharesZeroAmountIsPossible()
-    public virtual {
+    function testConvertToSharesZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerCallConvertToSharesAssets(alice, 0);
         assertTrue(success);
     }
@@ -30,8 +29,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `convertToAssets` of zero amount is not possible.
     /// @custom:ercx-categories assets, shares, zero amount
     /// @custom:ercx-concerned-function convertToAssets
-    function testConvertToAssetsZeroAmountIsPossible()
-    public virtual {
+    function testConvertToAssetsZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerCallConvertToAssetsShares(alice, 0);
         assertTrue(success);
     }
@@ -41,8 +39,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `previewDeposit` of zero amount is not possible.
     /// @custom:ercx-categories deposit, zero amount
     /// @custom:ercx-concerned-function previewDeposit
-    function testPreviewDepositZeroAmountIsPossible()
-    public virtual {
+    function testPreviewDepositZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerCallPreviewDepositAssets(alice, 0);
         assertTrue(success);
     }
@@ -52,8 +49,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `deposit` of zero amount is not possible.
     /// @custom:ercx-categories deposit, zero amount
     /// @custom:ercx-concerned-function deposit
-    function testDepositZeroAmountIsPossible()
-    public virtual {
+    function testDepositZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerDepositAssetsToReceiver(alice, 0, alice);
         assertTrue(success);
     }
@@ -63,8 +59,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `previewMint` of zero amount is not possible.
     /// @custom:ercx-categories mint, zero amount
     /// @custom:ercx-concerned-function previewMint
-    function testPreviewMintZeroAmountIsPossible()
-    public virtual {
+    function testPreviewMintZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerCallPreviewMintShares(alice, 0);
         assertTrue(success);
     }
@@ -74,8 +69,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `mint` of zero amount is not possible.
     /// @custom:ercx-categories mint, zero amount
     /// @custom:ercx-concerned-function mint
-    function testMintZeroAmountIsPossible()
-    public virtual {
+    function testMintZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerMintSharesToReceiver(alice, 0, alice);
         assertTrue(success);
     }
@@ -85,8 +79,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `previewWithdraw` of zero amount is not possible.
     /// @custom:ercx-categories withdraw, zero amount
     /// @custom:ercx-concerned-function previewWithdraw
-    function testPreviewWithdrawZeroAmountIsPossible()
-    public virtual {
+    function testPreviewWithdrawZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerCallPreviewWithdrawAssets(alice, 0);
         assertTrue(success);
     }
@@ -96,8 +89,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `withdraw` of zero amount is not possible.
     /// @custom:ercx-categories withdraw, zero amount
     /// @custom:ercx-concerned-function withdraw
-    function testWithdrawZeroAmountIsPossible()
-    public virtual {
+    function testWithdrawZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerWithdrawAssetsToReceiverFromOwner(alice, 0, alice, alice);
         assertTrue(success);
     }
@@ -107,8 +99,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `previewRedeem` of zero amount is not possible.
     /// @custom:ercx-categories redeem, zero amount
     /// @custom:ercx-concerned-function previewRedeem
-    function testPreviewRedeemZeroAmountIsPossible()
-    public virtual {
+    function testPreviewRedeemZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerCallPreviewRedeemShares(alice, 0);
         assertTrue(success);
     }
@@ -118,8 +109,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `redeem` of zero amount is not possible.
     /// @custom:ercx-categories redeem, zero amount
     /// @custom:ercx-concerned-function redeem
-    function testRedeemZeroAmountIsPossible()
-    public virtual {
+    function testRedeemZeroAmountIsPossible() public virtual {
         (bool success,) = tryCallerRedeemSharesToReceiverFromOwner(alice, 0, alice, alice);
         assertTrue(success);
     }
@@ -139,8 +129,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// i.e., there exists some `shares > type(uint256).max / vault.totalAssets()` where `convertToAssets(shares)` does not revert due to integer overflow.
     /// @custom:ercx-categories assets, shares
     /// @custom:ercx-concerned-function convertToAssets
-    function testConvertToAssetsIntOverflowLimitFollowsSolmate() 
-    public virtual {
+    function testConvertToAssetsIntOverflowLimitFollowsSolmate() public virtual {
         uint256 totalSupply = cut4626.totalSupply();
         uint256 totalAssets = cut4626.totalAssets();
         if (totalSupply > 0) {
@@ -169,8 +158,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// i.e., there exists some `assets > type(uint256).max / vault.totalSupply()` where `convertToShares(assets)` does not revert due to integer overflow.
     /// @custom:ercx-categories assets, shares
     /// @custom:ercx-concerned-function convertToShares
-    function testConvertToSharesIntOverflowLimitFollowsSolmate() 
-    public virtual {
+    function testConvertToSharesIntOverflowLimitFollowsSolmate() public virtual {
         uint256 totalSupply = cut4626.totalSupply();
         if (totalSupply > 0) {
             // restrict `assets` to force overflow
@@ -199,8 +187,13 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// OR calling the following functions: approve.
     /// @custom:ercx-categories assets, deposit
     /// @custom:ercx-concerned-function deposit
-    function testDepositRevertsWhenAssetsGtMaxDeposit(uint256 assets, uint256 aliceAssets, uint256 bobShares) public virtual
-    initializeAssetsTwoUsers(aliceAssets, 0) initializeSharesTwoUsers(0, bobShares) assetsOverflowRestriction(assets) {
+    function testDepositRevertsWhenAssetsGtMaxDeposit(uint256 assets, uint256 aliceAssets, uint256 bobShares)
+        public
+        virtual
+        initializeAssetsTwoUsers(aliceAssets, 0)
+        initializeSharesTwoUsers(0, bobShares)
+        assetsOverflowRestriction(assets)
+    {
         uint256 maxDepositBob = cut4626.maxDeposit(bob);
         // Pass the test if cut4626.maxDeposit(bob) == type(uint256).max
         if (maxDepositBob != MAX_UINT256) {
@@ -225,8 +218,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `maxDeposit` does not return 2 ** 256 - 1, i.e., there might be a limit set for `maxDeposit`.
     /// @custom:ercx-categories deposit
     /// @custom:ercx-concerned-function maxDeposit
-    function testMaxDepositReturnMaxUint256IfNoLimit() 
-    public virtual {
+    function testMaxDepositReturnMaxUint256IfNoLimit() public virtual {
         assertEq(cut4626.maxDeposit(alice), MAX_UINT256, "Calling `maxDeposit` does not return 2 ** 256 - 1.");
     }
 
@@ -245,7 +237,10 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-categories withdraw
     /// @custom:ercx-concerned-function maxWithdraw
     function testMaxWithdrawEqConvertToAssetsOfBalanceOfShares(uint256 aliceShares)
-    public virtual initializeSharesTwoUsers(aliceShares, 0) {
+        public
+        virtual
+        initializeSharesTwoUsers(aliceShares, 0)
+    {
         vm.assume(aliceShares > 0);
         uint256 balanceOfShares = cut4626.balanceOf(alice);
         // prevent `balanceOfShares` from integer overflow
@@ -266,7 +261,12 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-categories assets, withdraw
     /// @custom:ercx-concerned-function withdraw
     function testWithdrawRevertsWhenAssetsGtMaxWithdraw(uint256 assets, uint256 aliceShares)
-    public virtual initializeSharesTwoUsers(aliceShares, 0) assetsOverflowRestriction(assets) sharesOverflowRestriction(aliceShares) {
+        public
+        virtual
+        initializeSharesTwoUsers(aliceShares, 0)
+        assetsOverflowRestriction(assets)
+        sharesOverflowRestriction(aliceShares)
+    {
         vm.assume(aliceShares > 0);
         vm.assume(assets > 0);
         uint256 maxWithdrawAlice = cut4626.maxWithdraw(alice);
@@ -295,9 +295,14 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// OR calling the following functions: approve.
     /// @custom:ercx-categories shares, mint
     /// @custom:ercx-concerned-function mint
-    function testMintRevertsWhenSharesGtMaxMint(uint256 shares, uint256 aliceAssets, uint256 bobShares) public virtual
-    initializeAssetsTwoUsers(aliceAssets, 0) initializeSharesTwoUsers(0, bobShares) sharesOverflowRestriction(shares) {
-        // Pass the test if cut4626.maxMint(bob) == type(uint256).max 
+    function testMintRevertsWhenSharesGtMaxMint(uint256 shares, uint256 aliceAssets, uint256 bobShares)
+        public
+        virtual
+        initializeAssetsTwoUsers(aliceAssets, 0)
+        initializeSharesTwoUsers(0, bobShares)
+        sharesOverflowRestriction(shares)
+    {
+        // Pass the test if cut4626.maxMint(bob) == type(uint256).max
         if (cut4626.maxMint(bob) != MAX_UINT256) {
             vm.assume(shares > cut4626.maxMint(bob));
             uint256 previewedAssets = cut4626.previewMint(shares);
@@ -319,9 +324,8 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback Calling `maxMint` does not return 2 ** 256 - 1, i.e., there might be a limit set for `maxMint`.
     /// @custom:ercx-categories mint
     /// @custom:ercx-concerned-function maxMint
-    function testMaxMintReturnMaxUint256IfNoLimit()
-    public virtual {
-       assertEq(cut4626.maxMint(alice), MAX_UINT256, "Calling `maxMint` does not return 2 ** 256 - 1.");
+    function testMaxMintReturnMaxUint256IfNoLimit() public virtual {
+        assertEq(cut4626.maxMint(alice), MAX_UINT256, "Calling `maxMint` does not return 2 ** 256 - 1.");
     }
 
     /**
@@ -339,7 +343,10 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-categories redeem
     /// @custom:ercx-concerned-function maxRedeem
     function testMaxRedeemEqBalanceOfShares(uint256 aliceShares)
-    public virtual initializeSharesTwoUsers(aliceShares, 0) {
+        public
+        virtual
+        initializeSharesTwoUsers(aliceShares, 0)
+    {
         vm.assume(aliceShares > 0);
         assertEq(cut4626.maxRedeem(alice), cut4626.balanceOf(alice), "`maxRedeem(account) != vault.balanceOf(account)`");
     }
@@ -351,7 +358,11 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-categories redeem, shares
     /// @custom:ercx-concerned-function redeem
     function testRedeemRevertsWhenSharesGtMaxRedeem(uint256 shares, uint256 aliceShares)
-    public virtual initializeSharesTwoUsers(aliceShares, 0) sharesOverflowRestriction(shares) {
+        public
+        virtual
+        initializeSharesTwoUsers(aliceShares, 0)
+        sharesOverflowRestriction(shares)
+    {
         vm.assume(aliceShares > 0);
         vm.assume(shares > 0);
         vm.assume(cut4626.previewRedeem(shares) > 0);
@@ -377,9 +388,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback The vault token is non-transferrable via `transfer`.
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with dealing tokens to dummy users for interacting with the contract.
     /// @custom:ercx-categories eip20
-    function testSharesIsTransferAble(uint256 aliceShares)
-    initializeSharesTwoUsers(aliceShares, 0)
-    public virtual {
+    function testSharesIsTransferAble(uint256 aliceShares) public virtual initializeSharesTwoUsers(aliceShares, 0) {
         vm.assume(aliceShares > 0);
         uint256 aliceSharesBefore = cut4626.balanceOf(alice);
         tryCallerTransferReceiverShares(alice, bob, aliceShares);
@@ -395,8 +404,10 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// OR calling the following functions: approve.
     /// @custom:ercx-categories eip20
     function testSharesIsTransferFromAble(uint256 aliceShares)
-    initializeSharesTwoUsers(aliceShares, 0)
-    public virtual {
+        public
+        virtual
+        initializeSharesTwoUsers(aliceShares, 0)
+    {
         vm.assume(aliceShares > 0);
         (bool callApprove,) = tryCallerApproveApproveeShares(alice, bob, aliceShares);
         // Skip the test if the approve call failed
@@ -420,8 +431,11 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback There is discrepancy between `convertToShares` and `previewDeposit`.
     /// @custom:ercx-categories shares, assets, deposit
     /// @custom:ercx-concerned-function previewDeposit
-    function testNoDiscrepancyConvertToSharesAndPreviewDeposit(uint256 assets) public virtual
-    assetsOverflowRestriction(assets) {
+    function testNoDiscrepancyConvertToSharesAndPreviewDeposit(uint256 assets)
+        public
+        virtual
+        assetsOverflowRestriction(assets)
+    {
         vm.assume(assets > 0);
         uint256 ctsShares = cut4626.convertToShares(assets);
         uint256 pdShares = cut4626.previewDeposit(assets);
@@ -433,8 +447,11 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback There is discrepancy between `convertToAssets` and `previewMint`.
     /// @custom:ercx-categories shares, assets, mint
     /// @custom:ercx-concerned-function previewMint
-    function testNoDiscrepancyConvertToAssetsAndPreviewMint(uint256 shares) public virtual
-    sharesOverflowRestriction(shares) {
+    function testNoDiscrepancyConvertToAssetsAndPreviewMint(uint256 shares)
+        public
+        virtual
+        sharesOverflowRestriction(shares)
+    {
         vm.assume(shares > 0);
         uint256 ctaShares = cut4626.convertToAssets(shares);
         uint256 pmShares = cut4626.previewMint(shares);
@@ -446,8 +463,11 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback There is discrepancy between `convertToShares` and `previewWithdraw`.
     /// @custom:ercx-categories shares, assets, withdraw
     /// @custom:ercx-concerned-function previewWithdraw
-    function testNoDiscrepancyConvertToSharesAndPreviewWithdraw(uint256 assets) public virtual
-    assetsOverflowRestriction(assets) {
+    function testNoDiscrepancyConvertToSharesAndPreviewWithdraw(uint256 assets)
+        public
+        virtual
+        assetsOverflowRestriction(assets)
+    {
         vm.assume(assets > 0);
         uint256 ctsShares = cut4626.convertToShares(assets);
         uint256 pwShares = cut4626.previewWithdraw(assets);
@@ -459,8 +479,11 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback There is discrepancy between `convertToAssets` and `previewRedeem`.
     /// @custom:ercx-categories shares, assets, redeem
     /// @custom:ercx-concerned-function previewRedeem
-    function testNoDiscrepancyConvertToAssetsAndPreviewRedeem(uint256 shares) public virtual
-    sharesOverflowRestriction(shares) {
+    function testNoDiscrepancyConvertToAssetsAndPreviewRedeem(uint256 shares)
+        public
+        virtual
+        sharesOverflowRestriction(shares)
+    {
         vm.assume(shares > 0);
         uint256 ctaShares = cut4626.convertToAssets(shares);
         uint256 prShares = cut4626.previewRedeem(shares);
@@ -480,10 +503,9 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback `vault.totalAssets() >= asset.balanceOf(vault)`
     /// @custom:ercx-categories assets, total assets
     /// @custom:ercx-concerned-function totalAssets
-    function testTotalAssetsLtVaultAssetsBalance()
-	public virtual {
-		uint256 totalAssets = cut4626.totalAssets();
-		uint256 balance = asset.balanceOf(address(cut4626));
+    function testTotalAssetsLtVaultAssetsBalance() public virtual {
+        uint256 totalAssets = cut4626.totalAssets();
+        uint256 balance = asset.balanceOf(address(cut4626));
         assertLt(totalAssets, balance, "`vault.totalAssets() >= asset.balanceOf(vault)`");
     }
 
@@ -492,10 +514,9 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback `vault.totalAssets() <= asset.balanceOf(vault)`
     /// @custom:ercx-categories assets, total assets
     /// @custom:ercx-concerned-function totalAssets
-    function testTotalAssetsGtVaultAssetsBalance()
-	public virtual {
-		uint256 totalAssets = cut4626.totalAssets();
-		uint256 balance = asset.balanceOf(address(cut4626));
+    function testTotalAssetsGtVaultAssetsBalance() public virtual {
+        uint256 totalAssets = cut4626.totalAssets();
+        uint256 balance = asset.balanceOf(address(cut4626));
         assertGt(totalAssets, balance, "`vault.totalAssets() <= asset.balanceOf(vault)`");
     }
 
@@ -504,9 +525,8 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback `vault.totalAssets() == 0`
     /// @custom:ercx-categories total assets
     /// @custom:ercx-concerned-function totalAssets
-    function testTotalAssetsGtZero()
-	public virtual {
-		uint256 totalAssets = cut4626.totalAssets();
+    function testTotalAssetsGtZero() public virtual {
+        uint256 totalAssets = cut4626.totalAssets();
         assertGt(totalAssets, 0, "`vault.totalAssets() == 0`");
     }
 
@@ -515,9 +535,8 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback `vault.totalSupply() == 0`
     /// @custom:ercx-categories total supply
     /// @custom:ercx-concerned-function totalSupply
-    function testTotalSupplyGtZero()
-	public virtual {
-		uint256 totalSupply = cut4626.totalSupply();
+    function testTotalSupplyGtZero() public virtual {
+        uint256 totalSupply = cut4626.totalSupply();
         assertGt(totalSupply, 0, "`vault.totalSupply() == 0`");
     }
 
@@ -526,9 +545,8 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback `vault.totalAssets() >= vault.totalSupply()`
     /// @custom:ercx-categories total assets, total supply
     /// @custom:ercx-concerned-function totalAssets, totalSupply
-    function testTotalAssetsLtTotalSupply()
-	public virtual {
-		uint256 totalAssets = cut4626.totalAssets();
+    function testTotalAssetsLtTotalSupply() public virtual {
+        uint256 totalAssets = cut4626.totalAssets();
         uint256 totalSupply = cut4626.totalSupply();
         assertLt(totalAssets, totalSupply, "`vault.totalAssets() >= vault.totalSupply()`");
     }
@@ -538,9 +556,8 @@ abstract contract ERC4626Features is ERC4626Abstract {
     /// @custom:ercx-feedback `vault.totalAssets() <= vault.totalSupply()`
     /// @custom:ercx-categories total assets, total supply
     /// @custom:ercx-concerned-function totalAssets, totalSupply
-    function testTotalAssetsGtTotalSupply()
-	public virtual {
-		uint256 totalAssets = cut4626.totalAssets();
+    function testTotalAssetsGtTotalSupply() public virtual {
+        uint256 totalAssets = cut4626.totalAssets();
         uint256 totalSupply = cut4626.totalSupply();
         assertGt(totalAssets, totalSupply, "`vault.totalAssets() <= vault.totalSupply()`");
     }
