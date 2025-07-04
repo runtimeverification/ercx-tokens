@@ -6,6 +6,28 @@ env:
   FOUNDRY_PROFILE: ci
 
 jobs:
+  format-check:
+    name: Code formatting check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: rc-1
+
+      - name: Check code formatting
+        run: |
+          forge fmt --check
+          if [ $? -ne 0 ]; then
+            echo "Code formatting check failed. Please run 'forge fmt' to fix formatting."
+            exit 1
+          fi
+
   golden-tests:
     name: Local ERCx token tests
     runs-on: [self-hosted, linux, flyweight]

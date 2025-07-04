@@ -6,7 +6,6 @@ import {ERC20Mock} from "openzeppelin-contracts/mocks/ERC20Mock.sol";
 import {ERC4626Mock} from "openzeppelin-contracts/mocks/ERC4626Mock.sol";
 
 contract ERC4626MockTest is ERC4626Test {
-
     function setUp() public {
         ERC20Mock underlyingToken = new ERC20Mock();
         address underlyingTokenAddress = address(underlyingToken);
@@ -17,5 +16,4 @@ contract ERC4626MockTest is ERC4626Test {
         underlyingToken.mint(address(token), 1e18);
         ERC4626Test.init(address(token));
     }
-
 }

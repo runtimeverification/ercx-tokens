@@ -4,7 +4,6 @@ pragma solidity ^0.8.4;
 import "openzeppelin-contracts/token/ERC721/IERC721Receiver.sol";
 
 contract ERC721Receiver is IERC721Receiver {
-
     string public name;
 
     constructor(string memory _name) {

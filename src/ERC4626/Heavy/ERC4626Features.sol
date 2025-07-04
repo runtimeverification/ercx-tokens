@@ -3,7 +3,7 @@
 
 // import "../ERC4626Abstract.sol";
 
-// /// @notice Abstract contract that consists of testing functions with test for properties 
+// /// @notice Abstract contract that consists of testing functions with test for properties
 // /// that are neither desirable nor undesirable but instead implementation choices.
 // abstract contract ERC4626Features is ERC4626Abstract {
 
@@ -23,7 +23,7 @@
 //     function testConvertToAssetsIntOverflowLimitFollowsSolmate() public {
 //         uint256 totalSupply = cut4626.totalSupply();
 //         uint256 totalAssets = cut4626.totalAssets();
-//         if (totalSupply > 0) { 
+//         if (totalSupply > 0) {
 //             // restrict `shares` to force overflow
 //             uint256 shares = MAX_UINT256 / totalAssets + 1;
 //             bytes memory data = abi.encodeWithSelector(cut4626.convertToAssets.selector, shares);
@@ -86,7 +86,7 @@
 //     /// @custom:ercx-concerned-function convertToShares
 //     function testConvertToSharesIntOverflowLimitFollowsSolmate() public {
 //         uint256 totalSupply = cut4626.totalSupply();
-//         if (totalSupply > 0) { 
+//         if (totalSupply > 0) {
 //             // restrict `assets` to force overflow
 //             uint256 assets = MAX_UINT256 / totalSupply + 1;
 //             bytes memory data = abi.encodeWithSelector(cut4626.convertToShares.selector, assets);
@@ -133,7 +133,6 @@
 //         uint256 assets = cut4626.convertToAssets(shares);
 //         assertGt(cut4626.convertToShares(assets), shares, "`convertToShares(convertToAssets(shares)) <= shares`");
 //     }
-
 
 //     /****************************
 //     *
@@ -183,14 +182,14 @@
 //             vm.startPrank(alice);
 //             (bool callDeposit, ) = tryDeposit(assets, bob);
 //             vm.stopPrank();
-//             assertTrue(callDeposit, "Alice cannot deposit a number of assets that is lesser than `maxDeposit(bob)` for Bob.");            
+//             assertTrue(callDeposit, "Alice cannot deposit a number of assets that is lesser than `maxDeposit(bob)` for Bob.");
 //         }
 //         else {
 //             emit log("Alice cannot approve assets for the vault.");
 //         }
 //     }
 
-//     /// @notice Calling `maxDeposit MUST return 2 ** 256 - 1 
+//     /// @notice Calling `maxDeposit MUST return 2 ** 256 - 1
 //     /// if there is no limit on the maximum amount of assets that may be deposited.
 //     /// @custom:ercx-expected optional
 //     /// @custom:ercx-feedback Calling `maxDeposit` does not return 2 ** 256 - 1, i.e., there might be a limit set for `maxDeposit`.
@@ -404,10 +403,10 @@
 //         assertGt(totalAssetsAfter - totalAssetsBefore, assets, "The total assets of the vault increases by a number of shares lesser than or equal to what was expected.");
 //     }
 
-//     /// @notice The assets' allowance of caller to vault decreases by the amount of `assets` deposited 
+//     /// @notice The assets' allowance of caller to vault decreases by the amount of `assets` deposited
 //     /// (from some initial allowance >= assets) after a successful `deposit(assets, receiver)` call.
 //     /// @custom:ercx-expected pass
-//     /// @custom:ercx-feedback The assets' allowance of caller to vault does not decrease by the amount of `assets` deposited 
+//     /// @custom:ercx-feedback The assets' allowance of caller to vault does not decrease by the amount of `assets` deposited
 //     /// (from some initial allowance >= assets) after a successful `deposit(assets, receiver)` call.
 //     /// @custom:ercx-categories assets, deposit, allowance
 //     /// @custom:ercx-concerned-function deposit
@@ -422,10 +421,10 @@
 //         assertEq(aliceAssets - aliceAllowanceToVaultAfter, assets, "The assets' allowance of Alice to the vault does not decrease by the correct amount after a successful `deposit` call.");
 //     }
 
-//     /// @notice The assets' allowance of caller to vault decreases by a number of `assets` lesser than what was deposited 
+//     /// @notice The assets' allowance of caller to vault decreases by a number of `assets` lesser than what was deposited
 //     /// (from some initial allowance >= assets) after a successful `deposit(assets, receiver)` call.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback The assets' allowance of caller to vault decreases by a number of `assets` greater than or equal to what was deposited 
+//     /// @custom:ercx-feedback The assets' allowance of caller to vault decreases by a number of `assets` greater than or equal to what was deposited
 //     /// (from some initial allowance >= assets) after a successful `deposit(assets, receiver)` call.
 //     /// @custom:ercx-categories assets, deposit, allowance
 //     /// @custom:ercx-concerned-function deposit
@@ -440,10 +439,10 @@
 //         assertLt(aliceAssets - aliceAllowanceToVaultAfter, assets, "The assets' allowance of Alice to the vault decreases by a number of shares greater than or equal to what was expected.");
 //     }
 
-//     /// @notice The assets' allowance of caller to vault decreases by a number of `assets` greater than what was deposited 
+//     /// @notice The assets' allowance of caller to vault decreases by a number of `assets` greater than what was deposited
 //     /// (from some initial allowance >= assets) after a successful `deposit(assets, receiver)` call.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback The assets' allowance of caller to vault decreases by a number of `assets` lesser than or equal to what was deposited 
+//     /// @custom:ercx-feedback The assets' allowance of caller to vault decreases by a number of `assets` lesser than or equal to what was deposited
 //     /// (from some initial allowance >= assets) after a successful `deposit(assets, receiver)` call.
 //     /// @custom:ercx-categories assets, deposit, allowance
 //     /// @custom:ercx-concerned-function deposit
@@ -463,7 +462,7 @@
 //     * Calling of deposit()-* checks.
 //     *
 //     *****************************/
-    
+
 //     /// @notice `deposit(assets, caller) == withdraw(assets, caller, caller)` where deposit is called before withdraw.
 //     /// In layman terms, it means initial shares minted from depositing == shares burnt from withdrawing for same amount of assets.
 //     /// @custom:ercx-expected optional
@@ -479,18 +478,18 @@
 //         uint256 mintedShares = selfDeposit(assets);
 //         // case where Alice has not enough mintedShares to withdraw assets
 //         uint256 totalSupply = cut4626.totalSupply();
-//         if (totalSupply > 0) { 
-//             vm.assume(assets < MAX_UINT256 / totalSupply); 
+//         if (totalSupply > 0) {
+//             vm.assume(assets < MAX_UINT256 / totalSupply);
 //         }
-//         if (mintedShares < cut4626.previewWithdraw(assets)) { 
+//         if (mintedShares < cut4626.previewWithdraw(assets)) {
 //             vm.startPrank(alice);
 //             (bool callWithdraw, uint256 burnedShares) = tryWithdraw(assets, alice, alice);
 //             vm.stopPrank();
-//             if (callWithdraw) { 
+//             if (callWithdraw) {
 //                 assertEq(mintedShares, burnedShares, "`deposit(assets, caller) != withdraw(assets, caller, caller)`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -514,10 +513,10 @@
 //         uint256 mintedShares = selfDeposit(assets);
 //         // case where Alice has not enough mintedShares to withdraw assets
 //         uint256 totalSupply = cut4626.totalSupply();
-//         if (totalSupply > 0) { 
-//             vm.assume(assets < MAX_UINT256 / totalSupply); 
+//         if (totalSupply > 0) {
+//             vm.assume(assets < MAX_UINT256 / totalSupply);
 //         }
-//         if (mintedShares < cut4626.previewWithdraw(assets)) { 
+//         if (mintedShares < cut4626.previewWithdraw(assets)) {
 //             vm.startPrank(alice);
 //             (bool callWithdraw, uint256 burnedShares) = tryWithdraw(assets, alice, alice);
 //             vm.stopPrank();
@@ -546,10 +545,10 @@
 //         uint256 mintedShares = selfDeposit(assets);
 //         // case where Alice has not enough mintedShares to withdraw assets
 //         uint256 totalSupply = cut4626.totalSupply();
-//         if (totalSupply > 0) { 
-//             vm.assume(assets < MAX_UINT256 / totalSupply); 
+//         if (totalSupply > 0) {
+//             vm.assume(assets < MAX_UINT256 / totalSupply);
 //         }
-//         if (mintedShares < cut4626.previewWithdraw(assets)) { 
+//         if (mintedShares < cut4626.previewWithdraw(assets)) {
 //             vm.startPrank(alice);
 //             (bool callWithdraw, uint256 burnedShares) = tryWithdraw(assets, alice, alice);
 //             vm.stopPrank();
@@ -557,7 +556,7 @@
 //                 assertGt(mintedShares, burnedShares, "`deposit(assets, caller) <= withdraw(assets, caller, caller)`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -566,10 +565,10 @@
 //         }
 //     }
 
-//     /// @notice `redeem(deposit(assets, caller), caller, caller) == assets`. In layman terms, it means 
+//     /// @notice `redeem(deposit(assets, caller), caller, caller) == assets`. In layman terms, it means
 //     /// assets redeemed == initial assets deposited.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `redeem(deposit(assets, caller), caller, caller) != assets`. In layman terms, it means 
+//     /// @custom:ercx-feedback `redeem(deposit(assets, caller), caller, caller) != assets`. In layman terms, it means
 //     /// assets redeemed != initial assets deposited.
 //     /// @custom:ercx-categories assets, deposit, redeem
 //     /// @custom:ercx-concerned-function deposit, redeem
@@ -583,10 +582,10 @@
 //         assertEq(redeemedAssets, assets, "`redeem(deposit(assets, caller), caller, caller) != assets`");
 //     }
 
-//     /// @notice `redeem(deposit(assets, caller), caller, caller) < assets`. In layman terms, it means 
+//     /// @notice `redeem(deposit(assets, caller), caller, caller) < assets`. In layman terms, it means
 //     /// assets redeemed < initial assets deposited.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `redeem(deposit(assets, caller), caller, caller) >= assets`. In layman terms, it means 
+//     /// @custom:ercx-feedback `redeem(deposit(assets, caller), caller, caller) >= assets`. In layman terms, it means
 //     /// assets redeemed >= initial assets deposited.
 //     /// @custom:ercx-categories assets, deposit, redeem
 //     /// @custom:ercx-concerned-function deposit, redeem
@@ -600,10 +599,10 @@
 //         assertLt(redeemedAssets, assets, "`redeem(deposit(assets, caller), caller, caller) >= assets`");
 //     }
 
-//     /// @notice `redeem(deposit(assets, caller), caller, caller) > assets`. In layman terms, it means 
+//     /// @notice `redeem(deposit(assets, caller), caller, caller) > assets`. In layman terms, it means
 //     /// assets redeemed > initial assets deposited.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `redeem(deposit(assets, caller), caller, caller) <= assets`. In layman terms, it means 
+//     /// @custom:ercx-feedback `redeem(deposit(assets, caller), caller, caller) <= assets`. In layman terms, it means
 //     /// assets redeemed <= initial assets deposited.
 //     /// @custom:ercx-categories assets, deposit, redeem
 //     /// @custom:ercx-concerned-function deposit, redeem
@@ -632,12 +631,12 @@
 //     public initializeSharesTwoUsers(aliceShares, 0) {
 //         uint256 balanceOfShares = cut4626.balanceOf(alice);
 //         // prevent `balanceOfShares` from integer overflow
-//         if (cut4626.totalSupply() > 0) { 
+//         if (cut4626.totalSupply() > 0) {
 //             vm.assume(balanceOfShares < MAX_UINT256 / (cut4626.totalAssets() + 1));
 //         }
 //         assertEq(cut4626.maxWithdraw(alice), cut4626.convertToAssets(cut4626.balanceOf(alice)), "`maxWithdraw(account) != convertToAssets(vault.balanceOf(account))`");
 //     }
-    
+
 //     /// @notice Calling `withdraw` reverts when the amount of assets to withdraw is greater than `maxWithdraw(tokenOwner)`.
 //     /// @custom:ercx-expected pass
 //     /// @custom:ercx-feedback Calling `withdraw` does not revert on some amount of assets that is greater than `maxWithdraw(tokenOwner)`.
@@ -875,11 +874,11 @@
 //     *****************************/
 
 //     /// @notice `withdraw(assets, caller, caller) == deposit(assets, caller)` where withdraw is called before deposit.
-//     /// In layman terms, it means initial shares burnt from withdrawing == shares minted from depositing for same amount 
+//     /// In layman terms, it means initial shares burnt from withdrawing == shares minted from depositing for same amount
 //     /// of assets.
 //     /// @custom:ercx-expected optional
 //     /// @custom:ercx-feedback `withdraw(assets, caller, caller) != deposit(assets, caller)` where withdraw is called before deposit.
-//     /// In layman terms, it means initial shares burnt from withdrawing != shares minted from depositing for same amount 
+//     /// In layman terms, it means initial shares burnt from withdrawing != shares minted from depositing for same amount
 //     /// of assets.
 //     /// @custom:ercx-categories assets, shares, withdraw, deposit
 //     /// @custom:ercx-concerned-function withdraw, deposit
@@ -898,11 +897,11 @@
 //     }
 
 //     /// @notice `withdraw(assets, caller, caller) < deposit(assets, caller)` where withdraw is called before deposit.
-//     /// In layman terms, it means initial shares burnt from withdrawing < shares minted from depositing for same amount 
+//     /// In layman terms, it means initial shares burnt from withdrawing < shares minted from depositing for same amount
 //     /// of assets.
 //     /// @custom:ercx-expected optional
 //     /// @custom:ercx-feedback `withdraw(assets, caller, caller) >= deposit(assets, caller)` where withdraw is called before deposit.
-//     /// In layman terms, it means initial shares burnt from withdrawing >= shares minted from depositing for same amount 
+//     /// In layman terms, it means initial shares burnt from withdrawing >= shares minted from depositing for same amount
 //     /// of assets.
 //     /// @custom:ercx-categories assets, shares, withdraw, deposit
 //     /// @custom:ercx-concerned-function withdraw, deposit
@@ -921,11 +920,11 @@
 //     }
 
 //     /// @notice `withdraw(assets, caller, caller) > deposit(assets, caller)` where withdraw is called before deposit.
-//     /// In layman terms, it means initial shares burnt from withdrawing > shares minted from depositing for same amount 
+//     /// In layman terms, it means initial shares burnt from withdrawing > shares minted from depositing for same amount
 //     /// of assets.
 //     /// @custom:ercx-expected optional
 //     /// @custom:ercx-feedback `withdraw(assets, caller, caller) <= deposit(assets, caller)` where withdraw is called before deposit.
-//     /// In layman terms, it means initial shares burnt from withdrawing <= shares minted from depositing for same amount 
+//     /// In layman terms, it means initial shares burnt from withdrawing <= shares minted from depositing for same amount
 //     /// of assets.
 //     /// @custom:ercx-categories assets, shares, withdraw, deposit
 //     /// @custom:ercx-concerned-function withdraw, deposit
@@ -943,25 +942,25 @@
 //         assertGt(burnedShares, mintedShares, "`withdraw(assets, caller, caller) <= deposit(assets, caller)`");
 //     }
 
-//     /// @notice `mint(withdraw(assets, caller, caller), caller) == assets`. In layman terms, it means 
+//     /// @notice `mint(withdraw(assets, caller, caller), caller) == assets`. In layman terms, it means
 //     /// shares minted == initial shares burnt from withdrawing.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `mint(withdraw(assets, caller, caller), caller) != assets`. In layman terms, it means 
+//     /// @custom:ercx-feedback `mint(withdraw(assets, caller, caller), caller) != assets`. In layman terms, it means
 //     /// shares minted != initial shares burnt from withdrawing.
 //     /// @custom:ercx-categories assets, withdraw, mint
 //     /// @custom:ercx-concerned-function withdraw, mint
 //     function testWithdrawMintIdentity(uint256 assets, uint256 shares)
-//     initializeSharesTwoUsers(shares, 0) assetsOverflowRestriction(assets) 
+//     initializeSharesTwoUsers(shares, 0) assetsOverflowRestriction(assets)
 //     public {
 //         vm.assume(assets > 0);
 //         vm.assume(shares > 0);
 //         vm.assume(cut4626.previewWithdraw(assets) > 0);
 //         uint256 burnedShares = selfWithdraw(assets);
 //         // case where Alice has not enough assets to mint burnedShares
-//         if (cut4626.totalSupply() > 0) { 
-//             vm.assume(burnedShares < MAX_UINT256 / (cut4626.totalAssets() + 1)); 
+//         if (cut4626.totalSupply() > 0) {
+//             vm.assume(burnedShares < MAX_UINT256 / (cut4626.totalAssets() + 1));
 //         }
-//         if (cut4626.previewMint(burnedShares) > assets) { 
+//         if (cut4626.previewMint(burnedShares) > assets) {
 //             vm.startPrank(alice);
 //             (bool callMint, uint256 depositedAssets) = tryMint(burnedShares, alice);
 //             vm.stopPrank();
@@ -969,7 +968,7 @@
 //                 assertEq(depositedAssets, assets, "`mint(withdraw(assets, caller, caller), caller) != assets`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -978,25 +977,25 @@
 //         }
 //     }
 
-//     /// @notice `mint(withdraw(assets, caller, caller), caller) < assets`. In layman terms, it means 
+//     /// @notice `mint(withdraw(assets, caller, caller), caller) < assets`. In layman terms, it means
 //     /// shares minted < initial shares burnt from withdrawing.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `mint(withdraw(assets, caller, caller), caller) >= assets`. In layman terms, it means 
+//     /// @custom:ercx-feedback `mint(withdraw(assets, caller, caller), caller) >= assets`. In layman terms, it means
 //     /// shares minted >= initial shares burnt from withdrawing.
 //     /// @custom:ercx-categories assets, withdraw, mint
 //     /// @custom:ercx-concerned-function withdraw, mint
 //     function testWithdrawMintLt(uint256 assets, uint256 shares)
-//     initializeSharesTwoUsers(shares, 0) assetsOverflowRestriction(assets) 
+//     initializeSharesTwoUsers(shares, 0) assetsOverflowRestriction(assets)
 //     public {
 //         vm.assume(assets > 0);
 //         vm.assume(shares > 0);
 //         vm.assume(cut4626.previewWithdraw(assets) > 0);
 //         uint256 burnedShares = selfWithdraw(assets);
 //         // case where Alice has not enough assets to mint burnedShares
-//         if (cut4626.totalSupply() > 0) { 
-//             vm.assume(burnedShares < MAX_UINT256 / (cut4626.totalAssets() + 1)); 
+//         if (cut4626.totalSupply() > 0) {
+//             vm.assume(burnedShares < MAX_UINT256 / (cut4626.totalAssets() + 1));
 //         }
-//         if (cut4626.previewMint(burnedShares) > assets) { 
+//         if (cut4626.previewMint(burnedShares) > assets) {
 //             vm.startPrank(alice);
 //             (bool callMint, uint256 depositedAssets) = tryMint(burnedShares, alice);
 //             vm.stopPrank();
@@ -1004,7 +1003,7 @@
 //                 assertLt(depositedAssets, assets, "`mint(withdraw(assets, caller, caller), caller) >= assets`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -1013,25 +1012,25 @@
 //         }
 //     }
 
-//     /// @notice `mint(withdraw(assets, caller, caller), caller) > assets`. In layman terms, it means 
+//     /// @notice `mint(withdraw(assets, caller, caller), caller) > assets`. In layman terms, it means
 //     /// shares minted > initial shares burnt from withdrawing.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `mint(withdraw(assets, caller, caller), caller) <= assets`. In layman terms, it means 
+//     /// @custom:ercx-feedback `mint(withdraw(assets, caller, caller), caller) <= assets`. In layman terms, it means
 //     /// shares minted <= initial shares burnt from withdrawing.
 //     /// @custom:ercx-categories assets, withdraw, mint
 //     /// @custom:ercx-concerned-function withdraw, mint
 //     function testWithdrawMintGt(uint256 assets, uint256 shares)
-//     initializeSharesTwoUsers(shares, 0) assetsOverflowRestriction(assets) 
+//     initializeSharesTwoUsers(shares, 0) assetsOverflowRestriction(assets)
 //     public {
 //         vm.assume(assets > 0);
 //         vm.assume(shares > 0);
 //         vm.assume(cut4626.previewWithdraw(assets) > 0);
 //         uint256 burnedShares = selfWithdraw(assets);
 //         // case where Alice has not enough assets to mint burnedShares
-//         if (cut4626.totalSupply() > 0) { 
-//             vm.assume(burnedShares < MAX_UINT256 / (cut4626.totalAssets() + 1)); 
+//         if (cut4626.totalSupply() > 0) {
+//             vm.assume(burnedShares < MAX_UINT256 / (cut4626.totalAssets() + 1));
 //         }
-//         if (cut4626.previewMint(burnedShares) > assets) { 
+//         if (cut4626.previewMint(burnedShares) > assets) {
 //             vm.startPrank(alice);
 //             (bool callMint, uint256 depositedAssets) = tryMint(burnedShares, alice);
 //             vm.stopPrank();
@@ -1255,7 +1254,7 @@
 //         uint256 depositedAssets = mintAToB(shares);
 //         uint256 aliceAssetsAfter = asset.balanceOf(alice);
 //         assertGt(aliceAssetsBefore, aliceAssetsAfter, "The assets' balance of Alice does not decrease as expected.");
-//         assertLt(aliceAssetsBefore - aliceAssetsAfter, depositedAssets, "The assets' balance of Alice decreases by a number of assets greater than or equal to what was expected after a successful `mint` call."); 
+//         assertLt(aliceAssetsBefore - aliceAssetsAfter, depositedAssets, "The assets' balance of Alice decreases by a number of assets greater than or equal to what was expected after a successful `mint` call.");
 //     }
 
 //     /// @notice The assets' balance of the caller decreases by a number of assets greater than what was output by a successful `mint(shares, receiver)` call.
@@ -1273,7 +1272,7 @@
 //         uint256 depositedAssets = mintAToB(shares);
 //         uint256 aliceAssetsAfter = asset.balanceOf(alice);
 //         assertGt(aliceAssetsBefore, aliceAssetsAfter, "The assets' balance of Alice does not decrease as expected.");
-//         assertGt(aliceAssetsBefore - aliceAssetsAfter, depositedAssets, "The assets' balance of Alice decreases by a number of assets lesser than or equal to what was expected after a successful `mint` call."); 
+//         assertGt(aliceAssetsBefore - aliceAssetsAfter, depositedAssets, "The assets' balance of Alice decreases by a number of assets lesser than or equal to what was expected after a successful `mint` call.");
 //     }
 
 //     /// @notice The total assets increases by the amount of assets output by a successful `mint(shares, output)` call.
@@ -1387,10 +1386,10 @@
 //     *
 //     *****************************/
 
-//     /// @notice `withdraw(mint(shares, caller), caller, caller) == shares`. In layman terms, it means 
+//     /// @notice `withdraw(mint(shares, caller), caller, caller) == shares`. In layman terms, it means
 //     /// shares burnt from withdrawing == initial shares minted.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `withdraw(mint(shares, caller), caller, caller) != shares`. In layman terms, it means 
+//     /// @custom:ercx-feedback `withdraw(mint(shares, caller), caller, caller) != shares`. In layman terms, it means
 //     /// shares burnt from withdrawing != initial shares minted.
 //     /// @custom:ercx-categories shares, mint, withdraw
 //     /// @custom:ercx-concerned-function mint, withdraw
@@ -1403,10 +1402,10 @@
 //         uint256 depositedAssets = selfMint(shares);
 //         // case where Alice has not enough shares to withdraw depositedAssets
 //         uint256 totalSupply = cut4626.totalSupply();
-//         if (totalSupply > 0) { 
-//             vm.assume(depositedAssets < MAX_UINT256 / totalSupply); 
+//         if (totalSupply > 0) {
+//             vm.assume(depositedAssets < MAX_UINT256 / totalSupply);
 //         }
-//         if (cut4626.previewWithdraw(depositedAssets) > shares) { 
+//         if (cut4626.previewWithdraw(depositedAssets) > shares) {
 //             vm.startPrank(alice);
 //             (bool callWithdraw, uint256 burnedShares) = tryWithdraw(depositedAssets, alice, alice);
 //             vm.stopPrank();
@@ -1414,7 +1413,7 @@
 //                 assertEq(burnedShares, shares, "`withdraw(mint(shares, caller), caller, caller) != shares`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -1423,10 +1422,10 @@
 //         }
 //     }
 
-//     /// @notice `withdraw(mint(shares, caller), caller, caller) < shares`. In layman terms, it means 
+//     /// @notice `withdraw(mint(shares, caller), caller, caller) < shares`. In layman terms, it means
 //     /// shares burnt from withdrawing < initial shares minted.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `withdraw(mint(shares, caller), caller, caller) >= shares`. In layman terms, it means 
+//     /// @custom:ercx-feedback `withdraw(mint(shares, caller), caller, caller) >= shares`. In layman terms, it means
 //     /// shares burnt from withdrawing >= initial shares minted.
 //     /// @custom:ercx-categories shares, mint, withdraw
 //     /// @custom:ercx-concerned-function mint, withdraw
@@ -1439,10 +1438,10 @@
 //         uint256 depositedAssets = selfMint(shares);
 //         // case where Alice has not enough shares to withdraw depositedAssets
 //         uint256 totalSupply = cut4626.totalSupply();
-//         if (totalSupply > 0) { 
-//             vm.assume(depositedAssets < MAX_UINT256 / totalSupply); 
+//         if (totalSupply > 0) {
+//             vm.assume(depositedAssets < MAX_UINT256 / totalSupply);
 //         }
-//         if (cut4626.previewWithdraw(depositedAssets) > shares) { 
+//         if (cut4626.previewWithdraw(depositedAssets) > shares) {
 //             vm.startPrank(alice);
 //             (bool callWithdraw, uint256 burnedShares) = tryWithdraw(depositedAssets, alice, alice);
 //             vm.stopPrank();
@@ -1450,7 +1449,7 @@
 //                 assertLt(burnedShares, shares, "`withdraw(mint(shares, caller), caller, caller) >= shares`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -1459,10 +1458,10 @@
 //         }
 //     }
 
-//     /// @notice `withdraw(mint(shares, caller), caller, caller) > shares`. In layman terms, it means 
+//     /// @notice `withdraw(mint(shares, caller), caller, caller) > shares`. In layman terms, it means
 //     /// shares burnt from withdrawing > initial shares minted.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `withdraw(mint(shares, caller), caller, caller) <= shares`. In layman terms, it means 
+//     /// @custom:ercx-feedback `withdraw(mint(shares, caller), caller, caller) <= shares`. In layman terms, it means
 //     /// shares burnt from withdrawing <= initial shares minted.
 //     /// @custom:ercx-categories shares, mint, withdraw
 //     /// @custom:ercx-concerned-function mint, withdraw
@@ -1475,14 +1474,14 @@
 //         uint256 depositedAssets = selfMint(shares);
 //         // case where Alice has not enough shares to withdraw depositedAssets
 //         uint256 totalSupply = cut4626.totalSupply();
-//         if (totalSupply > 0) { 
-//             vm.assume(depositedAssets < MAX_UINT256 / totalSupply); 
+//         if (totalSupply > 0) {
+//             vm.assume(depositedAssets < MAX_UINT256 / totalSupply);
 //         }
-//         if (cut4626.previewWithdraw(depositedAssets) > shares) { 
+//         if (cut4626.previewWithdraw(depositedAssets) > shares) {
 //             vm.startPrank(alice);
 //             (bool callWithdraw, uint256 burnedShares) = tryWithdraw(depositedAssets, alice, alice);
 //             vm.stopPrank();
-//             if (callWithdraw) { 
+//             if (callWithdraw) {
 //                 assertGt(burnedShares, shares, "`withdraw(mint(shares, caller), caller, caller) <= shares`");
 //             }
 //         }
@@ -1492,12 +1491,12 @@
 //         }
 //     }
 
-//     /// @notice `mint(shares, caller) == redeem(shares, caller, caller)` where mint is called before redeem. 
-//     /// In layman terms, it means initial assets lost by caller from minting == assets gained by caller from redeeming 
+//     /// @notice `mint(shares, caller) == redeem(shares, caller, caller)` where mint is called before redeem.
+//     /// In layman terms, it means initial assets lost by caller from minting == assets gained by caller from redeeming
 //     /// for same amount of shares.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `mint(shares, caller) != redeem(shares, caller, caller)` where mint is called before redeem. 
-//     /// In layman terms, it means initial assets lost by caller from minting != assets gained by caller from redeeming 
+//     /// @custom:ercx-feedback `mint(shares, caller) != redeem(shares, caller, caller)` where mint is called before redeem.
+//     /// In layman terms, it means initial assets lost by caller from minting != assets gained by caller from redeeming
 //     /// for same amount of shares.
 //     /// @custom:ercx-categories assets, shares, mint, redeem
 //     /// @custom:ercx-concerned-function mint, redeem
@@ -1512,12 +1511,12 @@
 //         assertEq(depositedAssets, redeemedAssets, "`mint(shares, caller) != redeem(shares, caller, caller)`");
 //     }
 
-//     /// @notice `mint(shares, caller) < redeem(shares, caller, caller)` where mint is called before redeem. 
-//     /// In layman terms, it means initial assets lost by caller from minting < assets gained by caller from redeeming 
+//     /// @notice `mint(shares, caller) < redeem(shares, caller, caller)` where mint is called before redeem.
+//     /// In layman terms, it means initial assets lost by caller from minting < assets gained by caller from redeeming
 //     /// for same amount of shares.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `mint(shares, caller) >= redeem(shares, caller, caller)` where mint is called before redeem. 
-//     /// In layman terms, it means initial assets lost by caller from minting >= assets gained by caller from redeeming 
+//     /// @custom:ercx-feedback `mint(shares, caller) >= redeem(shares, caller, caller)` where mint is called before redeem.
+//     /// In layman terms, it means initial assets lost by caller from minting >= assets gained by caller from redeeming
 //     /// for same amount of shares.
 //     /// @custom:ercx-categories assets, shares, mint, redeem
 //     /// @custom:ercx-concerned-function mint, redeem
@@ -1532,12 +1531,12 @@
 //         assertLt(depositedAssets, redeemedAssets, "`mint(shares, caller) >= redeem(shares, caller, caller)`");
 //     }
 
-//     /// @notice `mint(shares, caller) > redeem(shares, caller, caller)` where mint is called before redeem. 
-//     /// In layman terms, it means initial assets lost by caller from minting > assets gained by caller from redeeming 
+//     /// @notice `mint(shares, caller) > redeem(shares, caller, caller)` where mint is called before redeem.
+//     /// In layman terms, it means initial assets lost by caller from minting > assets gained by caller from redeeming
 //     /// for same amount of shares.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `mint(shares, caller) <= redeem(shares, caller, caller)` where mint is called before redeem. 
-//     /// In layman terms, it means initial assets lost by caller from minting <= assets gained by caller from redeeming 
+//     /// @custom:ercx-feedback `mint(shares, caller) <= redeem(shares, caller, caller)` where mint is called before redeem.
+//     /// In layman terms, it means initial assets lost by caller from minting <= assets gained by caller from redeeming
 //     /// for same amount of shares.
 //     /// @custom:ercx-categories assets, shares, mint, redeem
 //     /// @custom:ercx-concerned-function mint, redeem
@@ -1551,7 +1550,6 @@
 //         uint256 redeemedAssets = selfRedeem(shares);
 //         assertGt(depositedAssets, redeemedAssets, "`mint(shares, caller) <= redeem(shares, caller, caller)`");
 //     }
-
 
 //     /****************************
 //     *
@@ -1740,10 +1738,10 @@
 //         assertGt(aliceAssetsAfter - aliceAssetsBefore, redeemedAssets, "The assets' balance of Alice increases by a number of assets lesser than or equal to what was expected after a successful `redeem` call.");
 //     }
 
-//     /// @notice The shares' allowance of owner to caller decreases  by the amount of `shares` redeemed 
+//     /// @notice The shares' allowance of owner to caller decreases  by the amount of `shares` redeemed
 //     /// (from some initial allowance >= shares) after a successful `redeem(shares, receiver, owner)` call if caller != owner.
 //     /// @custom:ercx-expected pass
-//     /// @custom:ercx-feedback The shares' allowance of owner to caller does not decrease by the amount of `shares` redeemed 
+//     /// @custom:ercx-feedback The shares' allowance of owner to caller does not decrease by the amount of `shares` redeemed
 //     /// (from some initial allowance >= shares) after a successful `redeem(shares, receiver, owner)` call if caller != owner.
 //     /// @custom:ercx-categories shares, redeem, allowance
 //     /// @custom:ercx-concerned-function redeem
@@ -1758,10 +1756,10 @@
 //         assertEq(bobShares - bobAllowanceToAlice, shares, "The allowance from Bob to Alice does not decrease by the correct amount after a successful `redeem` call.");
 //     }
 
-//     /// @notice The shares' allowance of owner to caller decreases by a number of `shares` lesser than what was redeemed 
+//     /// @notice The shares' allowance of owner to caller decreases by a number of `shares` lesser than what was redeemed
 //     /// (from some initial allowance >= shares) after a successful `redeem(shares, receiver, owner)` call if caller != owner.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback The shares' allowance of owner to caller decreases by a number of `shares` greater than or equal to what was redeemed 
+//     /// @custom:ercx-feedback The shares' allowance of owner to caller decreases by a number of `shares` greater than or equal to what was redeemed
 //     /// (from some initial allowance >= shares) after a successful `redeem(shares, receiver, owner)` call if caller != owner.
 //     /// @custom:ercx-categories shares, redeem, allowance
 //     /// @custom:ercx-concerned-function redeem
@@ -1776,10 +1774,10 @@
 //         assertLt(bobShares - bobAllowanceToAlice, shares, "The shares' allowance of Bob to Alice decreases by a number of shares greater than or equal to what was expected after a successful `redeem` call.");
 //     }
 
-//     /// @notice The shares' allowance of owner to caller decreases by a number of `shares` greater than what was redeemed 
+//     /// @notice The shares' allowance of owner to caller decreases by a number of `shares` greater than what was redeemed
 //     /// (from some initial allowance >= shares) after a successful `redeem(shares, receiver, owner)` call if caller != owner.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback The shares' allowance of owner to caller decreases by a number of `shares` lesser than or equal to what was redeemed 
+//     /// @custom:ercx-feedback The shares' allowance of owner to caller decreases by a number of `shares` lesser than or equal to what was redeemed
 //     /// (from some initial allowance >= shares) after a successful `redeem(shares, receiver, owner)` call if caller != owner.
 //     /// @custom:ercx-categories shares, redeem, allowance
 //     /// @custom:ercx-concerned-function redeem
@@ -1800,10 +1798,10 @@
 //     *
 //     *****************************/
 
-//     /// @notice `deposit(redeem(shares, caller, caller), caller) == shares`. In layman terms, it means 
+//     /// @notice `deposit(redeem(shares, caller, caller), caller) == shares`. In layman terms, it means
 //     /// initial shares redeemed == shares minted from depositing.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `deposit(redeem(shares, caller, caller), caller) != shares`. In layman terms, it means 
+//     /// @custom:ercx-feedback `deposit(redeem(shares, caller, caller), caller) != shares`. In layman terms, it means
 //     /// initial shares redeemed != shares minted from depositing.
 //     /// @custom:ercx-categories shares, redeem, deposit
 //     /// @custom:ercx-concerned-function redeem, deposit
@@ -1818,10 +1816,10 @@
 //         assertEq(mintedShares, shares, "`deposit(redeem(shares, caller, caller), caller) != shares`");
 //     }
 
-//     /// @notice `deposit(redeem(shares, caller, caller), caller) < shares`. In layman terms, it means 
+//     /// @notice `deposit(redeem(shares, caller, caller), caller) < shares`. In layman terms, it means
 //     /// initial shares redeemed < shares minted from depositing.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `deposit(redeem(shares, caller, caller), caller) >= shares`. In layman terms, it means 
+//     /// @custom:ercx-feedback `deposit(redeem(shares, caller, caller), caller) >= shares`. In layman terms, it means
 //     /// initial shares redeemed >= shares minted from depositing.
 //     /// @custom:ercx-categories shares, redeem, deposit
 //     /// @custom:ercx-concerned-function redeem, deposit
@@ -1836,10 +1834,10 @@
 //         assertLt(mintedShares, shares, "`deposit(redeem(shares, caller, caller), caller) >= shares`");
 //     }
 
-//     /// @notice `deposit(redeem(shares, caller, caller), caller) > shares`. In layman terms, it means 
+//     /// @notice `deposit(redeem(shares, caller, caller), caller) > shares`. In layman terms, it means
 //     /// initial shares redeemed > shares minted from depositing.
 //     /// @custom:ercx-expected optional
-//     /// @custom:ercx-feedback `deposit(redeem(shares, caller, caller), caller) <= shares`. In layman terms, it means 
+//     /// @custom:ercx-feedback `deposit(redeem(shares, caller, caller), caller) <= shares`. In layman terms, it means
 //     /// initial shares redeemed <= shares minted from depositing.
 //     /// @custom:ercx-categories shares, redeem, deposit
 //     /// @custom:ercx-concerned-function redeem, deposit
@@ -1855,11 +1853,11 @@
 //     }
 
 //     /// @notice `redeem(shares, caller, caller) == mint(shares, caller)` where redeem is called before mint.
-//     /// In layman terms, it means initial assets gained by caller from redeem == assets lost by caller 
+//     /// In layman terms, it means initial assets gained by caller from redeem == assets lost by caller
 //     /// from minting for same amount of shares.
 //     /// @custom:ercx-expected optional
 //     /// @custom:ercx-feedback `redeem(shares, caller, caller) != mint(shares, caller)` where redeem is called before mint.
-//     /// In layman terms, it means initial assets gained by caller from redeem != assets lost by caller 
+//     /// In layman terms, it means initial assets gained by caller from redeem != assets lost by caller
 //     /// from minting for same amount of shares.
 //     /// @custom:ercx-categories assets, shares, redeem, mint
 //     /// @custom:ercx-concerned-function redeem, mint
@@ -1870,10 +1868,10 @@
 //         vm.assume(cut4626.previewRedeem(shares) > 0);
 //         uint256 redeemedAssets = selfRedeem(shares);
 //         // case where Alice has not enough redeemedAssets to mint shares
-//         if (cut4626.totalSupply() > 0) { 
-//             vm.assume(shares < MAX_UINT256 / (cut4626.totalAssets() + 1)); 
+//         if (cut4626.totalSupply() > 0) {
+//             vm.assume(shares < MAX_UINT256 / (cut4626.totalAssets() + 1));
 //         }
-//         if (redeemedAssets < cut4626.previewMint(shares)) { 
+//         if (redeemedAssets < cut4626.previewMint(shares)) {
 //             vm.startPrank(alice);
 //             (bool callMint, uint256 depositedAssets) = tryMint(shares, alice);
 //             vm.stopPrank();
@@ -1881,7 +1879,7 @@
 //                 assertEq(redeemedAssets, depositedAssets, "`redeem(shares, caller, caller) != mint(shares, caller)`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -1891,11 +1889,11 @@
 //     }
 
 //     /// @notice `redeem(shares, caller, caller) < mint(shares, caller)` where redeem is called before mint.
-//     /// In layman terms, it means initial assets gained by caller from redeem < assets lost by caller 
+//     /// In layman terms, it means initial assets gained by caller from redeem < assets lost by caller
 //     /// from minting for same amount of shares.
 //     /// @custom:ercx-expected optional
 //     /// @custom:ercx-feedback `redeem(shares, caller, caller) >= mint(shares, caller)` where redeem is called before mint.
-//     /// In layman terms, it means initial assets gained by caller from redeem >= assets lost by caller 
+//     /// In layman terms, it means initial assets gained by caller from redeem >= assets lost by caller
 //     /// from minting for same amount of shares.
 //     /// @custom:ercx-categories assets, shares, redeem, mint
 //     /// @custom:ercx-concerned-function redeem, mint
@@ -1906,10 +1904,10 @@
 //         vm.assume(cut4626.previewRedeem(shares) > 0);
 //         uint256 redeemedAssets = selfRedeem(shares);
 //         // case where Alice has not enough redeemedAssets to mint shares
-//         if (cut4626.totalSupply() > 0) { 
-//             vm.assume(shares < MAX_UINT256 / (cut4626.totalAssets() + 1)); 
+//         if (cut4626.totalSupply() > 0) {
+//             vm.assume(shares < MAX_UINT256 / (cut4626.totalAssets() + 1));
 //         }
-//         if (redeemedAssets < cut4626.previewMint(shares)) { 
+//         if (redeemedAssets < cut4626.previewMint(shares)) {
 //             vm.startPrank(alice);
 //             (bool callMint, uint256 depositedAssets) = tryMint(shares, alice);
 //             vm.stopPrank();
@@ -1924,11 +1922,11 @@
 //     }
 
 //     /// @notice `redeem(shares, caller, caller) > mint(shares, caller)` where redeem is called before mint.
-//     /// In layman terms, it means initial assets gained by caller from redeem > assets lost by caller 
+//     /// In layman terms, it means initial assets gained by caller from redeem > assets lost by caller
 //     /// from minting for same amount of shares.
 //     /// @custom:ercx-expected optional
 //     /// @custom:ercx-feedback `redeem(shares, caller, caller) <= mint(shares, caller)` where redeem is called before mint.
-//     /// In layman terms, it means initial assets gained by caller from redeem <= assets lost by caller 
+//     /// In layman terms, it means initial assets gained by caller from redeem <= assets lost by caller
 //     /// from minting for same amount of shares.
 //     /// @custom:ercx-categories assets, shares, redeem, mint
 //     /// @custom:ercx-concerned-function redeem, mint
@@ -1939,10 +1937,10 @@
 //         vm.assume(cut4626.previewRedeem(shares) > 0);
 //         uint256 redeemedAssets = selfRedeem(shares);
 //         // case where Alice has not enough redeemedAssets to mint shares
-//         if (cut4626.totalSupply() > 0) { 
-//             vm.assume(shares < MAX_UINT256 / (cut4626.totalAssets() + 1)); 
+//         if (cut4626.totalSupply() > 0) {
+//             vm.assume(shares < MAX_UINT256 / (cut4626.totalAssets() + 1));
 //         }
-//         if (redeemedAssets < cut4626.previewMint(shares)) { 
+//         if (redeemedAssets < cut4626.previewMint(shares)) {
 //             vm.startPrank(alice);
 //             (bool callMint, uint256 depositedAssets) = tryMint(shares, alice);
 //             vm.stopPrank();
@@ -1950,7 +1948,7 @@
 //                 assertGt(redeemedAssets, depositedAssets, "`redeem(shares, caller, caller) <= mint(shares, caller)`");
 //             }
 //             else {
-//                 assertTrue(false); 
+//                 assertTrue(false);
 //             }
 //         }
 //         else {
@@ -1958,7 +1956,6 @@
 //             assertGt(redeemedAssets, depositedAssets, "`redeem(shares, caller, caller) <= mint(shares, caller)`");
 //         }
 //     }
-
 
 //     /****************************
 //     *
@@ -1992,7 +1989,6 @@
 //         assertEq(cut4626.balanceOf(alice), shares, "The token vault is transferrable via `transferFrom`.");
 //     }
 
-
 //     /****************************
 //     *
 //     * Discrepancy checks between convertTo* and preview*
@@ -2004,7 +2000,7 @@
 //     /// @custom:ercx-feedback There is discrepancy between `convertToShares` and `previewDeposit`.
 //     /// @custom:ercx-categories shares, assets, deposit
 //     /// @custom:ercx-concerned-function previewDeposit
-//     function testNoDiscrepancyConvertToSharesAndPreviewDeposit(uint256 assets) external 
+//     function testNoDiscrepancyConvertToSharesAndPreviewDeposit(uint256 assets) external
 //     assetsOverflowRestriction(assets) {
 //         vm.assume(assets > 0);
 //         uint256 ctsShares = cut4626.convertToShares(assets);
@@ -2017,7 +2013,7 @@
 //     /// @custom:ercx-feedback There is discrepancy between `convertToAssets` and `previewMint`.
 //     /// @custom:ercx-categories shares, assets, mint
 //     /// @custom:ercx-concerned-function previewMint
-//     function testNoDiscrepancyConvertToAssetsAndPreviewMint(uint256 shares) external 
+//     function testNoDiscrepancyConvertToAssetsAndPreviewMint(uint256 shares) external
 //     sharesOverflowRestriction(shares) {
 //         vm.assume(shares > 0);
 //         uint256 ctaShares = cut4626.convertToAssets(shares);
@@ -2030,7 +2026,7 @@
 //     /// @custom:ercx-feedback There is discrepancy between `convertToShares` and `previewWithdraw`.
 //     /// @custom:ercx-categories shares, assets, withdraw
 //     /// @custom:ercx-concerned-function previewWithdraw
-//     function testNoDiscrepancyConvertToSharesAndPreviewWithdraw(uint256 assets) external 
+//     function testNoDiscrepancyConvertToSharesAndPreviewWithdraw(uint256 assets) external
 //     assetsOverflowRestriction(assets) {
 //         vm.assume(assets > 0);
 //         uint256 ctsShares = cut4626.convertToShares(assets);
@@ -2043,14 +2039,13 @@
 //     /// @custom:ercx-feedback There is discrepancy between `convertToAssets` and `previewRedeem`.
 //     /// @custom:ercx-categories shares, assets, redeem
 //     /// @custom:ercx-concerned-function previewRedeem
-//     function testNoDiscrepancyConvertToAssetsAndPreviewRedeem(uint256 shares) external 
+//     function testNoDiscrepancyConvertToAssetsAndPreviewRedeem(uint256 shares) external
 //     sharesOverflowRestriction(shares) {
 //         vm.assume(shares > 0);
 //         uint256 ctaShares = cut4626.convertToAssets(shares);
 //         uint256 prShares = cut4626.previewRedeem(shares);
 //         assertEq(ctaShares, prShares, "`convertToAssets(shares) != previewRedeem(shares)`");
 //     }
-
 
 //     /****************************
 //     *
