@@ -3,24 +3,27 @@ pragma solidity >=0.6.2 <0.9.0;
 
 import "../ERC20Abstract.sol";
 
-/// @notice Abstract contract that consists of testing functions with test for properties 
+/// @notice Abstract contract that consists of testing functions with test for properties
 /// that are neither desirable nor undesirable but instead implementation choices.
 contract ERC20Features is ERC20Abstract {
+    /**
+     *
+     * Glossary                                                                         *
+     * -------------------------------------------------------------------------------- *
+     * tokenSender   : address that sends tokens (usually in a transaction)             *
+     * tokenReceiver : address that receives tokens (usually in a transaction)          *
+     * tokenApprover : address that approves tokens (usually in an approval)            *
+     * tokenApprovee : address that tokenApprover approves of (usually in an approval)  *
+     *
+     */
 
-    /***********************************************************************************
-    * Glossary                                                                         *
-    * -------------------------------------------------------------------------------- *
-    * tokenSender   : address that sends tokens (usually in a transaction)             *
-    * tokenReceiver : address that receives tokens (usually in a transaction)          *
-    * tokenApprover : address that approves tokens (usually in an approval)            *
-    * tokenApprovee : address that tokenApprover approves of (usually in an approval)  *
-    ***********************************************************************************/
-
-    /****************************
-    *
-    * decreaseAllowance feature checks
-    *
-    ****************************/
+    /**
+     *
+     *
+     * decreaseAllowance feature checks
+     *
+     *
+     */
 
     /// @notice A successful `decreaseAllowance` call of a positive amount DECREASES the allowance by MORE than the said amount.
     /// @custom:ercx-expected fail
@@ -29,7 +32,9 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-categories allowance
     /// @custom:ercx-concerned-function decreaseAllowance
     function testDecreaseAllowanceGtExpected(uint256 substractedValue, uint256 allowance, uint256 balance1)
-    external initializeStateTwoUsers(balance1, 0) {
+        external
+        initializeStateTwoUsers(balance1, 0)
+    {
         vm.assume(substractedValue > 0);
         vm.assume(substractedValue < allowance);
         vm.assume(allowance < MAX_UINT256 - substractedValue);
@@ -38,7 +43,6 @@ contract ERC20Features is ERC20Abstract {
         assertGt(allowance - substractedValue, cut.allowance(alice, bob));
     }
 
-
     /// @notice A successful `decreaseAllowance` call of a positive amount DECREASES the allowance by LESS than the said amount.
     /// @custom:ercx-expected fail
     /// @custom:ercx-feedback A successful `decreaseAllowance` call of a positive amount DOES NOT DECREASE the allowance by LESS than the said amount.
@@ -46,7 +50,9 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-categories allowance
     /// @custom:ercx-concerned-function decreaseAllowance
     function testDecreaseAllowanceLtExpected(uint256 substractedValue, uint256 allowance, uint256 balance1)
-    external initializeStateTwoUsers(balance1, 0) {
+        external
+        initializeStateTwoUsers(balance1, 0)
+    {
         vm.assume(substractedValue > 0);
         vm.assume(substractedValue < allowance);
         vm.assume(allowance < MAX_UINT256 - substractedValue);
@@ -55,17 +61,20 @@ contract ERC20Features is ERC20Abstract {
         assertLt(allowance - substractedValue, cut.allowance(alice, bob));
     }
 
-
-    /// @notice A `decreaseAllowance` call DOES NOT REVERT if there's not enough allowance to decrease 
+    /// @notice A `decreaseAllowance` call DOES NOT REVERT if there's not enough allowance to decrease
     /// and TURNS the allowance to zero since the current allowance is smaller than the amount to decrease.
     /// @custom:ercx-expected optional
-    /// @custom:ercx-feedback A `decreaseAllowance` call REVERTS if there's not enough allowance to decrease 
+    /// @custom:ercx-feedback A `decreaseAllowance` call REVERTS if there's not enough allowance to decrease
     /// or DOES NOT TURN the allowance to zero even though the current allowance is smaller than the amount to decrease.
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with dealing tokens to dummy users for interacting with the contract.
     /// @custom:ercx-categories allowance
     /// @custom:ercx-concerned-function decreaseAllowance
-    function testDecreaseAllowanceBehaviorInexact(uint256 prevAllowance, uint256 decreaseAmount, uint256 balance1, uint256 balance2)
-        external initializeAllowanceOneUser(prevAllowance) initializeStateTwoUsers(balance1, balance2){
+    function testDecreaseAllowanceBehaviorInexact(
+        uint256 prevAllowance,
+        uint256 decreaseAmount,
+        uint256 balance1,
+        uint256 balance2
+    ) external initializeAllowanceOneUser(prevAllowance) initializeStateTwoUsers(balance1, balance2) {
         vm.assume(prevAllowance < decreaseAmount);
         // Alice decreases more allowance from Bob to what he has
         assertSuccess(_tryAliceDecreaseAllowance(bob, decreaseAmount));
@@ -73,12 +82,13 @@ contract ERC20Features is ERC20Abstract {
         assertEq(cut.allowance(alice, bob), 0);
     }
 
-
-    /****************************
-    *
-    * increaseAllowance feature checks
-    *
-    ****************************/
+    /**
+     *
+     *
+     * increaseAllowance feature checks
+     *
+     *
+     */
 
     /// @notice A successful `increaseAllowance` call of a positive amount INCREASES the allowance by MORE than the said amount.
     /// @custom:ercx-expected fail
@@ -87,7 +97,9 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-categories allowance
     /// @custom:ercx-concerned-function increaseAllowance
     function testIncreaseAllowanceGtExpected(uint256 addedValue, uint256 allowance, uint256 balance1)
-    external initializeStateTwoUsers(balance1, 0) {
+        external
+        initializeStateTwoUsers(balance1, 0)
+    {
         vm.assume(addedValue > 0);
         vm.assume(allowance > addedValue);
         vm.assume(allowance < MAX_UINT256 - addedValue);
@@ -96,7 +108,6 @@ contract ERC20Features is ERC20Abstract {
         assertGt(cut.allowance(alice, bob), allowance + addedValue);
     }
 
-
     /// @notice A successful `increaseAllowance` call of a positive amount INCREASES the allowance by LESS than the said amount.
     /// @custom:ercx-expected fail
     /// @custom:ercx-feedback A successful `increaseAllowance` call of a positive amount DOES NOT INCREASE the allowance by LESS than the said amount.
@@ -104,7 +115,9 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-categories allowance
     /// @custom:ercx-concerned-function increaseAllowance
     function testIncreaseAllowanceLtExpected(uint256 addedValue, uint256 allowance, uint256 balance1)
-    external initializeStateTwoUsers(balance1, 0) {
+        external
+        initializeStateTwoUsers(balance1, 0)
+    {
         vm.assume(addedValue > 0);
         vm.assume(allowance > addedValue);
         vm.assume(allowance < MAX_UINT256 - addedValue);
@@ -113,12 +126,13 @@ contract ERC20Features is ERC20Abstract {
         assertLt(cut.allowance(alice, bob), allowance + addedValue);
     }
 
-
-    /****************************
-    *
-    * transferFrom feature checks
-    *
-    ****************************/
+    /**
+     *
+     *
+     * transferFrom feature checks
+     *
+     *
+     */
 
     /// @notice A successful `transferFrom` call of a positive amount DECREASES the allowance of the tokenSender by MORE than the transferred amount.
     /// @custom:ercx-expected fail
@@ -127,7 +141,9 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-categories transferFrom, allowance
     /// @custom:ercx-concerned-function transferFrom
     function testTransferFromDecreaseAllowanceGtExpected(uint256 amount, uint256 allowance, uint256 balance1)
-    external initializeStateTwoUsers(balance1, 0) {
+        external
+        initializeStateTwoUsers(balance1, 0)
+    {
         vm.assume(amount > 0);
         vm.assume(amount <= cut.balanceOf(alice));
         vm.assume(allowance >= amount);
@@ -137,7 +153,6 @@ contract ERC20Features is ERC20Abstract {
         assertGt(allowance - amount, cut.allowance(alice, bob));
     }
 
-
     /// @notice A successful `transferFrom` call of a positive amount DECREASES the allowance of the tokenSender by LESS than the transferred amount.
     /// @custom:ercx-expected fail
     /// @custom:ercx-feedback A successful `transferFrom` call of a positive amount DOES NOT DECREASE the allowance of the tokenSender by LESS than the transferred amount.
@@ -145,7 +160,9 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-categories transferFrom, allowance
     /// @custom:ercx-concerned-function transferFrom
     function testTransferFromDecreaseAllowanceLtExpected(uint256 amount, uint256 allowance, uint256 balance1)
-    external initializeStateTwoUsers(balance1, 0) {
+        external
+        initializeStateTwoUsers(balance1, 0)
+    {
         vm.assume(amount > 0);
         vm.assume(amount <= cut.balanceOf(alice));
         vm.assume(allowance >= amount);
@@ -155,12 +172,13 @@ contract ERC20Features is ERC20Abstract {
         assertLt(allowance - amount, cut.allowance(alice, bob));
     }
 
-
-    /****************************
-    *
-    * approve function categorization: default vs recommended
-    *
-    ****************************/
+    /**
+     *
+     *
+     * approve function categorization: default vs recommended
+     *
+     *
+     */
 
     /// @notice Consecutive calls of `approve` function of positive-to-positive amounts CAN be called.
     /// @custom:ercx-expected optional
@@ -168,8 +186,7 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with dealing tokens to dummy users for interacting with the contract.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function approve
-    function testOverwriteApprovePositiveToPositive(uint256 approveAmount1, uint256 approveAmount2)
-    external {
+    function testOverwriteApprovePositiveToPositive(uint256 approveAmount1, uint256 approveAmount2) external {
         // to make sure the allowance of Alice for bob is reset to 0
         if (cut.allowance(alice, bob) != 0) {
             assertSuccess(_tryAliceApprove(bob, 0));
@@ -182,12 +199,13 @@ contract ERC20Features is ERC20Abstract {
         assertSuccess(_tryAliceApprove(bob, approveAmount2));
     }
 
-
-    /****************************
-    *
-    * Infinite approval.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * Infinite approval.
+     *
+     *
+     */
 
     /// @notice The token REVERTS if one set the approval to MAX_UINT256.
     /// @custom:ercx-expected optional
@@ -195,24 +213,27 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with dealing tokens to dummy users for interacting with the contract.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function approve
-    function testRevertsOnInfiniteApproval(uint256 balance1, uint256 balance2) 
-    external initializeStateTwoUsers(balance1, balance2) {
+    function testRevertsOnInfiniteApproval(uint256 balance1, uint256 balance2)
+        external
+        initializeStateTwoUsers(balance1, balance2)
+    {
         assertFail(_tryAliceApprove(bob, MAX_UINT256));
     }
 
-
-    /// @notice The token HAS infinite approval property. That is, if the approval is set to 
+    /// @notice The token HAS infinite approval property. That is, if the approval is set to
     /// MAX_UINT256 and a `transfer` is called, the allowance does not decrease by the transferred amount.
     /// @custom:ercx-expected optional
-    /// @custom:ercx-feedback The token MAY NOT HAVE the infinite approval property. That is, 
-    /// if the approval is set to MAX_UINT256 and a `transfer` is called, the allowance 
+    /// @custom:ercx-feedback The token MAY NOT HAVE the infinite approval property. That is,
+    /// if the approval is set to MAX_UINT256 and a `transfer` is called, the allowance
     /// may decrease by the transferred amount.
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with EITHER dealing tokens to dummy users for interacting with the contract
     /// OR calling the following functions: approve, transferFrom.
     /// @custom:ercx-categories approval, transferFrom, allowance
     /// @custom:ercx-concerned-function approve
-    function testInfiniteApprovalConstant(uint256 transferAmount, uint256 balance1, uint256 balance2) 
-    external initializeStateTwoUsers(balance1, balance2) {
+    function testInfiniteApprovalConstant(uint256 transferAmount, uint256 balance1, uint256 balance2)
+        external
+        initializeStateTwoUsers(balance1, balance2)
+    {
         vm.assume(transferAmount < cut.balanceOf(alice));
         CallResult memory callResultApprove = _tryAliceApprove(bob, MAX_UINT256);
         bool successApprove = callResultApprove.success && cut.allowance(alice, bob) == MAX_UINT256;
@@ -231,24 +252,28 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with dealing tokens to dummy users for interacting with the contract.
     /// @custom:ercx-categories approval, balance
     /// @custom:ercx-concerned-function approve
-    function testRevertsIfApprovalGreaterThanBalance(uint256 approveAmount, uint256 balance1, uint256 balance2) 
-    external initializeStateTwoUsers(balance1, balance2) {
+    function testRevertsIfApprovalGreaterThanBalance(uint256 approveAmount, uint256 balance1, uint256 balance2)
+        external
+        initializeStateTwoUsers(balance1, balance2)
+    {
         vm.assume(approveAmount > cut.balanceOf(alice));
         assertFail(_tryAliceApprove(bob, approveAmount));
     }
 
-    /// @notice The token DOES NOT have infinite approval property. That is, if the approval 
+    /// @notice The token DOES NOT have infinite approval property. That is, if the approval
     /// is set to MAX_UINT256 and a `transfer` is called, the allowance is decreased by the transferred amount.
     /// @custom:ercx-expected optional
     /// @custom:ercx-feedback The token MAY support infinite approval. That is, if the approval
-    /// is set to MAX_UINT256 and a `transfer` is called, the allowance may not decrease 
+    /// is set to MAX_UINT256 and a `transfer` is called, the allowance may not decrease
     /// by the transferred amount.
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with EITHER dealing tokens to dummy users for interacting with the contract
     /// OR calling the following functions: approve, transferFrom.
     /// @custom:ercx-categories approval, transferFrom, allowance
     /// @custom:ercx-concerned-function approve
-    function testInfiniteApprovalNotConstant(uint256 transferAmount, uint256 balance1, uint256 balance2) 
-    external initializeStateTwoUsers(balance1, balance2) {
+    function testInfiniteApprovalNotConstant(uint256 transferAmount, uint256 balance1, uint256 balance2)
+        external
+        initializeStateTwoUsers(balance1, balance2)
+    {
         vm.assume(transferAmount < cut.balanceOf(alice));
         CallResult memory callResultApprove = _tryAliceApprove(bob, MAX_UINT256);
         bool successApprove = callResultApprove.success;
@@ -262,12 +287,13 @@ contract ERC20Features is ERC20Abstract {
         assertEq(cut.allowance(alice, bob), MAX_UINT256 - transferAmount);
     }
 
-
-    /****************************
-    *
-    * Approval with balance verify
-    *
-    ****************************/
+    /**
+     *
+     *
+     * Approval with balance verify
+     *
+     *
+     */
 
     /// @notice The token ALLOWS tokenApprover to call `approve` of an amount higher than her balance.
     /// @custom:ercx-expected optional
@@ -276,35 +302,46 @@ contract ERC20Features is ERC20Abstract {
     /// @custom:ercx-categories approval, transferFrom, allowance
     /// @custom:ercx-note from awesome buggy A19
     /// @custom:ercx-concerned-function approve
-    function testCanApproveMoreThanBalance(uint256 balanceAlice, uint256 approvedAmount) external initializeStateTwoUsers(balanceAlice, 0) {
+    function testCanApproveMoreThanBalance(uint256 balanceAlice, uint256 approvedAmount)
+        external
+        initializeStateTwoUsers(balanceAlice, 0)
+    {
         vm.assume(approvedAmount > cut.balanceOf(alice)); //Note that approveAmount is necessary > 0
         assertSuccess(_tryAliceApprove(bob, approvedAmount));
     }
 
-
-    /// @notice Given the token DOES NOT ALLOW tokenApprover to call `approve` of an amount higher than her balance. 
-    /// The tokenApprover MUST maintain at least the said amount in her balance before she can make a `transfer` call 
+    /// @notice Given the token DOES NOT ALLOW tokenApprover to call `approve` of an amount higher than her balance.
+    /// The tokenApprover MUST maintain at least the said amount in her balance before she can make a `transfer` call
     /// to an account other than the tokenApprovee.
     /// @custom:ercx-expected optional
-    /// @custom:ercx-feedback The tokenApprover DOES NOT need to maintain at least the said amount in her balance before she 
+    /// @custom:ercx-feedback The tokenApprover DOES NOT need to maintain at least the said amount in her balance before she
     /// can make a `transfer` call to an account other than the tokenApprovee.
     /// @custom:ercx-inconclusive The test is skipped as there is an issue with EITHER dealing tokens to dummy users for interacting with the contract
     /// OR calling the following functions: approve, transfer OR the token ALLOWS tokenApprover to call `approve` of an amount higher than her balance.
     /// @custom:ercx-categories approval, transferFrom, allowance
     /// @custom:ercx-concerned-function approve
     /// @custom:ercx-note inspired from awesome buggy A19
-    function testMaintainsApprovalLowerThanBalance(uint256 balanceAlice, uint256 approvedAmountGreater, uint256 approvedAmountLower) external initializeStateTwoUsers(balanceAlice, 0) {
+    function testMaintainsApprovalLowerThanBalance(
+        uint256 balanceAlice,
+        uint256 approvedAmountGreater,
+        uint256 approvedAmountLower
+    ) external initializeStateTwoUsers(balanceAlice, 0) {
         uint256 aliceBalance = cut.balanceOf(alice);
         vm.assume(approvedAmountLower < MAX_UINT256);
         vm.assume(approvedAmountGreater > aliceBalance); //Note that approveAmountGreater is necessary > 0
-        vm.assume(approvedAmountLower  + 1 < aliceBalance); //Note that approveAmountLower is necessary > 0
+        vm.assume(approvedAmountLower + 1 < aliceBalance); //Note that approveAmountLower is necessary > 0
         CallResult memory callResultApproval1 = _tryAliceApprove(bob, approvedAmountGreater);
         // Skip the test if it is possible to approve more than one's balance
-        conditionalSkip(callResultApproval1.success, "Inconclusive test: It is possible to approve more than one's balance.");
+        conditionalSkip(
+            callResultApproval1.success, "Inconclusive test: It is possible to approve more than one's balance."
+        );
         // Transfer some token
         CallResult memory callResultApproval2 = _tryAliceApprove(bob, approvedAmountLower); // This should succeed.
         // Skip the test if the above approve call fails
-        conditionalSkip(!callResultApproval2.success, "Inconclusive test: Alice was not able to approve Bob for a higher nor a lower amount.");
+        conditionalSkip(
+            !callResultApproval2.success,
+            "Inconclusive test: Alice was not able to approve Bob for a higher nor a lower amount."
+        );
         // Make Alice's balance lower than approval
         uint256 amountToTransfer = aliceBalance - approvedAmountLower + 1;
         CallResult memory callResultTransfer = _tryAliceTransfer(carol, amountToTransfer);
@@ -314,10 +351,8 @@ contract ERC20Features is ERC20Abstract {
         if (cut.allowance(alice, bob) == approvedAmountLower) {
             emit log("Allowance of Alice to Bob was not adjusted.");
             assertTrue(false);
-        }
-        else {
+        } else {
             emit log("Contract adjusted allowance.");
         }
     }
-
 }

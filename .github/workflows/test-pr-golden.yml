@@ -10,6 +10,23 @@ env:
   FOUNDRY_PROFILE: ci
 
 jobs:
+  format-check:
+    name: Code formatting check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: rc-1
+
+      - name: Check code formatting
+        run: forge fmt --check
+
   golden-tests:
     name: Local ERCx token tests
     runs-on: [self-hosted, linux, flyweight]

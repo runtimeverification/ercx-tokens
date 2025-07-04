@@ -5,14 +5,8 @@ import "./ERC721Standard.sol";
 import "./ERC721Security.sol";
 import "./ERC721Features.sol";
 
-abstract contract ERC721Test is
-  ERC721Standard,
-  ERC721Security,
-  ERC721Features
-  {
-
+abstract contract ERC721Test is ERC721Standard, ERC721Security, ERC721Features {
     function init(address token) internal virtual override {
         ERC721Abstract.init(token);
     }
-
 }

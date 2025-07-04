@@ -5,11 +5,7 @@ import "./ERC4626Standard.sol";
 import "../ERC4626Security.sol";
 import "./ERC4626Features.sol";
 
-abstract contract ERC4626Test is
-    ERC4626Standard,
-    ERC4626Security,
-    ERC4626Features 
-    {
+abstract contract ERC4626Test is ERC4626Standard, ERC4626Security, ERC4626Features {
     function init(address token) internal virtual override {
         ERC4626Abstract.init(token);
     }

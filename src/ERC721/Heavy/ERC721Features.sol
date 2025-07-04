@@ -3,33 +3,34 @@ pragma solidity >=0.6.2 <0.9.0;
 
 import "../ERC721Abstract.sol";
 
-/// @notice Abstract contract that consists of testing functions with test for properties 
+/// @notice Abstract contract that consists of testing functions with test for properties
 /// that are neither desirable nor undesirable but instead implementation choices.
 abstract contract ERC721Features is ERC721Abstract {
+    /**
+     *
+     * Glossary                                                                         *
+     * -------------------------------------------------------------------------------- *
+     * tokenSender   : address that sends tokens (usually in a transaction)             *
+     * tokenReceiver : address that receives tokens (usually in a transaction)          *
+     * tokenApprover : address that approves tokens (usually in an approval)            *
+     * tokenApprovee : address that tokenApprover approves of (usually in an approval)  *
+     *
+     */
 
-    /***********************************************************************************
-    * Glossary                                                                         *
-    * -------------------------------------------------------------------------------- *
-    * tokenSender   : address that sends tokens (usually in a transaction)             *
-    * tokenReceiver : address that receives tokens (usually in a transaction)          *
-    * tokenApprover : address that approves tokens (usually in an approval)            *
-    * tokenApprovee : address that tokenApprover approves of (usually in an approval)  *
-    ***********************************************************************************/
-
-
-   /****************************
-    *
-    * isApprovedForAll feature tests.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * isApprovedForAll feature tests.
+     *
+     *
+     */
 
     /// @notice Users without token are operators for themselves. Note: the zero address is not considered.
     /// @custom:ercx-expected pass
     /// @custom:ercx-feedback A user without token does not have oneself as operator.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function isApprovedForall
-    function testIsApprovedForAllReflexiveForUsersWithoutTokens(address querier, address user) external
-    withUsers() {
+    function testIsApprovedForAllReflexiveForUsersWithoutTokens(address querier, address user) external withUsers {
         vm.assume(user != address(0x0));
         vm.assume(cut.balanceOf(user) == 0);
 
@@ -41,8 +42,7 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback A user without token has oneself as operator.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function isApprovedForall
-    function testIsNotApprovedForAllReflexiveForUsersWithoutTokens(address querier, address user) external
-    withUsers() {
+    function testIsNotApprovedForAllReflexiveForUsersWithoutTokens(address querier, address user) external withUsers {
         vm.assume(user != address(0x0));
         vm.assume(cut.balanceOf(user) == 0);
 
@@ -54,8 +54,11 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback A user without token does not have oneself as operator.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function isApprovedForall
-    function testIsApprovedForAllReflexiveForUsersWithTokens(address querier, uint256 tokenId) external
-    withUsers() dealAnOwnedTokenToAlice(tokenId) {
+    function testIsApprovedForAllReflexiveForUsersWithTokens(address querier, uint256 tokenId)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenId)
+    {
         assertTrue(_propertyIsOperatorForSelf(querier, alice));
     }
 
@@ -64,14 +67,17 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback A user without token has oneself as operator.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function isApprovedForall
-    function testIsNotApprovedForAllReflexiveForUsersWithTokens(address querier, uint256 tokenId) external
-    withUsers() dealAnOwnedTokenToAlice(tokenId) {
+    function testIsNotApprovedForAllReflexiveForUsersWithTokens(address querier, uint256 tokenId)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenId)
+    {
         assertFalse(_propertyIsOperatorForSelf(querier, alice));
     }
 
     function _propertyIsOperatorForSelf(address querier, address user) internal returns (bool) {
         vm.assume(querier != address(0x0));
-        
+
         (bool success, bool result) = _tryCustomerIsApprovedForAll(querier, user, user);
         conditionalSkip(!success, "Inconclusive test: Could not call isApprovedForAll.");
         return result;
@@ -83,12 +89,14 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback It was not possible for the zero address to query whether some address is an operator.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testZeroAddressCanQueryWhetherAnyoneIsOperatorOfAnyone(address tokenOwner, address tokenOperator) external
-    withUsers() {
+    function testZeroAddressCanQueryWhetherAnyoneIsOperatorOfAnyone(address tokenOwner, address tokenOperator)
+        external
+        withUsers
+    {
         vm.assume(tokenOwner != address(0x0));
         vm.assume(tokenOperator != address(0x0));
-        
-        (bool success, ) = _tryCustomerIsApprovedForAll(address(0x0), tokenOwner, tokenOperator);
+
+        (bool success,) = _tryCustomerIsApprovedForAll(address(0x0), tokenOwner, tokenOperator);
         assertTrue(success, "It was not possible for the zero address to query whether some address is an operator.");
     }
 
@@ -98,12 +106,14 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback An address could not query whether the zero address is an operator of some other address.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testAnyoneCanQueryWhetherZeroAddressIsOperatorOfAnyone(address approvalQuerier, address approver) external
-    withUsers() {
+    function testAnyoneCanQueryWhetherZeroAddressIsOperatorOfAnyone(address approvalQuerier, address approver)
+        external
+        withUsers
+    {
         vm.assume(approvalQuerier != address(0x0));
         vm.assume(approver != address(0x0));
-        
-        (bool success, ) = _tryCustomerIsApprovedForAll(approvalQuerier, approver, address(0x0));
+
+        (bool success,) = _tryCustomerIsApprovedForAll(approvalQuerier, approver, address(0x0));
         assertTrue(success, "An address could not query whether the zero address is an operator of some other address.");
     }
 
@@ -113,20 +123,24 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback An address could not query about whether some address is an operator of the zero address.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testAnyoneCanQueryWhetherAnyoneIsOperatorOfZeroAddress(address approvalQuerier, address operator) external
-    withUsers() {
+    function testAnyoneCanQueryWhetherAnyoneIsOperatorOfZeroAddress(address approvalQuerier, address operator)
+        external
+        withUsers
+    {
         vm.assume(approvalQuerier != address(0x0));
         vm.assume(operator != address(0x0));
-        
-        (bool success, ) = _tryCustomerIsApprovedForAll(approvalQuerier, address(0x0), operator);
+
+        (bool success,) = _tryCustomerIsApprovedForAll(approvalQuerier, address(0x0), operator);
         assertTrue(success, "An address could not query about whether some address is an operator of the zero address.");
     }
 
-    /****************************
-    *
-    * setApprovalForAll feature tests.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * setApprovalForAll feature tests.
+     *
+     *
+     */
 
     /// @notice Function `setApprovedForAll(address,bool)` does not throw when enabling a valid address as operator.
     /// @custom:ercx-expected pass
@@ -137,7 +151,10 @@ abstract contract ERC721Features is ERC721Abstract {
         vm.assume(approver != address(0x0));
         vm.assume(approvee != address(0x0));
 
-        assertSuccess(_tryCustomerSetApprovalForAll(approver, approvee, true), "Call to setApprovedForall() on some address threw.");
+        assertSuccess(
+            _tryCustomerSetApprovalForAll(approver, approvee, true),
+            "Call to setApprovedForall() on some address threw."
+        );
     }
 
     /// @notice Function `setApprovedForAll(address,bool)` does not throw when disabling a valid address as operator.
@@ -148,8 +165,11 @@ abstract contract ERC721Features is ERC721Abstract {
     function testDisablingAnyoneAsApprovedIsPossible(address approver, address approvee) external {
         vm.assume(approver != address(0x0));
         vm.assume(approvee != address(0x0));
-        
-        assertSuccess(_tryCustomerSetApprovalForAll(approver, approvee, false), "Call to setApprovedForall() on some address threw.");
+
+        assertSuccess(
+            _tryCustomerSetApprovalForAll(approver, approvee, false),
+            "Call to setApprovedForall() on some address threw."
+        );
     }
 
     /// @notice Function setApprovalForAll(address,bool) can enable self as token operator for a user with tokens.
@@ -157,11 +177,17 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback It was not possible to define oneself as operator of one's assets.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testCanEnableSelfWithTokensAsOperator(uint256 tokenId) external 
-    withUsers() dealAnOwnedTokenToAlice(tokenId) {
+    function testCanEnableSelfWithTokensAsOperator(uint256 tokenId)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenId)
+    {
         CallResult memory callApproval = _tryAliceSetApprovalForAll(alice, true);
         assertTrue(callApproval.success, "Calling setApprovalForAll reverted.");
-        assertTrue(cut.isApprovedForAll(alice, alice), "Even with a successful setApprovalForAll to enable herself as operator, Alice is still not an operator for herself.");
+        assertTrue(
+            cut.isApprovedForAll(alice, alice),
+            "Even with a successful setApprovalForAll to enable herself as operator, Alice is still not an operator for herself."
+        );
     }
 
     /// @notice Function setApprovalForAll(address,bool) can disable self as token operator for a user with tokens.
@@ -169,11 +195,17 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback It was not possible to define oneself as operator of one's assets.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testCanDisableSelfWithTokensAsOperator(uint256 tokenId) external 
-    withUsers() dealAnOwnedTokenToAlice(tokenId) {
+    function testCanDisableSelfWithTokensAsOperator(uint256 tokenId)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenId)
+    {
         CallResult memory callApproval = _tryAliceSetApprovalForAll(alice, false);
         assertTrue(callApproval.success, "Calling setApprovalForAll reverted.");
-        assertFalse(cut.isApprovedForAll(alice, alice), "Even with a successful setApprovalForAll to disable herself as operator, Alice is still an operator for herself.");
+        assertFalse(
+            cut.isApprovedForAll(alice, alice),
+            "Even with a successful setApprovalForAll to disable herself as operator, Alice is still an operator for herself."
+        );
     }
 
     /// @notice Function setApprovalForAll(address,bool) can enable self as token operator for a user without tokens.
@@ -184,10 +216,13 @@ abstract contract ERC721Features is ERC721Abstract {
     function testCanEnableSelfWithoutTokensAsOperator(address user) external {
         vm.assume(user != address(0x0));
         vm.assume(cut.balanceOf(user) == 0);
-        
+
         CallResult memory callApproval = _tryCustomerSetApprovalForAll(user, user, true);
         assertTrue(callApproval.success, "Calling setApprovalForAll reverted.");
-        assertTrue(cut.isApprovedForAll(user, user), "Even with a successful setApprovalForAll to enable it as operator, some address is still not an operator for self.");
+        assertTrue(
+            cut.isApprovedForAll(user, user),
+            "Even with a successful setApprovalForAll to enable it as operator, some address is still not an operator for self."
+        );
     }
 
     /// @notice Function setApprovalForAll(address,bool) can disable self as token operator for a user without tokens.
@@ -198,10 +233,13 @@ abstract contract ERC721Features is ERC721Abstract {
     function testCanDisableSelfWithoutTokensAsOperator(address user) external {
         vm.assume(user != address(0x0));
         vm.assume(cut.balanceOf(user) == 0);
-        
+
         CallResult memory callApproval = _tryCustomerSetApprovalForAll(user, user, false);
         assertTrue(callApproval.success, "Calling setApprovalForAll reverted.");
-        assertFalse(cut.isApprovedForAll(user, user), "Even with a successful setApprovalForAll to disable it as operator, some address is still an operator for self.");
+        assertFalse(
+            cut.isApprovedForAll(user, user),
+            "Even with a successful setApprovalForAll to disable it as operator, some address is still an operator for self."
+        );
     }
 
     /// @notice An operator is approved for any token owned by the address which granted the operator via setApprovalForAll.
@@ -209,8 +247,11 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback The operator of an address is not approved for a token owned by the address which granted the operator.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testAnOperatorIsApprovedForAnyTokenOfApprover(uint256 tokenId, address operator) external
-    withUsers() dealAnOwnedTokenToAlice(tokenId) {
+    function testAnOperatorIsApprovedForAnyTokenOfApprover(uint256 tokenId, address operator)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenId)
+    {
         vm.assume(operator != address(0x0));
         vm.assume(operator != alice); // msg.sender cannot approve herself in some contracts
         // Define operator
@@ -226,13 +267,19 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the token owner to a non-TokenReceiver.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
-    function testRevertsWhenSafeTransferFromWithDataToRecipientIsNotReceiverBySomeone(uint256 tokenId, address transferInitiator, bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenId) {
+    function testRevertsWhenSafeTransferFromWithDataToRecipientIsNotReceiverBySomeone(
+        uint256 tokenId,
+        address transferInitiator,
+        bytes memory data
+    ) external withUsers dealAnOwnedTokenToAlice(tokenId) {
         vm.assume(transferInitiator != address(0x0));
         vm.assume(transferInitiator != alice); // msg.sender cannot approve herself in some contracts
         CallResult memory callApproval = _tryAliceSetApprovalForAll(transferInitiator, true);
         conditionalSkip(!callApproval.success, "Inconclusive test: Alice could not define an operator.");
-        assertFail(_tryCustomerSafeTransferFromWithData(transferInitiator, alice, dan, tokenId, data), "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the token owner to a non-TokenReceiver."); // dan is not TokenReceiver
+        assertFail(
+            _tryCustomerSafeTransferFromWithData(transferInitiator, alice, dan, tokenId, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the token owner to a non-TokenReceiver."
+        ); // dan is not TokenReceiver
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256)` by someone throws if the recipient is not a TokenReceiver.
@@ -240,13 +287,18 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-feedback A `safeTransferFrom(address,address,uint256)` could be initiated by the token owner to a non-TokenReceiver.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
-    function testRevertsWhenSafeTransferFromWithoutDataToRecipientIsNotReceiverBySomeone(uint256 tokenId, address transferInitiator)
-    external withUsers() dealAnOwnedTokenToAlice(tokenId) {
+    function testRevertsWhenSafeTransferFromWithoutDataToRecipientIsNotReceiverBySomeone(
+        uint256 tokenId,
+        address transferInitiator
+    ) external withUsers dealAnOwnedTokenToAlice(tokenId) {
         vm.assume(transferInitiator != address(0x0));
         vm.assume(transferInitiator != alice); // msg.sender cannot approve herself in some contracts
         CallResult memory callApproval = _tryAliceSetApprovalForAll(transferInitiator, true);
         conditionalSkip(!callApproval.success, "Inconclusive test: Alice could not define an operator.");
-        assertFail(_tryCustomerSafeTransferFrom(transferInitiator, alice, dan, tokenId), "A `safeTransferFrom(address,address,uint256)` could be initiated by the token owner to a non-TokenReceiver."); // dan is not TokenReceiver
+        assertFail(
+            _tryCustomerSafeTransferFrom(transferInitiator, alice, dan, tokenId),
+            "A `safeTransferFrom(address,address,uint256)` could be initiated by the token owner to a non-TokenReceiver."
+        ); // dan is not TokenReceiver
     }
 
     /// @notice A `transferFrom(address,address,uint256)` by someone throws if the recipient is not a TokenReceiver.
@@ -255,20 +307,27 @@ abstract contract ERC721Features is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenTransferFromToRecipientIsNotReceiverBySomeone(uint256 tokenId, address transferInitiator)
-    external withUsers() dealAnOwnedTokenToAlice(tokenId) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenId)
+    {
         vm.assume(transferInitiator != address(0x0));
         vm.assume(transferInitiator != alice); // msg.sender cannot approve herself in some contracts
         CallResult memory callApproval = _tryAliceSetApprovalForAll(transferInitiator, true);
         conditionalSkip(!callApproval.success, "Inconclusive test: Alice could not define an operator.");
-        assertFail(_tryCustomerTransferFrom(transferInitiator, alice, dan, tokenId), "A `transferFrom(address,address,uint256)` could be initiated by the token owner to a non-TokenReceiver."); // dan is not TokenReceiver
+        assertFail(
+            _tryCustomerTransferFrom(transferInitiator, alice, dan, tokenId),
+            "A `transferFrom(address,address,uint256)` could be initiated by the token owner to a non-TokenReceiver."
+        ); // dan is not TokenReceiver
     }
 
-    /****************************
-    *
-    * Metadata feature tests.
-    *
-    ****************************/
-
+    /**
+     *
+     *
+     * Metadata feature tests.
+     *
+     *
+     */
 
     /// @notice Function name() is implemented and provides a descriptive name for the NFTs in this contract.
     /// @custom:ercx-expected pass

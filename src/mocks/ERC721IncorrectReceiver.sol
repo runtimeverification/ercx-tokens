@@ -4,7 +4,6 @@ pragma solidity ^0.8.4;
 import "openzeppelin-contracts/token/ERC721/IERC721Receiver.sol";
 
 contract ERC721IncorrectReceiver is IERC721Receiver {
-
     string public name;
 
     constructor(string memory _name) {
@@ -16,7 +15,7 @@ contract ERC721IncorrectReceiver is IERC721Receiver {
      */
     function onERC721Received(address, address, uint256, bytes memory) public virtual override returns (bytes4) {
         uint8 cases = 4;
-        uint randomMistakeNumber = _getRandomNumber(cases);
+        uint256 randomMistakeNumber = _getRandomNumber(cases);
         if (randomMistakeNumber == 1) {
             // Omit the first address parameter
             return bytes4(keccak256("onERC721Received(address,uint256,bytes)"));
@@ -65,18 +64,17 @@ contract ERC721IncorrectReceiver is IERC721Receiver {
         } else if (randomMistakeNumber == 16) {
             // Omit the uint256 and bytes parameters
             return bytes4(keccak256("onERC721Received(address,address,address)"));
-        }
-        else {
+        } else {
             return bytes4(keccak256("onERC721Received()"));
         }
     }
 
-    function _getRandomNumber(uint8 upperBound) internal view returns (uint) {
+    function _getRandomNumber(uint8 upperBound) internal view returns (uint256) {
         // Get the hash of the last block
         bytes32 blockHash = blockhash(block.number - 1);
 
         // Use the block hash to generate a pseudo-random number
-        uint randomNumber = uint(blockHash) % upperBound;
+        uint256 randomNumber = uint256(blockHash) % upperBound;
 
         return randomNumber;
     }

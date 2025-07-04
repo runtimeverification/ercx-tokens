@@ -3,32 +3,37 @@ pragma solidity >=0.6.2 <0.9.0;
 
 import "../ERC721Abstract.sol";
 
-/// @notice Abstract contract that consists of testing functions which test for 
+/// @notice Abstract contract that consists of testing functions which test for
 /// properties from the standard stated in the official EIP721 specification.
 abstract contract ERC721Standard is ERC721Abstract {
+    /**
+     *
+     * Glossary                                                                         *
+     * -------------------------------------------------------------------------------- *
+     * tokenSender   : address that sends tokens (usually in a transaction)             *
+     * tokenReceiver : address that receives tokens (usually in a transaction)          *
+     * tokenApprover : address that approves tokens (usually in an approval)            *
+     * tokenApprovee : address that tokenApprover approves of (usually in an approval)  *
+     *
+     */
 
-    /***********************************************************************************
-    * Glossary                                                                         *
-    * -------------------------------------------------------------------------------- *
-    * tokenSender   : address that sends tokens (usually in a transaction)             *
-    * tokenReceiver : address that receives tokens (usually in a transaction)          *
-    * tokenApprover : address that approves tokens (usually in an approval)            *
-    * tokenApprovee : address that tokenApprover approves of (usually in an approval)  *
-    ***********************************************************************************/
+    /**
+     *
+     *
+     *
+     * MANDATORY checks.
+     *
+     *
+     *
+     */
 
-    /****************************
-    *****************************
-    *                           
-    * MANDATORY checks.
-    *
-    *****************************
-    ****************************/
-
-    /****************************
-    *
-    * setApprovalForAll(address,bool) mandatory checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * setApprovalForAll(address,bool) mandatory checks.
+     *
+     *
+     */
 
     /// @notice Function setApprovalForAll(address,bool) MUST allow multiple operators per owner.
     /// @notice This test takes quite some time to execute.
@@ -37,7 +42,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-     function testCanEnableSeveralOperators() external {
+    function testCanEnableSeveralOperators() external {
         address allowingAddress = alice;
         address[3] memory allowedOperators = [bob, carol, dan];
 
@@ -47,25 +52,28 @@ abstract contract ERC721Standard is ERC721Abstract {
         CallResult memory callApproval2 = _tryCustomerSetApprovalForAll(allowingAddress, allowedOperators[1], true);
         conditionalSkip(!callApproval2.success, "Inconclusive test: Could not call setApprovalForAll a second time.");
         assertTrue(cut.isApprovedForAll(allowingAddress, allowedOperators[1]), "Could not allow a second operator.");
-        CallResult memory callApproval3= _tryCustomerSetApprovalForAll(allowingAddress, allowedOperators[2], true);
+        CallResult memory callApproval3 = _tryCustomerSetApprovalForAll(allowingAddress, allowedOperators[2], true);
         conditionalSkip(!callApproval3.success, "Inconclusive test: Could not call setApprovalForAll a third time.");
         assertTrue(cut.isApprovedForAll(allowingAddress, allowedOperators[2]), "Could not allow a third operator.");
     }
 
+    /**
+     *
+     *
+     *
+     * Other checks from the standards.
+     *
+     *
+     *
+     */
 
-    /****************************
-    *****************************
-    *                           
-    * Other checks from the standards.
-    *
-    *****************************
-    ****************************/
-
-    /****************************
-    *
-    * Event emission checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * Event emission checks.
+     *
+     *
+     */
 
     /* Transfer event */
 
@@ -78,8 +86,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback event Transfer was not emitted upon a change of ownership with `safeTransferFrom(address,address,uint256,bytes)` (with data) by token owner.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenSafeTransferFromWithDataByOwnerToEOA(bytes memory data) 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenSafeTransferFromWithDataByOwnerToEOA(bytes memory data)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOwner(tokenIdWithOwner, dan, data);
     }
 
@@ -88,13 +99,20 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback event Transfer was not emitted upon a change of ownership with `safeTransferFrom(address,address,uint256,bytes)` (with data) by token owner.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenSafeTransferFromWithDataByOwnerToReceiver(bytes memory data) 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenSafeTransferFromWithDataByOwnerToReceiver(bytes memory data)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOwner(tokenIdWithOwner, bob, data);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with `safeTransferFrom(address,address,uint256,bytes)` (with data) by token owner.
-    function _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOwner(uint256 tokenId, address toAddress, bytes memory data) internal {
+    function _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOwner(
+        uint256 tokenId,
+        address toAddress,
+        bytes memory data
+    ) internal {
         vm.expectEmit(true, true, true, false);
         emit Transfer(alice, toAddress, tokenId);
         _tryAliceSafeTransferFromWithData(alice, toAddress, tokenId, data);
@@ -108,8 +126,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddressToEOA(bytes memory data) 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddressToEOA(bytes memory data)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddress(tokenIdWithOwner, bob, dan, data);
     }
 
@@ -119,13 +140,21 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddressToReceiver(bytes memory data) 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddressToReceiver(bytes memory data)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddress(tokenIdWithOwner, bob, carol, data);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with safeTransferFrom (with data) by then approved address of the token.
-    function _propertyEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddress(uint256 tokenId, address approvedAddress, address toAddress, bytes memory data) internal {
+    function _propertyEventTransferEmitsWhenSafeTransferFromWithDataByApprovedAddress(
+        uint256 tokenId,
+        address approvedAddress,
+        address toAddress,
+        bytes memory data
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(approvedAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not define an approved address.");
         vm.expectEmit(true, true, true, false);
@@ -141,8 +170,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApproveForAll.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenSafeTransferFromWithDataByOperatorToEOA(bytes memory data) 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenSafeTransferFromWithDataByOperatorToEOA(bytes memory data)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOperator(tokenIdWithOwner, bob, dan, data);
     }
 
@@ -152,15 +184,25 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApproveForAll.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenSafeTransferFromWithDataByOperatorToReceiver(bytes memory data) 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenSafeTransferFromWithDataByOperatorToReceiver(bytes memory data)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOperator(tokenIdWithOwner, bob, carol, data);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with safeTransferFrom (with data) by an operator.
-    function _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOperator(uint256 tokenId, address operator, address toAddress, bytes memory data) internal {
+    function _propertyEventTransferEmitsWhenSafeTransferFromWithDataByOperator(
+        uint256 tokenId,
+        address operator,
+        address toAddress,
+        bytes memory data
+    ) internal {
         CallResult memory callSetApproval = _tryAliceSetApprovalForAll(operator, true);
-        conditionalSkip(!callSetApproval.success, "Inconclusive test: Alice could not define an operator (setApprovalForAll).");
+        conditionalSkip(
+            !callSetApproval.success, "Inconclusive test: Alice could not define an operator (setApprovalForAll)."
+        );
         vm.expectEmit(true, true, true, false);
         emit Transfer(alice, toAddress, tokenId);
         _tryCustomerSafeTransferFromWithData(operator, alice, toAddress, tokenId, data);
@@ -175,8 +217,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback event Transfer was not emitted upon a change of ownership with `safeTransferFrom(address,address,uint256)` (without data) by token owner.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenTransferFromWithoutDataByOwnerToEOA() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromWithoutDataByOwnerToEOA()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromWithoutDataByOwner(tokenIdWithOwner, dan);
     }
 
@@ -186,12 +231,17 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
     function testEventTransferEmitsWhenTransferFromWithoutDataByOwnerToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromWithoutDataByOwner(tokenIdWithOwner, bob);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with safeTransferFrom (without data) by token owner.
-    function _propertyEventTransferEmitsWhenTransferFromWithoutDataByOwner(uint256 tokenId, address toAddress) internal {
+    function _propertyEventTransferEmitsWhenTransferFromWithoutDataByOwner(uint256 tokenId, address toAddress)
+        internal
+    {
         vm.expectEmit(true, true, true, false);
         emit Transfer(alice, toAddress, tokenId);
         _tryAliceSafeTransferFrom(alice, toAddress, tokenId);
@@ -205,8 +255,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenTransferFromWithoutDataByApprovedAddressToEOA() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromWithoutDataByApprovedAddressToEOA()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByApprovedAddress(tokenIdWithOwner, bob, dan);
     }
 
@@ -216,13 +269,20 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenTransferFromWithoutDataByApprovedAddressToReceiver() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromWithoutDataByApprovedAddressToReceiver()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByApprovedAddress(tokenIdWithOwner, bob, carol);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with safeTransferFrom (without data) by the approved address.
-    function _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByApprovedAddress(uint256 tokenId, address approvedAddress, address toAddress) internal {
+    function _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByApprovedAddress(
+        uint256 tokenId,
+        address approvedAddress,
+        address toAddress
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(approvedAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not define an approved address.");
         vm.expectEmit(true, true, true, false);
@@ -239,7 +299,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
     function testEventTransferEmitsWhenTransferFromWithoutDataByOperatorToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByOperator(tokenIdWithOwner, bob, dan);
     }
 
@@ -249,15 +312,24 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories event, safeTranferFrom
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventTransferEmitsWhenTransferFromWithoutDataByOperatorToReceiver() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromWithoutDataByOperatorToReceiver()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByOperator(tokenIdWithOwner, bob, carol);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with safeTransferFrom (without data) by an operator.
-    function _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByOperator(uint256 tokenId, address operator, address toAddress) internal {
+    function _propertyEventTransferEmitsWhenSafeTransferFromWithoutDataByOperator(
+        uint256 tokenId,
+        address operator,
+        address toAddress
+    ) internal {
         CallResult memory callSetApproval = _tryAliceSetApprovalForAll(operator, true);
-        conditionalSkip(!callSetApproval.success, "Inconclusive test: Alice could not define an operator (setApprovalForAll).");
+        conditionalSkip(
+            !callSetApproval.success, "Inconclusive test: Alice could not define an operator (setApprovalForAll)."
+        );
         vm.expectEmit(true, true, true, false);
         emit Transfer(alice, toAddress, tokenId);
         _tryCustomerSafeTransferFrom(operator, alice, toAddress, tokenId);
@@ -272,8 +344,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback event Transfer was not emitted upon a change of ownership with `transferFrom(address,address,uint256)` by token owner.
     /// @custom:ercx-categories event, transferFrom
     /// @custom:ercx-concerned-function transferFrom
-    function testEventTransferEmitsWhenTransferFromByOwnerToEOA() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromByOwnerToEOA()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromWithoutDataByOwner(tokenIdWithOwner, dan);
     }
 
@@ -283,7 +358,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories event, transferFrom
     /// @custom:ercx-concerned-function transferFrom
     function testEventTransferEmitsWhenTransferFromByOwnerToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromByOwner(tokenIdWithOwner, bob);
     }
 
@@ -302,8 +380,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories event, transferFrom
     /// @custom:ercx-concerned-function transferFrom
-    function testEventTransferEmitsWhenTransferFromByApprovedAddressToEOA() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromByApprovedAddressToEOA()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromByApprovedAddress(tokenIdWithOwner, bob, dan);
     }
 
@@ -313,13 +394,20 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories event, transferFrom
     /// @custom:ercx-concerned-function transferFrom
-    function testEventTransferEmitsWhenTransferFromByApprovedAddressToReceiver() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromByApprovedAddressToReceiver()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromByApprovedAddress(tokenIdWithOwner, bob, carol);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with `transferFrom(address,address,uint256)` by the approved address.
-    function _propertyEventTransferEmitsWhenTransferFromByApprovedAddress(uint256 tokenId, address approvedAddress, address toAddress) internal {
+    function _propertyEventTransferEmitsWhenTransferFromByApprovedAddress(
+        uint256 tokenId,
+        address approvedAddress,
+        address toAddress
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(approvedAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not define an approved address.");
         vm.expectEmit(true, true, true, false);
@@ -336,7 +424,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories event, transferFrom
     /// @custom:ercx-concerned-function transferFrom
     function testEventTransferEmitsWhenTransferFromByOperatorToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromByOperator(tokenIdWithOwner, bob, dan);
     }
 
@@ -346,15 +437,22 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories event, transferFrom
     /// @custom:ercx-concerned-function transferFrom
-    function testEventTransferEmitsWhenTransferFromByOperatorToReceiver() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventTransferEmitsWhenTransferFromByOperatorToReceiver()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyEventTransferEmitsWhenTransferFromByOperator(tokenIdWithOwner, bob, carol);
     }
 
     /// @notice Internal property-test checking that event Transfer emits when ownership of tokens changes with `transferFrom(address,address,uint256)` by an operator.
-    function _propertyEventTransferEmitsWhenTransferFromByOperator(uint256 tokenId, address operator, address toAddress) internal {
+    function _propertyEventTransferEmitsWhenTransferFromByOperator(uint256 tokenId, address operator, address toAddress)
+        internal
+    {
         CallResult memory callSetApproval = _tryAliceSetApprovalForAll(operator, true);
-        conditionalSkip(!callSetApproval.success, "Inconclusive test: Alice could not define an operator (setApprovalForAll).");
+        conditionalSkip(
+            !callSetApproval.success, "Inconclusive test: Alice could not define an operator (setApprovalForAll)."
+        );
         vm.expectEmit(true, true, true, false);
         emit Transfer(alice, toAddress, tokenId);
         _tryCustomerSafeTransferFrom(operator, alice, toAddress, tokenId);
@@ -362,14 +460,16 @@ abstract contract ERC721Standard is ERC721Abstract {
 
     /* Approval event */
 
-
     /// @notice Event Approval emits when approval is affirmed.
     /// @custom:ercx-expected pass
     /// @custom:ercx-feedback Event Approval was not emitted when an approvas was affirmed.
     /// @custom:ercx-categories event
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventApprovalEmitsWhenApprovedIsAffirmed() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventApprovalEmitsWhenApprovedIsAffirmed()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // Making sure the token has no approvee.
         vm.assume(cut.getApproved(tokenIdWithOwner) == address(0x0));
         vm.expectEmit(true, true, true, false);
@@ -382,8 +482,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback Event Approval was not emitted when an approvas was reaffirmed.
     /// @custom:ercx-categories event
     /// @custom:ercx-concerned-function safeTranferFrom
-    function testEventApprovalEmitsWhenApprovedIsReAffirmed() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventApprovalEmitsWhenApprovedIsReAffirmed()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // Affirming approval.
         _tryAliceApprove(bob, tokenIdWithOwner);
         vm.expectEmit(true, true, true, false);
@@ -397,8 +500,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback Event Approval was not emitted when an approvas was changed.
     /// @custom:ercx-categories event
     /// @custom:ercx-concerned-function approve
-    function testEventApprovalEmitsWhenApprovedIsChanged() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventApprovalEmitsWhenApprovedIsChanged()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // Affirming approval to Bob.
         _tryAliceApprove(bob, tokenIdWithOwner);
         vm.expectEmit(true, true, true, false);
@@ -414,8 +520,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback Event ApprovalForAll was not emitted when an operator was enabled.
     /// @custom:ercx-categories event, approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testEventApprovalForAllEmitsWhenOperatorIsEnabled() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventApprovalForAllEmitsWhenOperatorIsEnabled()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         vm.expectEmit(true, true, true, false);
         emit ApprovalForAll(alice, bob, true);
         _tryAliceSetApprovalForAll(bob, true);
@@ -426,18 +535,23 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback Event ApprovalForAll was not emitted when an operator was disabled.
     /// @custom:ercx-categories event, approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testEventApprovalForAllEmitsWhenOperatorIsDisabled() 
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testEventApprovalForAllEmitsWhenOperatorIsDisabled()
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         vm.expectEmit(true, true, true, false);
         emit ApprovalForAll(alice, bob, false);
         _tryAliceSetApprovalForAll(bob, false);
     }
 
-   /****************************
-    *
-    * balanceOf() checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * balanceOf() checks.
+     *
+     *
+     */
 
     /// @notice Function `balanceOf(address)` does not throw when queried about a valid address by anyone.
     /// @custom:ercx-expected pass
@@ -445,8 +559,8 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories balance
     /// @custom:ercx-concerned-function balanceOf
     function testQueryBalanceIsPossible() external {
-        (bool success, ) = _tryCustomerBalanceOf(alice, bob);
-        assertTrue(success,  "Call to `balanceOf()` on some account threw.");
+        (bool success,) = _tryCustomerBalanceOf(alice, bob);
+        assertTrue(success, "Call to `balanceOf()` on some account threw.");
     }
 
     /// @notice Function `balanceOf(address)` throws when queried about the zero address.
@@ -455,7 +569,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories balance
     /// @custom:ercx-concerned-function balanceOf
     function testThrowsQueryBalanceOfZeroAddress() external {
-        (bool success, ) = _tryBalanceOf(address(0x0));
+        (bool success,) = _tryBalanceOf(address(0x0));
         assertFalse(success, "Call to `balanceOf()` on the zero address did not throw.");
     }
 
@@ -464,11 +578,14 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A successful `balanceOf(account)` call does NOT return balance of `account` correctly.
     /// @custom:ercx-categories balance
     /// @custom:ercx-concerned-function balanceOf
-    function testUserBalanceIncrementedAfterReceivingAnOwnedToken()
-    external withUsers() {
+    function testUserBalanceIncrementedAfterReceivingAnOwnedToken() external withUsers {
         uint256 initialAliceBalance = cut.balanceOf(alice);
         _dealAnOwnedTokenToAlice(tokenIdWithOwner);
-        assertEq(cut.balanceOf(alice), initialAliceBalance + 1, "The value of `balanceOf(alice)` has not been incremented after a token was given to her.");
+        assertEq(
+            cut.balanceOf(alice),
+            initialAliceBalance + 1,
+            "The value of `balanceOf(alice)` has not been incremented after a token was given to her."
+        );
     }
 
     /// @notice A successful `balanceOf(account)` returns the updated balance of an `account` correctly when the user receives some tokens.
@@ -476,11 +593,14 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A successful `balanceOf(account)` call does NOT return balance of `account` correctly.
     /// @custom:ercx-categories balance
     /// @custom:ercx-concerned-function balanceOf
-    function testUserBalanceCorrectAfterReceivingSeveralTokens()
-    external withUsers() {
+    function testUserBalanceCorrectAfterReceivingSeveralTokens() external withUsers {
         uint256 initiaAlicelBalance = cut.balanceOf(alice);
         _dealSeveralOwnedTokensToAlice(tokenIdsWithOwners);
-        assertEq(cut.balanceOf(alice), initiaAlicelBalance + tokenIdsWithOwners.length, "The value of balanceOf(alice) does not equate the amount of tokens given to her.");
+        assertEq(
+            cut.balanceOf(alice),
+            initiaAlicelBalance + tokenIdsWithOwners.length,
+            "The value of balanceOf(alice) does not equate the amount of tokens given to her."
+        );
     }
 
     /// @notice A successful `balanceOf(account)` call returns 0 for users without tokens.
@@ -489,25 +609,33 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A successful `balanceOf(account)` call does NOT return balance of `account` correctly after two dummy users' balances are initialized.
     /// @custom:ercx-categories balance
     /// @custom:ercx-concerned-function balanceOf
-    function testUserBalanceInitializedToZero()
-    external withUsers() {
-        assertEq(cut.balanceOf(bob), 0, "The value of `balanceOf(bob)` does not equate to 0 while no token were provided to him.");
+    function testUserBalanceInitializedToZero() external withUsers {
+        assertEq(
+            cut.balanceOf(bob),
+            0,
+            "The value of `balanceOf(bob)` does not equate to 0 while no token were provided to him."
+        );
     }
-    
-    /****************************
-    *
-    * ownerOf() checks.
-    *
-    ****************************/
+
+    /**
+     *
+     *
+     * ownerOf() checks.
+     *
+     *
+     */
 
     /// @notice A successful `ownerOf(tokenId)` call returns the owner of `tokenId` correctly after a user is provided this token.
     /// @custom:ercx-expected pass
     /// @custom:ercx-feedback A successful `ownerOf(tokenId)` call does NOT return owner of `tokenId` correctly after a user is provided this token.
     /// @custom:ercx-categories ownerOf
     /// @custom:ercx-concerned-function ownerOf
-    function testOwnerOfUpdated()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        assertEq(cut.ownerOf(tokenIdWithOwner), alice, "The value of `ownerOf(tokenId)` does not equate the owner of the token.");
+    function testOwnerOfUpdated() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        assertEq(
+            cut.ownerOf(tokenIdWithOwner),
+            alice,
+            "The value of `ownerOf(tokenId)` does not equate the owner of the token."
+        );
     }
 
     /// @notice A call `ownerOf(tokenId)` for a non-owned token must throw.
@@ -515,17 +643,19 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A call to `ownerOf(tokenId)` did NOT throw for a `tokenId` that is not owned.
     /// @custom:ercx-categories ownerOf
     /// @custom:ercx-concerned-function ownerOf
-    function testOwnerOfThrowsForNotOwnedToken(uint256 tokenId) external{
+    function testOwnerOfThrowsForNotOwnedToken(uint256 tokenId) external {
         vm.assume(!_hasOwner(tokenId));
         vm.expectRevert();
         cut.ownerOf(tokenId);
     }
 
-    /****************************
-    *
-    * isApprovedForAll() checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * isApprovedForAll() checks.
+     *
+     *
+     */
 
     /// @notice Function `isApprovedForAll(address,address)` does not throw when queried about whether some address is an operator of some owner address, by anyone. This test excludes the zero address.
     /// @custom:ercx-expected pass
@@ -533,15 +663,17 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories getApproved
     /// @custom:ercx-concerned-function getApproved
     function testQueryIsApprovedForAllAddressIsPossible() external {
-        (bool success, ) = _tryCustomerIsApprovedForAll(alice, bob, carol);
+        (bool success,) = _tryCustomerIsApprovedForAll(alice, bob, carol);
         assertTrue(success, "Call to `isApprovedForAll()` on some account threw.");
     }
-    
-    /****************************
-    *
-    * safeTransferFrom(address,address,uint256,bytes) (with data) checks.
-    *
-    ****************************/
+
+    /**
+     *
+     *
+     * safeTransferFrom(address,address,uint256,bytes) (with data) checks.
+     *
+     *
+     */
 
     /*
     Throwing cases.
@@ -553,7 +685,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromWithDataToEOA(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromWithDataToReceiver(bob, dan, tokenIdWithOwner, data);
     }
 
@@ -563,13 +698,26 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromWithDataToReceiver(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromWithDataToReceiver(bob, carol, tokenIdWithOwner, data);
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromWithDataToReceiver(
+            bob, carol, tokenIdWithOwner, data
+        );
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) by the token owner throws if `_from` (the first address) is not the token owner.
-    function _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromWithDataToReceiver(address fromAddress, address toAddress, uint256 tokenId, bytes memory data) internal {
-        assertFail(_tryAliceSafeTransferFromWithData(fromAddress, toAddress, tokenId, data), "A `safeTransferFrom(address,address,uint256,bytes)` (with data) did not throw while the `_from` (the first address) is not the token owner and the `_from`initiated the transfer.");
+    function _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromWithDataToReceiver(
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
+        assertFail(
+            _tryAliceSafeTransferFromWithData(fromAddress, toAddress, tokenId, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` (with data) did not throw while the `_from` (the first address) is not the token owner and the `_from`initiated the transfer."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256,bytes)` (with data) to an EOA by someone throws if `_from` (the first address) is not the token owner.
@@ -579,7 +727,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromWithDataToEOA(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromWithData(carol, bob, dan, tokenIdWithOwner, data);
     }
 
@@ -590,18 +741,30 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromWithDataToReceiver(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromWithData(carol, bob, carol, tokenIdWithOwner, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) by someone throws if `_from` (the first address) is not the token owner.
-    function _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromWithData(address transferInitiator, address fromAddress, address toAddress, uint256 tokenId, bytes memory data) internal {
+    function _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromWithData(
+        address transferInitiator,
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         CallResult memory callApprove = _tryCustomerApprove(fromAddress, transferInitiator, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Could not approve ");
-        assertFail(_tryCustomerSafeTransferFromWithData(transferInitiator, fromAddress, toAddress, tokenId, data), "A `safeTransferFrom(address,address,uint256,bytes)` (with data) did not throw while the `_from` (the first address) is not the token owner and someone initiated the transfer.");
+        assertFail(
+            _tryCustomerSafeTransferFromWithData(transferInitiator, fromAddress, toAddress, tokenId, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` (with data) did not throw while the `_from` (the first address) is not the token owner and someone initiated the transfer."
+        );
     }
 
-   //
+    //
 
     /// @notice A `safeTransferFrom(address,address,uint256,bytes)` (with data) to an EOA throws if `tokenID` (uint256) is not a valid token id.
     /// @custom:ercx-expected pass
@@ -610,7 +773,9 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsSafeTransferFromWithDataToEOAWhenTokenIDIsNotValid(uint256 tokenId, bytes memory data)
-    external withUsers() {
+        external
+        withUsers
+    {
         _propertyRevertsSafeTransferFromWithDataWhenTokenIDIsNotValid(carol, bob, dan, tokenId, data);
     }
 
@@ -621,19 +786,30 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsSafeTransferFromWithDataToReceiverWhenTokenIDIsNotValid(uint256 tokenId, bytes memory data)
-    external withUsers() {
+        external
+        withUsers
+    {
         _propertyRevertsSafeTransferFromWithDataWhenTokenIDIsNotValid(carol, bob, carol, tokenId, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) throws if `tokenID` (uint256) is not a valid token id.
-    function _propertyRevertsSafeTransferFromWithDataWhenTokenIDIsNotValid(address transferInitiator, address fromAddress, address toAddress, uint256 tokenId, bytes memory data) internal {
+    function _propertyRevertsSafeTransferFromWithDataWhenTokenIDIsNotValid(
+        address transferInitiator,
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         vm.assume(!_hasOwner(tokenId));
         CallResult memory callApprove = _tryCustomerApprove(fromAddress, transferInitiator, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Could not approve.");
-        assertFail(_tryCustomerSafeTransferFromWithData(transferInitiator, fromAddress, toAddress, tokenId, data), "A `safeTransferFrom(address,address,uint256,bytes)` (with data) did not throw while `tokenID` (uint256) is not a valid id.");
+        assertFail(
+            _tryCustomerSafeTransferFromWithData(transferInitiator, fromAddress, toAddress, tokenId, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` (with data) did not throw while `tokenID` (uint256) is not a valid id."
+        );
     }
 
-   //
+    //
 
     /// @notice A `safeTransferFrom(address,address,uint256,bytes)` (with data) by the token owner to the zero address throws.
     /// @custom:ercx-expected pass
@@ -641,8 +817,14 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenOwnerSafeTransferFromWithDataToZeroAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        assertFail(_tryAliceSafeTransferFromWithData(alice, address(0x0), tokenIdWithOwner, data), "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the token owner to the zero address.");
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        assertFail(
+            _tryAliceSafeTransferFromWithData(alice, address(0x0), tokenIdWithOwner, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the token owner to the zero address."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256,bytes)` (with data) by the approved address to the zero address throws.
@@ -652,10 +834,16 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testRevertsWhenApprovedAddressSafeTransferFromWithDataToZeroAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceApprove(bob, tokenIdWithOwner);
         conditionalSkip(!callApprove.success, "Inconclusive test: could not approve some address.");
-        assertFail(_tryBobSafeTransferFromWithData(alice, address(0x0), tokenIdWithOwner, data), "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the approved address to the zero address.");
+        assertFail(
+            _tryBobSafeTransferFromWithData(alice, address(0x0), tokenIdWithOwner, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the approved address to the zero address."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256,bytes)` (with data) by the operator of the token owner to the zero address throws.
@@ -665,10 +853,18 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenSomeoneSafeTransferFromWithDataToZeroAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceSetApprovalForAll(bob, true);
-        conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer.");
-        assertFail(_tryCustomerSafeTransferFromWithData(bob, alice, address(0x0), tokenIdWithOwner, data), "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the operator of the token owner to the zero address.");
+        conditionalSkip(
+            !callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer."
+        );
+        assertFail(
+            _tryCustomerSafeTransferFromWithData(bob, alice, address(0x0), tokenIdWithOwner, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated by the operator of the token owner to the zero address."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256,bytes)` (with data) by token owner throws if the recipient does not return bytes4(keccak256("onERC721Received(address,address,uint256,bytes)")) when calling onERC721Received.
@@ -677,9 +873,15 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenSafeTransferFromWithDataToRecipientIsIncorrectReceiverByOwner(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // eve is an incorrect receiver
-        assertFail(_tryAliceSafeTransferFromWithData(alice, eve, tokenIdWithOwner, data), "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received.");
+        assertFail(
+            _tryAliceSafeTransferFromWithData(alice, eve, tokenIdWithOwner, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256,bytes)` (with data) by someone throws if the recipient does not return bytes4(keccak256("onERC721Received(address,address,uint256,bytes)")) when calling onERC721Received.
@@ -689,11 +891,19 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenSafeTransferFromWithDataToRecipientIsIncorrectReceiverBySomeone(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceSetApprovalForAll(bob, true);
-        conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer.");
+        conditionalSkip(
+            !callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer."
+        );
         // eve is an incorrect receiver
-        assertFail(_tryCustomerSafeTransferFromWithData(bob, alice, eve, tokenIdWithOwner, data), "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received."); 
+        assertFail(
+            _tryCustomerSafeTransferFromWithData(bob, alice, eve, tokenIdWithOwner, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received."
+        );
     }
 
     /*
@@ -706,7 +916,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testOwnerCanSafeTransferFromWithDataToEOA(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyOwnerCanSafeTransferFromWithData(dan, tokenIdWithOwner, data);
     }
 
@@ -716,14 +929,21 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testOwnerCanSafeTransferFromWithDataToReceiver(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyOwnerCanSafeTransferFromWithData(bob, tokenIdWithOwner, data);
     }
 
-
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) can be initiated by the token owner.
-    function _propertyOwnerCanSafeTransferFromWithData(address toAddress, uint256 tokenId, bytes memory data) internal {
-        assertSuccess(_tryAliceSafeTransferFromWithData(alice, toAddress, tokenId, data), "A `safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the token owner.");
+    function _propertyOwnerCanSafeTransferFromWithData(address toAddress, uint256 tokenId, bytes memory data)
+        internal
+    {
+        assertSuccess(
+            _tryAliceSafeTransferFromWithData(alice, toAddress, tokenId, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the token owner."
+        );
     }
 
     //
@@ -735,7 +955,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataByOwnerToEOAUpdatesOwnership(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByOwnerUpdatesOwnership(dan, tokenIdWithOwner, data);
     }
 
@@ -746,15 +969,26 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataByOwnerToReceiverUpdatesOwnership(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByOwnerUpdatesOwnership(bob, tokenIdWithOwner, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) by the token owner updates the ownership.
-    function _propertySafeTransferFromWithDataByOwnerUpdatesOwnership(address toAddress, uint256 tokenId, bytes memory data) internal {
+    function _propertySafeTransferFromWithDataByOwnerUpdatesOwnership(
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         CallResult memory callTransfer = _tryAliceSafeTransferFromWithData(alice, toAddress, tokenId, data);
         conditionalSkip(!callTransfer.success, "Inconclusive test: Could not perform safeTransferFrom.");
-        assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
+        assertEq(
+            cut.ownerOf(tokenId),
+            toAddress,
+            "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+        );
     }
 
     //
@@ -766,7 +1000,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataByOwnerToEOAResetsApprovedAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByOwnerResetsApprovedAddress(dan, tokenIdWithOwner, carol, data);
     }
 
@@ -777,18 +1014,30 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataByOwnerToReceiverResetsApprovedAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByOwnerResetsApprovedAddress(bob, tokenIdWithOwner, carol, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) by the token owner correctly resets the approved address for that token.
-    function _propertySafeTransferFromWithDataByOwnerResetsApprovedAddress(address toAddress, uint256 tokenId, address initialApprovee, bytes memory data) internal {
+    function _propertySafeTransferFromWithDataByOwnerResetsApprovedAddress(
+        address toAddress,
+        uint256 tokenId,
+        address initialApprovee,
+        bytes memory data
+    ) internal {
         // We make sure there was some approvee before the transfer so that the check focuses on the contract resetting the approvee.
         CallResult memory callApprove = _tryAliceApprove(initialApprovee, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve.");
         CallResult memory callTransfer = _tryAliceSafeTransferFromWithData(alice, toAddress, tokenId, data);
         conditionalSkip(!callTransfer.success, "Inconclusive test: Alice could not safeTransferFrom.");
-        assertEq(cut.getApproved(tokenId), address(0x0), "Approved address has not been reset after a safeTransferFrom by token owner.");
+        assertEq(
+            cut.getApproved(tokenId),
+            address(0x0),
+            "Approved address has not been reset after a safeTransferFrom by token owner."
+        );
     }
 
     /*
@@ -802,7 +1051,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromWithDataToEOA(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromWithDataToSomeone(dan, tokenIdWithOwner, data);
     }
 
@@ -813,15 +1065,25 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromWithDataToReceiver(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromWithDataToSomeone(carol, tokenIdWithOwner, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) can be initiated by the approved address to some other token receiver.
-    function _propertyApprovedAddressCanSafeTransferFromWithDataToSomeone(address toAddress, uint256 tokenId, bytes memory data) internal {
+    function _propertyApprovedAddressCanSafeTransferFromWithDataToSomeone(
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(bob, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve Bob.");
-        assertSuccess(_tryBobSafeTransferFromWithData(alice, toAddress, tokenId, data), "A `safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address.");
+        assertSuccess(
+            _tryBobSafeTransferFromWithData(alice, toAddress, tokenId, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address."
+        );
     }
 
     //
@@ -833,7 +1095,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromWithDataToEOAFromToSelf(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromWithDataFromToSelf(dan, tokenIdWithOwner, data);
     }
 
@@ -844,15 +1109,25 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromWithDataToReceiverFromToSelf(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromWithDataFromToSelf(bob, tokenIdWithOwner, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) can be initiated by the approved address to self.
-    function _propertyApprovedAddressCanSafeTransferFromWithDataFromToSelf(address toAddress, uint256 tokenId, bytes memory data) internal {
+    function _propertyApprovedAddressCanSafeTransferFromWithDataFromToSelf(
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(toAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve Bob.");
-        assertSuccess(_tryCustomerSafeTransferFromWithData(toAddress, alice, toAddress, tokenId, data), "A `safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to itself.");
+        assertSuccess(
+            _tryCustomerSafeTransferFromWithData(toAddress, alice, toAddress, tokenId, data),
+            "A `safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to itself."
+        );
     }
 
     //
@@ -864,7 +1139,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromWithDataByApprovedEOAAddressToSelfUpdatesOwnership(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByApprovedAddressToSelfUpdatesOwnership(dan, tokenIdWithOwner, data);
     }
 
@@ -875,17 +1153,32 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromWithDataByApprovedReceiverAddressToSelfUpdatesOwnership(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByApprovedAddressToSelfUpdatesOwnership(bob, tokenIdWithOwner, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) by the approved address to self correctly updates the ownership.
-    function _propertySafeTransferFromWithDataByApprovedAddressToSelfUpdatesOwnership(address toAddress, uint256 tokenId, bytes memory data) internal {
+    function _propertySafeTransferFromWithDataByApprovedAddressToSelfUpdatesOwnership(
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(toAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve.");
-        CallResult memory callTransfer = _tryCustomerSafeTransferFromWithData(toAddress, alice, toAddress, tokenId, data);
-        conditionalSkip(!callTransfer.success, "Inconclusive test: the approved address could not safeTransferFrom from Alice to itself.");
-        assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
+        CallResult memory callTransfer =
+            _tryCustomerSafeTransferFromWithData(toAddress, alice, toAddress, tokenId, data);
+        conditionalSkip(
+            !callTransfer.success,
+            "Inconclusive test: the approved address could not safeTransferFrom from Alice to itself."
+        );
+        assertEq(
+            cut.ownerOf(tokenId),
+            toAddress,
+            "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+        );
     }
 
     //
@@ -897,7 +1190,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataByApprovedEOAAddressResetsApprovedAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByApprovedAddressResetsApprovedAddress(dan, tokenIdWithOwner, carol, data);
     }
 
@@ -908,18 +1204,33 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataByApprovedReceiverAddressResetsApprovedAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByApprovedAddressResetsApprovedAddress(bob, tokenIdWithOwner, carol, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) by the approved address correctly resets the approved address for that token.
-    function _propertySafeTransferFromWithDataByApprovedAddressResetsApprovedAddress(address toAddress, uint256 tokenId, address initialApprovee, bytes memory data) internal {
+    function _propertySafeTransferFromWithDataByApprovedAddressResetsApprovedAddress(
+        address toAddress,
+        uint256 tokenId,
+        address initialApprovee,
+        bytes memory data
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(initialApprovee, tokenId);
         // We make sure there was some approvee before the transfer so that the check focuses on the contract resetting the approvee.
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve some initial approvee.");
-        CallResult memory callTransfer = _tryCustomerSafeTransferFromWithData(initialApprovee, alice, toAddress, tokenId, data);
-        conditionalSkip(!callTransfer.success, "Inconclusive test: initial approvee could not safeTransferFrom from Alice to Bob.");
-        assertEq(cut.getApproved(tokenId), address(0x0), "Approved address has not been reset after a safeTransferFrom by approved address.");
+        CallResult memory callTransfer =
+            _tryCustomerSafeTransferFromWithData(initialApprovee, alice, toAddress, tokenId, data);
+        conditionalSkip(
+            !callTransfer.success, "Inconclusive test: initial approvee could not safeTransferFrom from Alice to Bob."
+        );
+        assertEq(
+            cut.getApproved(tokenId),
+            address(0x0),
+            "Approved address has not been reset after a safeTransferFrom by approved address."
+        );
     }
 
     /*
@@ -933,7 +1244,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testOperatorCanSafeTransferFromWithDataToEOA(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyOperatorCanSafeTransferFromWithDataToSomeone(dan, tokenIdWithOwner, data);
     }
 
@@ -944,15 +1258,25 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testOperatorCanSafeTransferFromWithDataToReceiver(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyOperatorCanSafeTransferFromWithDataToSomeone(carol, tokenIdWithOwner, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) can be initiated by an operator.
-    function _propertyOperatorCanSafeTransferFromWithDataToSomeone(address toAddress, uint256 tokenId, bytes memory data) internal {        
+    function _propertyOperatorCanSafeTransferFromWithDataToSomeone(
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         CallResult memory callSetApproval = _tryAliceSetApprovalForAll(bob, true);
         conditionalSkip(!callSetApproval.success, "Inconclusive test: Alice could not setApprovalForAll.");
-        assertSuccess(_tryBobSafeTransferFromWithData(alice, toAddress, tokenId, data), "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address.");
+        assertSuccess(
+            _tryBobSafeTransferFromWithData(alice, toAddress, tokenId, data),
+            "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address."
+        );
     }
 
     //
@@ -963,8 +1287,14 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testOperatorCanSafeTransferFromWithDataToSelf(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        assertTrue(_AliceSetApprovedForAllBobAndBobSafeTransfersFromWithDataToSelf(tokenIdWithOwner, data), "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself.");
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        assertTrue(
+            _AliceSetApprovedForAllBobAndBobSafeTransfersFromWithDataToSelf(tokenIdWithOwner, data),
+            "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself."
+        );
     }
 
     //
@@ -975,10 +1305,17 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromWithDataByOperatorToSelfUpdatesOwnership(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         if (_AliceSetApprovedForAllBobAndBobSafeTransfersFromWithDataToSelf(tokenIdWithOwner, data)) {
-            assertEq(cut.ownerOf(tokenIdWithOwner), bob, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
-        } 
+            assertEq(
+                cut.ownerOf(tokenIdWithOwner),
+                bob,
+                "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+            );
+        }
     }
 
     //
@@ -989,7 +1326,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromWithDataByOperatorToEOAUpdatesOwnership(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByOperatorToSomeoneUpdatesOwnership(dan, tokenIdWithOwner, data);
     }
 
@@ -999,14 +1339,25 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromWithDataByOperatorToReceiverUpdatesOwnership(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromWithDataByOperatorToSomeoneUpdatesOwnership(carol, tokenIdWithOwner, data);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256,bytes)` (with data) by the approved address correctly updates the ownership.
-    function _propertySafeTransferFromWithDataByOperatorToSomeoneUpdatesOwnership(address toAddress, uint256 tokenId, bytes memory data) internal {
+    function _propertySafeTransferFromWithDataByOperatorToSomeoneUpdatesOwnership(
+        address toAddress,
+        uint256 tokenId,
+        bytes memory data
+    ) internal {
         if (_AliceSetApprovedForAllBobAndBobSafeTransfersFromWithDataToSomeone(tokenId, data, toAddress)) {
-            assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
+            assertEq(
+                cut.ownerOf(tokenId),
+                toAddress,
+                "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+            );
         }
     }
 
@@ -1018,9 +1369,20 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataToEOAByOperatorResetsApprovedAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        if (_AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromWithDataToSomeone(tokenIdWithOwner, data, bob, dan)) {
-            assertEq(cut.getApproved(tokenIdWithOwner), address(0x0), "Approved address has not been reset after a safeTransferFrom by operator.");
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        if (
+            _AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromWithDataToSomeone(
+                tokenIdWithOwner, data, bob, dan
+            )
+        ) {
+            assertEq(
+                cut.getApproved(tokenIdWithOwner),
+                address(0x0),
+                "Approved address has not been reset after a safeTransferFrom by operator."
+            );
         }
     }
 
@@ -1030,17 +1392,30 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromWithDataToReceiverByOperatorResetsApprovedAddress(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        if (_AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromWithDataToSomeone(tokenIdWithOwner, data, bob, carol)) {
-            assertEq(cut.getApproved(tokenIdWithOwner), address(0x0), "Approved address has not been reset after a safeTransferFrom by operator.");
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        if (
+            _AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromWithDataToSomeone(
+                tokenIdWithOwner, data, bob, carol
+            )
+        ) {
+            assertEq(
+                cut.getApproved(tokenIdWithOwner),
+                address(0x0),
+                "Approved address has not been reset after a safeTransferFrom by operator."
+            );
         }
     }
 
-    /****************************
-    *
-    * safeTransferFrom(address,address,uint256) checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * safeTransferFrom(address,address,uint256) checks.
+     *
+     *
+     */
 
     /*
     Throwing cases.
@@ -1052,7 +1427,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromToReceiver(bob, dan, tokenIdWithOwner);
     }
 
@@ -1062,13 +1440,23 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromToReceiver(bob, carol, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) by the owner throws if `_from` (the first address) is not the token owner.
-    function _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromToReceiver(address fromAddress, address toAddress, uint256 tokenId) internal {
-        assertFail(_tryAliceSafeTransferFrom(fromAddress, toAddress, tokenId), "A `safeTransferFrom(address,address,uint256)` (with data) did not throw while the `_from` (the first address) is not the token owner and the `_from`initiated the transfer.");
+    function _propertyRevertsByOwnerWhenOwnerIsNotFromInSafeTransferFromToReceiver(
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId
+    ) internal {
+        assertFail(
+            _tryAliceSafeTransferFrom(fromAddress, toAddress, tokenId),
+            "A `safeTransferFrom(address,address,uint256)` (with data) did not throw while the `_from` (the first address) is not the token owner and the `_from`initiated the transfer."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256)` (without data) to an EOA by someone throws if `_from` (the first address) is not the token owner.
@@ -1078,7 +1466,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFrom(bob, carol, dan, tokenIdWithOwner);
     }
 
@@ -1089,18 +1480,29 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFrom(bob, carol, bob, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) by someone throws if `_from` (the first address) is not the token owner.
-    function _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFrom(address transferInitiator, address fromAddress, address toAddress, uint256 tokenId) internal {
+    function _propertyRevertsBySomeoneWhenOwnerIsNotFromInSafeTransferFrom(
+        address transferInitiator,
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId
+    ) internal {
         CallResult memory callApprove = _tryCustomerApprove(fromAddress, transferInitiator, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Could not approve.");
-        assertFail(_tryCustomerSafeTransferFrom(transferInitiator, fromAddress, toAddress, tokenId), "A `safeTransferFrom(address,address,uint256)` did not throw while the `_from` (the first address) is not the token owner and someone initiated the transfer.");
+        assertFail(
+            _tryCustomerSafeTransferFrom(transferInitiator, fromAddress, toAddress, tokenId),
+            "A `safeTransferFrom(address,address,uint256)` did not throw while the `_from` (the first address) is not the token owner and someone initiated the transfer."
+        );
     }
 
-   //
+    //
 
     /// @notice A `safeTransferFrom(address,address,uint256)` (without data) to an EOA throws if `tokenID` (uint256) is not a valid token id.
     /// @custom:ercx-expected pass
@@ -1108,8 +1510,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
-    function testRevertsSafeTransferFromToEOAWhenTokenIDIsNotValid(uint256 tokenId)
-    external withUsers() {
+    function testRevertsSafeTransferFromToEOAWhenTokenIDIsNotValid(uint256 tokenId) external withUsers {
         _propertyRevertsSafeTransferFromWhenTokenIDIsNotValid(bob, carol, dan, tokenId);
     }
 
@@ -1119,20 +1520,27 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
-    function testRevertsSafeTransferFromToReceiverWhenTokenIDIsNotValid(uint256 tokenId)
-    external withUsers() {
+    function testRevertsSafeTransferFromToReceiverWhenTokenIDIsNotValid(uint256 tokenId) external withUsers {
         _propertyRevertsSafeTransferFromWhenTokenIDIsNotValid(bob, carol, bob, tokenId);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) throws if `tokenId` (uint256) is not a valid token id.
-    function _propertyRevertsSafeTransferFromWhenTokenIDIsNotValid(address transferInitiator, address fromAddress, address toAddress, uint256 tokenId) internal {
+    function _propertyRevertsSafeTransferFromWhenTokenIDIsNotValid(
+        address transferInitiator,
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId
+    ) internal {
         vm.assume(!_hasOwner(tokenId));
         CallResult memory callApprove = _tryCustomerApprove(fromAddress, transferInitiator, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: could not approve.");
-        assertFail(_tryCustomerSafeTransferFrom(transferInitiator, fromAddress, toAddress, tokenId), "A `safeTransferFrom(address,address,uint256)` did not throw while `tokenID` (uint256) is not a valid id.");
+        assertFail(
+            _tryCustomerSafeTransferFrom(transferInitiator, fromAddress, toAddress, tokenId),
+            "A `safeTransferFrom(address,address,uint256)` did not throw while `tokenID` (uint256) is not a valid id."
+        );
     }
 
-   //
+    //
 
     /// @notice A `safeTransferFrom(address,address,uint256)` (without data) by the token owner to the zero address throws.
     /// @custom:ercx-expected pass
@@ -1140,8 +1548,14 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenOwnerSafeTransferFromToZeroAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        assertFail(_tryAliceSafeTransferFrom(alice, address(0x0), tokenIdWithOwner), "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated by the token owner to the zero address.");
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        assertFail(
+            _tryAliceSafeTransferFrom(alice, address(0x0), tokenIdWithOwner),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated by the token owner to the zero address."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256)` (without data) by the approved address to the zero address throws.
@@ -1151,10 +1565,16 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testRevertsWhenApprovedAddressSafeTransferFromToZeroAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceApprove(bob, tokenIdWithOwner);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve some address.");
-        assertFail(_tryBobSafeTransferFrom(alice, address(0x0), tokenIdWithOwner), "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated by the approved address to the zero address.");
+        assertFail(
+            _tryBobSafeTransferFrom(alice, address(0x0), tokenIdWithOwner),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated by the approved address to the zero address."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256)` (without data) by the operator of the token owner to the zero address throws.
@@ -1164,10 +1584,18 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenSomeoneSafeTransferFromToZeroAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceSetApprovalForAll(bob, true);
-        conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer.");
-        assertFail(_tryCustomerSafeTransferFrom(bob, alice, address(0x0), tokenIdWithOwner), "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated by the operator of the token owner to the zero address.");
+        conditionalSkip(
+            !callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer."
+        );
+        assertFail(
+            _tryCustomerSafeTransferFrom(bob, alice, address(0x0), tokenIdWithOwner),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated by the operator of the token owner to the zero address."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256)` (without data) by token owner throws if the recipient does not return bytes4(keccak256("onERC721Received(address,address,uint256,bytes)")) when calling onERC721Received.
@@ -1176,9 +1604,15 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenSafeTransferFromToRecipientIsIncorrectReceiverByOwner()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // eve is an incorrect receiver
-        assertFail(_tryAliceSafeTransferFrom(alice, eve, tokenIdWithOwner), "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received.");
+        assertFail(
+            _tryAliceSafeTransferFrom(alice, eve, tokenIdWithOwner),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received."
+        );
     }
 
     /// @notice A `safeTransferFrom(address,address,uint256)` (without data) by someone throws if the recipient does not return bytes4(keccak256("onERC721Received(address,address,uint256,bytes)")) when calling onERC721Received.
@@ -1188,11 +1622,19 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
     function testRevertsWhenSafeTransferFromToRecipientIsIncorrectReceiverBySomeone()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceSetApprovalForAll(bob, true);
-        conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer.");
+        conditionalSkip(
+            !callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer."
+        );
         // eve is an incorrect receiver
-        assertFail(_tryCustomerSafeTransferFrom(bob, alice, eve, tokenIdWithOwner), "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received."); 
+        assertFail(
+            _tryCustomerSafeTransferFrom(bob, alice, eve, tokenIdWithOwner),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could be initiated when recipient does not return bytes4(keccak256(...)) when calling onERC721Received."
+        );
     }
 
     /*
@@ -1204,8 +1646,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the token owner.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
-    function testOwnerCanSafeTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOwnerCanSafeTransferFromToEOA() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOwnerCanSafeTransferFrom(dan, tokenIdWithOwner);
     }
 
@@ -1214,14 +1655,16 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the token owner.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function safeTransferFrom
-    function testOwnerCanSafeTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOwnerCanSafeTransferFromToReceiver() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOwnerCanSafeTransferFrom(bob, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) can be initiated by token owner.
     function _propertyOwnerCanSafeTransferFrom(address toAddress, uint256 tokenId) internal {
-        assertSuccess(_tryAliceSafeTransferFrom(alice, toAddress, tokenId), "A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the token owner");
+        assertSuccess(
+            _tryAliceSafeTransferFrom(alice, toAddress, tokenId),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the token owner"
+        );
     }
 
     //
@@ -1233,7 +1676,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromByOwnerToEOAUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByOwnerUpdatesOwnership(dan, tokenIdWithOwner);
     }
 
@@ -1244,7 +1690,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromByOwnerToReceiverUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByOwnerUpdatesOwnership(bob, tokenIdWithOwner);
     }
 
@@ -1252,7 +1701,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertySafeTransferFromByOwnerUpdatesOwnership(address toAddress, uint256 tokenId) internal {
         CallResult memory callTransfer = _tryAliceSafeTransferFrom(alice, toAddress, tokenId);
         conditionalSkip(!callTransfer.success, "Inconclusive test: Could not perform safeTransferFrom.");
-        assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
+        assertEq(
+            cut.ownerOf(tokenId),
+            toAddress,
+            "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+        );
     }
 
     //
@@ -1264,7 +1717,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromByOwnerToEOAResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByOwnerResetsApprovedAddress(dan, tokenIdWithOwner, bob);
     }
 
@@ -1275,18 +1731,29 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromByOwnerToReceiverResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByOwnerResetsApprovedAddress(carol, tokenIdWithOwner, bob);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) by token owner correctly resets the approved address for that token.
-    function _propertySafeTransferFromByOwnerResetsApprovedAddress(address toAddress, uint256 tokenId, address initialApprovee) internal {
+    function _propertySafeTransferFromByOwnerResetsApprovedAddress(
+        address toAddress,
+        uint256 tokenId,
+        address initialApprovee
+    ) internal {
         // We make sure there was some approvee before the transfer so that the check focuses on the contract resetting the approvee.
         CallResult memory callApprove = _tryAliceApprove(initialApprovee, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve.");
         CallResult memory callTransfer = _tryAliceSafeTransferFrom(alice, toAddress, tokenId);
         conditionalSkip(!callTransfer.success, "Inconclusive test: Alice could not safeTransferFrom.");
-        assertEq(cut.getApproved(tokenId), address(0x0), "Approved address has not been reset after a safeTransferFrom by token owner.");
+        assertEq(
+            cut.getApproved(tokenId),
+            address(0x0),
+            "Approved address has not been reset after a safeTransferFrom by token owner."
+        );
     }
 
     /*
@@ -1300,7 +1767,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromToSomeone(dan, tokenIdWithOwner);
     }
 
@@ -1311,7 +1781,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromToSomeone(carol, tokenIdWithOwner);
     }
 
@@ -1319,7 +1792,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertyApprovedAddressCanSafeTransferFromToSomeone(address toAddress, uint256 tokenId) internal {
         CallResult memory callApprove = _tryAliceApprove(bob, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve Bob.");
-        assertSuccess(_tryBobSafeTransferFrom(alice, toAddress, tokenId), "A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the approved address.");
+        assertSuccess(
+            _tryBobSafeTransferFrom(alice, toAddress, tokenId),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the approved address."
+        );
     }
 
     //
@@ -1331,7 +1807,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromToEOAFromToSelf()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromToSelf(dan, tokenIdWithOwner);
     }
 
@@ -1342,7 +1821,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
     function testApprovedAddressCanSafeTransferFromToReceiverFromToSelf()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanSafeTransferFromToSelf(bob, tokenIdWithOwner);
     }
 
@@ -1350,7 +1832,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertyApprovedAddressCanSafeTransferFromToSelf(address toAddress, uint256 tokenId) internal {
         CallResult memory callApprove = _tryAliceApprove(toAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve Bob.");
-        assertSuccess(_tryCustomerSafeTransferFrom(toAddress, alice, toAddress, tokenId), "A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the approved address to itself.");
+        assertSuccess(
+            _tryCustomerSafeTransferFrom(toAddress, alice, toAddress, tokenId),
+            "A `safeTransferFrom(address,address,uint256)` (without data) could not be initiated by the approved address to itself."
+        );
     }
 
     //
@@ -1362,7 +1847,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromByApprovedEOAAddressToSelfUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByApprovedAddressToSelfUpdatesOwnership(dan, tokenIdWithOwner);
     }
 
@@ -1373,17 +1861,29 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromByApprovedReceiverAddressToSelfUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByApprovedAddressToSelfUpdatesOwnership(bob, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) by the approved address to self correctly updates the ownership.
-    function _propertySafeTransferFromByApprovedAddressToSelfUpdatesOwnership(address toAddress, uint256 tokenId) internal {
+    function _propertySafeTransferFromByApprovedAddressToSelfUpdatesOwnership(address toAddress, uint256 tokenId)
+        internal
+    {
         CallResult memory callApprove = _tryAliceApprove(toAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve.");
         CallResult memory callTransfer = _tryCustomerSafeTransferFrom(toAddress, alice, toAddress, tokenId);
-        conditionalSkip(!callTransfer.success, "Inconclusive test: the approved address could not safeTransferFrom from Alice to itself.");
-        assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
+        conditionalSkip(
+            !callTransfer.success,
+            "Inconclusive test: the approved address could not safeTransferFrom from Alice to itself."
+        );
+        assertEq(
+            cut.ownerOf(tokenId),
+            toAddress,
+            "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+        );
     }
 
     //
@@ -1395,7 +1895,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromByApprovedEOAAddressResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByApprovedAddressResetsApprovedAddress(dan, tokenIdWithOwner, bob);
     }
 
@@ -1406,20 +1909,33 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromByApprovedReceiverAddressResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByApprovedAddressResetsApprovedAddress(carol, tokenIdWithOwner, bob);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) by the approved address to self correctly resets the approved address for that token.
-    function _propertySafeTransferFromByApprovedAddressResetsApprovedAddress(address toAddress, uint256 tokenId, address initialApprovee) internal {
+    function _propertySafeTransferFromByApprovedAddressResetsApprovedAddress(
+        address toAddress,
+        uint256 tokenId,
+        address initialApprovee
+    ) internal {
         vm.assume(initialApprovee != address(0x0));
 
         CallResult memory callApprove = _tryAliceApprove(initialApprovee, tokenId);
         // We make sure there was some approvee before the transfer so that the check focuses on the contract resetting the approvee.
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve some initial approvee.");
         CallResult memory callTransfer = _tryCustomerSafeTransferFrom(initialApprovee, alice, toAddress, tokenId);
-        conditionalSkip(!callTransfer.success, "Inconclusive test: initial approvee could not safeTransferFrom from Alice to Bob.");
-        assertEq(cut.getApproved(tokenId), address(0x0), "Approved address has not been reset after a safeTransferFrom by approved address.");
+        conditionalSkip(
+            !callTransfer.success, "Inconclusive test: initial approvee could not safeTransferFrom from Alice to Bob."
+        );
+        assertEq(
+            cut.getApproved(tokenId),
+            address(0x0),
+            "Approved address has not been reset after a safeTransferFrom by approved address."
+        );
     }
 
     /*
@@ -1432,8 +1948,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
-    function testOperatorCanSafeTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOperatorCanSafeTransferFromToEOA() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOperatorCanSafeTransferFromToSomeone(dan, tokenIdWithOwner);
     }
 
@@ -1443,8 +1958,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
-    function testOperatorCanSafeTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOperatorCanSafeTransferFromToReceiver() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOperatorCanSafeTransferFromToSomeone(carol, tokenIdWithOwner);
     }
 
@@ -1452,7 +1966,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertyOperatorCanSafeTransferFromToSomeone(address toAddress, uint256 tokenId) internal {
         CallResult memory callSetApproval = _tryAliceSetApprovalForAll(bob, true);
         conditionalSkip(!callSetApproval.success, "Inconclusive test: Alice could not setApprovalForAll.");
-        assertSuccess(_tryBobSafeTransferFrom(alice, toAddress, tokenId), "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address.");
+        assertSuccess(
+            _tryBobSafeTransferFrom(alice, toAddress, tokenId),
+            "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address."
+        );
     }
 
     //
@@ -1462,9 +1979,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself.
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function safeTransferFrom, approve
-    function testOperatorCanSafeTransferFromToSelf()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        assertTrue(_AliceSetApprovedForAllBobAndBobSafeTransfersFromToSelf(tokenIdWithOwner), "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself.");
+    function testOperatorCanSafeTransferFromToSelf() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        assertTrue(
+            _AliceSetApprovedForAllBobAndBobSafeTransfersFromToSelf(tokenIdWithOwner),
+            "A safeTransferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself."
+        );
     }
 
     //
@@ -1475,11 +1994,18 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromByOperatorToSelfUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // The following function call skips the test if the approve or the transferFrom fails
         if (_AliceSetApprovedForAllBobAndBobSafeTransfersFromToSelf(tokenIdWithOwner)) {
-            assertEq(cut.ownerOf(tokenIdWithOwner), bob, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
-        } 
+            assertEq(
+                cut.ownerOf(tokenIdWithOwner),
+                bob,
+                "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+            );
+        }
     }
 
     //
@@ -1490,7 +2016,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromByOperatorToEOAUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByOperatorToSomeoneUpdatesOwnership(dan, tokenIdWithOwner);
     }
 
@@ -1500,14 +2029,23 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf, approve
     function testSafeTransferFromByOperatorToReceiverUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertySafeTransferFromByOperatorToSomeoneUpdatesOwnership(carol, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `safeTransferFrom(address,address,uint256)` (without data) by an operator correctly updates the ownership.
-    function _propertySafeTransferFromByOperatorToSomeoneUpdatesOwnership(address toAddress, uint256 tokenId) internal {
+    function _propertySafeTransferFromByOperatorToSomeoneUpdatesOwnership(address toAddress, uint256 tokenId)
+        internal
+    {
         if (_AliceSetApprovedForAllBobAndBobSafeTransfersFromToSomeone(tokenId, toAddress)) {
-            assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a safeTransferFrom by token owner.");
+            assertEq(
+                cut.ownerOf(tokenId),
+                toAddress,
+                "Ownership of token has not been transferred after a safeTransferFrom by token owner."
+            );
         }
     }
 
@@ -1519,10 +2057,17 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromToEOAByOperatorResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // The following function call skips the test if the approve or the transferFrom fails
         if (_AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromToSomeone(tokenIdWithOwner, bob, dan)) {
-            assertEq(cut.getApproved(tokenIdWithOwner), address(0x0), "Approved address has not been reset after a safeTransferFrom by operator.");
+            assertEq(
+                cut.getApproved(tokenIdWithOwner),
+                address(0x0),
+                "Approved address has not been reset after a safeTransferFrom by operator."
+            );
         }
     }
 
@@ -1532,19 +2077,27 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function safeTransferFrom, ownerOf
     function testSafeTransferFromToReceiverByOperatorResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         // The following function call skips the test if the approve or the transferFrom fails
         if (_AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromToSomeone(tokenIdWithOwner, bob, carol)) {
-            assertEq(cut.getApproved(tokenIdWithOwner), address(0x0), "Approved address has not been reset after a safeTransferFrom by operator.");
+            assertEq(
+                cut.getApproved(tokenIdWithOwner),
+                address(0x0),
+                "Approved address has not been reset after a safeTransferFrom by operator."
+            );
         }
     }
 
-    /****************************
-    *
-    * transferFrom(address,address,uint256) checks.
-    *
-    ****************************/
-    
+    /**
+     *
+     *
+     * transferFrom(address,address,uint256) checks.
+     *
+     *
+     */
 
     /*
     Throwing cases.
@@ -1556,7 +2109,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testRevertsByOwnerWhenOwnerIsNotFromInTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsByOwnerWhenOwnerIsNotFromInTransferFromToReceiver(bob, dan, tokenIdWithOwner);
     }
 
@@ -1566,13 +2122,23 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testRevertsByOwnerWhenOwnerIsNotFromInTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsByOwnerWhenOwnerIsNotFromInTransferFromToReceiver(bob, carol, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `transferFrom(address,address,uint256)` by the owner throws if `_from` (the first address) is not the token owner.
-    function _propertyRevertsByOwnerWhenOwnerIsNotFromInTransferFromToReceiver(address fromAddress, address toAddress, uint256 tokenId) internal {
-       assertFail(_tryAliceTransferFrom(fromAddress, toAddress, tokenId), "A `transferFrom(address,address,uint256)` (with data) did not throw while the `_from` (the first address) is not the token owner and the `_from`initiated the transfer.");
+    function _propertyRevertsByOwnerWhenOwnerIsNotFromInTransferFromToReceiver(
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId
+    ) internal {
+        assertFail(
+            _tryAliceTransferFrom(fromAddress, toAddress, tokenId),
+            "A `transferFrom(address,address,uint256)` (with data) did not throw while the `_from` (the first address) is not the token owner and the `_from`initiated the transfer."
+        );
     }
 
     /// @notice A `transferFrom(address,address,uint256)` to an EOA by someone throws if `_from` (the first address) is not the token owner.
@@ -1582,7 +2148,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testRevertsBySomeoneWhenOwnerIsNotFromInTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsBySomeoneWhenOwnerIsNotFromInTransferFrom(bob, carol, dan, tokenIdWithOwner);
     }
 
@@ -1593,18 +2162,29 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testRevertsBySomeoneWhenOwnerIsNotFromInTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyRevertsBySomeoneWhenOwnerIsNotFromInTransferFrom(bob, carol, bob, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `transferFrom(address,address,uint256)` by someone throws if `_from` (the first address) is not the token owner.
-    function _propertyRevertsBySomeoneWhenOwnerIsNotFromInTransferFrom(address transferInitiator, address fromAddress, address toAddress, uint256 tokenId) internal {
+    function _propertyRevertsBySomeoneWhenOwnerIsNotFromInTransferFrom(
+        address transferInitiator,
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId
+    ) internal {
         CallResult memory callApprove = _tryCustomerApprove(fromAddress, transferInitiator, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Could not approve.");
-        assertFail(_tryCustomerTransferFrom(transferInitiator, fromAddress, toAddress, tokenId), "A `transferFrom(address,address,uint256)` did not throw while the `_from` (the first address) is not the token owner and someone initiated the transfer.");
+        assertFail(
+            _tryCustomerTransferFrom(transferInitiator, fromAddress, toAddress, tokenId),
+            "A `transferFrom(address,address,uint256)` did not throw while the `_from` (the first address) is not the token owner and someone initiated the transfer."
+        );
     }
 
-   //
+    //
 
     /// @notice A `transferFrom(address,address,uint256)` to an EOA throws if `tokenID` (uint256) is not a valid token id.
     /// @custom:ercx-expected pass
@@ -1612,8 +2192,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom
-    function testRevertsTransferFromToEOAWhenTokenIDIsNotValid(uint256 tokenId)
-    external withUsers() {
+    function testRevertsTransferFromToEOAWhenTokenIDIsNotValid(uint256 tokenId) external withUsers {
         _propertyRevertsTransferFromWhenTokenIDIsNotValid(bob, carol, dan, tokenId);
     }
 
@@ -1623,20 +2202,27 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom
-    function testRevertsTransferFromToReceiverWhenTokenIDIsNotValid(uint256 tokenId)
-    external withUsers() {
+    function testRevertsTransferFromToReceiverWhenTokenIDIsNotValid(uint256 tokenId) external withUsers {
         _propertyRevertsTransferFromWhenTokenIDIsNotValid(bob, carol, bob, tokenId);
     }
 
     /// @notice Internal property-test checking that a `transferFrom(address,address,uint256)` throws if `tokenID` (uin256) is not a valid token id.
-    function _propertyRevertsTransferFromWhenTokenIDIsNotValid(address transferInitiator, address fromAddress, address toAddress, uint256 tokenId) internal {
+    function _propertyRevertsTransferFromWhenTokenIDIsNotValid(
+        address transferInitiator,
+        address fromAddress,
+        address toAddress,
+        uint256 tokenId
+    ) internal {
         vm.assume(!_hasOwner(tokenId));
         CallResult memory callApprove = _tryCustomerApprove(fromAddress, transferInitiator, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Could not approve.");
-        assertFail(_tryCustomerTransferFrom(transferInitiator, fromAddress, toAddress, tokenId), "A `transferFrom(address,address,uint256)` did not throw while `tokenID` (uint256) is not a valid id.");
+        assertFail(
+            _tryCustomerTransferFrom(transferInitiator, fromAddress, toAddress, tokenId),
+            "A `transferFrom(address,address,uint256)` did not throw while `tokenID` (uint256) is not a valid id."
+        );
     }
 
-   //
+    //
 
     /// @notice A `transferFrom(address,address,uint256)` by the token owner to the zero address throws.
     /// @custom:ercx-expected pass
@@ -1644,8 +2230,14 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address
     /// @custom:ercx-concerned-function transferFrom
     function testRevertsWhenOwnerTransferFromToZeroAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        assertFail(_tryAliceTransferFrom(alice, address(0x0), tokenIdWithOwner), "A `transferFrom(address,address,uint256)` could be initiated by the token owner to the zero address.");
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        assertFail(
+            _tryAliceTransferFrom(alice, address(0x0), tokenIdWithOwner),
+            "A `transferFrom(address,address,uint256)` could be initiated by the token owner to the zero address."
+        );
     }
 
     /// @notice A `transferFrom(address,address,uint256)` by the approved address to the zero address throws.
@@ -1655,10 +2247,16 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address, approval
     /// @custom:ercx-concerned-function transferFrom, approve
     function testRevertsWhenApprovedAddressTransferFromToZeroAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceApprove(bob, tokenIdWithOwner);
         conditionalSkip(!callApprove.success, "Inconclusive test: could not approve some address.");
-        assertFail(_tryBobTransferFrom(alice, address(0x0), tokenIdWithOwner), "A `transferFrom(address,address,uint256)` could be initiated by the approved address to the zero address.");
+        assertFail(
+            _tryBobTransferFrom(alice, address(0x0), tokenIdWithOwner),
+            "A `transferFrom(address,address,uint256)` could be initiated by the approved address to the zero address."
+        );
     }
 
     /// @notice A `transferFrom(address,address,uint256)` by the operator of the token owner to the zero address throws.
@@ -1668,10 +2266,18 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, zero address
     /// @custom:ercx-concerned-function transferFrom
     function testRevertsWhenSomeoneTransferFromToZeroAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory callApprove = _tryAliceSetApprovalForAll(bob, true);
-        conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer.");
-        assertFail(_tryCustomerTransferFrom(bob, alice, address(0x0), tokenIdWithOwner), "A `transferFrom(address,address,uint256)` could be initiated by the token owner to the zero address.");
+        conditionalSkip(
+            !callApprove.success, "Inconclusive test: Alice could not setApprovalForAll the initiator of the transfer."
+        );
+        assertFail(
+            _tryCustomerTransferFrom(bob, alice, address(0x0), tokenIdWithOwner),
+            "A `transferFrom(address,address,uint256)` could be initiated by the token owner to the zero address."
+        );
     }
 
     /*
@@ -1683,8 +2289,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A `transferFrom(address,address,uint256)` could not be initiated by the token owner.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom
-    function testOwnerCanTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOwnerCanTransferFromToEOA() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOwnerCanTransferFrom(dan, tokenIdWithOwner);
     }
 
@@ -1693,14 +2298,16 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A `transferFrom(address,address,uint256)` could not be initiated by the token owner.
     /// @custom:ercx-categories transfer
     /// @custom:ercx-concerned-function transferFrom
-    function testOwnerCanTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOwnerCanTransferFromToReceiver() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOwnerCanTransferFrom(bob, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `transferFrom(address,address,uint256)` can be initiated by the token owner.
     function _propertyOwnerCanTransferFrom(address toAddress, uint256 tokenId) internal {
-        assertSuccess(_tryAliceTransferFrom(alice, toAddress, tokenId), "A `transferFrom(address,address,uint256)` could not be initiated by the token owner");
+        assertSuccess(
+            _tryAliceTransferFrom(alice, toAddress, tokenId),
+            "A `transferFrom(address,address,uint256)` could not be initiated by the token owner"
+        );
     }
 
     //
@@ -1712,7 +2319,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromByOwnerToEOAUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByOwnerUpdatesOwnership(dan, tokenIdWithOwner);
     }
 
@@ -1723,7 +2333,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromByOwnerToReceiverUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByOwnerUpdatesOwnership(bob, tokenIdWithOwner);
     }
 
@@ -1731,7 +2344,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertyTransferFromByOwnerUpdatesOwnership(address toAddress, uint256 tokenId) internal {
         CallResult memory callTransfer = _tryAliceTransferFrom(alice, toAddress, tokenId);
         conditionalSkip(!callTransfer.success, "Inconclusive test: Could not perform transferFrom.");
-        assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a transferFrom by token owner.");
+        assertEq(
+            cut.ownerOf(tokenId),
+            toAddress,
+            "Ownership of token has not been transferred after a transferFrom by token owner."
+        );
     }
 
     //
@@ -1743,7 +2360,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromByOwnerToEOAResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByOwnerResetsApprovedAddress(dan, tokenIdWithOwner, bob);
     }
 
@@ -1754,18 +2374,29 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromByOwnerToReceiverResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByOwnerResetsApprovedAddress(carol, tokenIdWithOwner, bob);
     }
 
     /// @notice Internal property-test checking that a `transferFrom(address,address,uint256)` by the token owner correctly resets the approved address for that token.
-    function _propertyTransferFromByOwnerResetsApprovedAddress(address toAddress, uint256 tokenId, address initialApprovee) internal {
+    function _propertyTransferFromByOwnerResetsApprovedAddress(
+        address toAddress,
+        uint256 tokenId,
+        address initialApprovee
+    ) internal {
         // We make sure there was some approvee before the transfer so that the check focuses on the contract resetting the approvee.
         CallResult memory callApprove = _tryAliceApprove(initialApprovee, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve.");
         CallResult memory callTransfer = _tryAliceTransferFrom(alice, toAddress, tokenId);
         conditionalSkip(!callTransfer.success, "Inconclusive test: Alice could not transferFrom.");
-        assertEq(cut.getApproved(tokenId), address(0x0), "Approved address has not been reset after a transferFrom by token owner.");
+        assertEq(
+            cut.getApproved(tokenId),
+            address(0x0),
+            "Approved address has not been reset after a transferFrom by token owner."
+        );
     }
 
     /*
@@ -1778,8 +2409,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function transferFrom, approve
-    function testApprovedAddressCanTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testApprovedAddressCanTransferFromToEOA() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyApprovedAddressCanTransferFromToSomeone(dan, tokenIdWithOwner);
     }
 
@@ -1790,7 +2420,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function transferFrom, approve
     function testApprovedAddressCanTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanTransferFromToSomeone(carol, tokenIdWithOwner);
     }
 
@@ -1798,7 +2431,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertyApprovedAddressCanTransferFromToSomeone(address toAddress, uint256 tokenId) internal {
         CallResult memory callApprove = _tryAliceApprove(bob, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve Bob.");
-        assertSuccess(_tryBobTransferFrom(alice, toAddress, tokenId), "A `transferFrom(address,address,uint256)` could not be initiated by the approved address.");
+        assertSuccess(
+            _tryBobTransferFrom(alice, toAddress, tokenId),
+            "A `transferFrom(address,address,uint256)` could not be initiated by the approved address."
+        );
     }
 
     //
@@ -1810,7 +2446,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function transferFrom, approve
     function testApprovedAddressCanTransferFromToEOAFromToSelf()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanTransferFromToSelf(dan, tokenIdWithOwner);
     }
 
@@ -1821,7 +2460,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function transferFrom, approve
     function testApprovedAddressCanTransferFromToReceiverFromToSelf()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyApprovedAddressCanTransferFromToSelf(bob, tokenIdWithOwner);
     }
 
@@ -1829,7 +2471,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertyApprovedAddressCanTransferFromToSelf(address toAddress, uint256 tokenId) internal {
         CallResult memory callApprove = _tryAliceApprove(toAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve Bob.");
-        assertSuccess(_tryCustomerTransferFrom(toAddress, alice, toAddress, tokenId), "A `transferFrom(address,address,uint256)` could not be initiated by the approved address to itself.");
+        assertSuccess(
+            _tryCustomerTransferFrom(toAddress, alice, toAddress, tokenId),
+            "A `transferFrom(address,address,uint256)` could not be initiated by the approved address to itself."
+        );
     }
 
     //
@@ -1841,7 +2486,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function transferFrom, ownerOf, approve
     function testTransferFromByApprovedEOAAddressToSelfUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByApprovedAddressToSelfUpdatesOwnership(dan, tokenIdWithOwner);
     }
 
@@ -1852,17 +2500,29 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function transferFrom, ownerOf, approve
     function testTransferFromByApprovedReceiverAddressToSelfUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByApprovedAddressToSelfUpdatesOwnership(bob, tokenIdWithOwner);
     }
 
     /// @notice Internal property-test checking that a `transferFrom(address,address,uint256)` by the approved address correctly updates the ownership.
-    function _propertyTransferFromByApprovedAddressToSelfUpdatesOwnership(address toAddress, uint256 tokenId) internal {
+    function _propertyTransferFromByApprovedAddressToSelfUpdatesOwnership(address toAddress, uint256 tokenId)
+        internal
+    {
         CallResult memory callApprove = _tryAliceApprove(toAddress, tokenId);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve.");
         CallResult memory callTransfer = _tryCustomerTransferFrom(toAddress, alice, toAddress, tokenId);
-        conditionalSkip(!callTransfer.success, "Inconclusive test: the approved address could not transferFrom from Alice to itself.");
-        assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a transferFrom by token owner.");
+        conditionalSkip(
+            !callTransfer.success,
+            "Inconclusive test: the approved address could not transferFrom from Alice to itself."
+        );
+        assertEq(
+            cut.ownerOf(tokenId),
+            toAddress,
+            "Ownership of token has not been transferred after a transferFrom by token owner."
+        );
     }
 
     //
@@ -1874,7 +2534,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromByApprovedEOAAddressResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByApprovedAddressResetsApprovedAddress(dan, tokenIdWithOwner, bob);
     }
 
@@ -1885,18 +2548,31 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromByApprovedReceiverAddressResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByApprovedAddressResetsApprovedAddress(carol, tokenIdWithOwner, bob);
     }
 
     /// @notice Internal property-test checking that a `transferFrom(address,address,uint256)` by the approved address correctly resets the approved address for that token.
-    function _propertyTransferFromByApprovedAddressResetsApprovedAddress(address toAddress, uint256 tokenId, address initialApprovee) internal {
+    function _propertyTransferFromByApprovedAddressResetsApprovedAddress(
+        address toAddress,
+        uint256 tokenId,
+        address initialApprovee
+    ) internal {
         CallResult memory callApprove = _tryAliceApprove(initialApprovee, tokenId);
         // We make sure there was some approvee before the transfer so that the check focuses on the contract resetting the approvee.
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not approve some initial approvee.");
         CallResult memory callTransfer = _tryCustomerTransferFrom(initialApprovee, alice, toAddress, tokenId);
-        conditionalSkip(!callTransfer.success, "Inconclusive test: initial approvee could not transferFrom from Alice to Bob.");
-        assertEq(cut.getApproved(tokenId), address(0x0), "Approved address has not been reset after a transferFrom by approved address.");
+        conditionalSkip(
+            !callTransfer.success, "Inconclusive test: initial approvee could not transferFrom from Alice to Bob."
+        );
+        assertEq(
+            cut.getApproved(tokenId),
+            address(0x0),
+            "Approved address has not been reset after a transferFrom by approved address."
+        );
     }
 
     /*
@@ -1909,8 +2585,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function transferFrom, approve
-    function testOperatorCanTransferFromToEOA()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOperatorCanTransferFromToEOA() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOperatorCanTransferFromToSomeone(dan, tokenIdWithOwner);
     }
 
@@ -1920,8 +2595,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function transferFrom, approve
-    function testOperatorCanTransferFromToReceiver()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testOperatorCanTransferFromToReceiver() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         _propertyOperatorCanTransferFromToSomeone(carol, tokenIdWithOwner);
     }
 
@@ -1929,7 +2603,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     function _propertyOperatorCanTransferFromToSomeone(address toAddress, uint256 tokenId) internal {
         CallResult memory callSetApproval = _tryAliceSetApprovalForAll(bob, true);
         conditionalSkip(!callSetApproval.success, "Inconclusive test: Alice could not setApprovalForAll.");
-        assertSuccess(_tryBobTransferFrom(alice, toAddress, tokenId), "A transferFrom(address,address,uint256,bytes)` could not be initiated by the approved address.");
+        assertSuccess(
+            _tryBobTransferFrom(alice, toAddress, tokenId),
+            "A transferFrom(address,address,uint256,bytes)` could not be initiated by the approved address."
+        );
     }
 
     //
@@ -1939,9 +2616,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback A transferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself.
     /// @custom:ercx-categories transfer, approval
     /// @custom:ercx-concerned-function transferFrom, approve
-    function testOperatorCanTransferFromToSelf()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-        assertTrue(_AliceSetApprovedForAllBobAndBobSafeTransfersFromToSelf(tokenIdWithOwner), "A transferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself.");
+    function testOperatorCanTransferFromToSelf() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        assertTrue(
+            _AliceSetApprovedForAllBobAndBobSafeTransfersFromToSelf(tokenIdWithOwner),
+            "A transferFrom(address,address,uint256,bytes)` could not be initiated by the approved address to himself."
+        );
     }
 
     //
@@ -1952,10 +2631,17 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function transferFrom, ownerOf, approve
     function testTransferFromByOperatorToSelfUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         if (_AliceSetApprovedForAllBobAndBobSafeTransfersFromToSelf(tokenIdWithOwner)) {
-            assertEq(cut.ownerOf(tokenIdWithOwner), bob, "Ownership of token has not been transferred after a transferFrom by token owner.");
-        } 
+            assertEq(
+                cut.ownerOf(tokenIdWithOwner),
+                bob,
+                "Ownership of token has not been transferred after a transferFrom by token owner."
+            );
+        }
     }
 
     //
@@ -1966,7 +2652,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function transferFrom, ownerOf, approve
     function testTransferFromByOperatorToEOAUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByOperatorToSomeoneUpdatesOwnership(dan, tokenIdWithOwner);
     }
 
@@ -1976,7 +2665,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership, approval
     /// @custom:ercx-concerned-function transferFrom, ownerOf, approve
     function testTransferFromByOperatorToReceiverUpdatesOwnership()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         _propertyTransferFromByOperatorToSomeoneUpdatesOwnership(carol, tokenIdWithOwner);
     }
 
@@ -1987,7 +2679,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-concerned-function transferFrom, ownerOf, approve
     function _propertyTransferFromByOperatorToSomeoneUpdatesOwnership(address toAddress, uint256 tokenId) internal {
         if (_AliceSetApprovedForAllBobAndBobSafeTransfersFromToSomeone(tokenId, toAddress)) {
-            assertEq(cut.ownerOf(tokenId), toAddress, "Ownership of token has not been transferred after a transferFrom by token owner.");
+            assertEq(
+                cut.ownerOf(tokenId),
+                toAddress,
+                "Ownership of token has not been transferred after a transferFrom by token owner."
+            );
         }
     }
 
@@ -1999,9 +2695,16 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromToEOAByOperatorResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         if (_AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromToSomeone(tokenIdWithOwner, bob, dan)) {
-            assertEq(cut.getApproved(tokenIdWithOwner), address(0x0), "Approved address has not been reset after a transferFrom by operator.");
+            assertEq(
+                cut.getApproved(tokenIdWithOwner),
+                address(0x0),
+                "Approved address has not been reset after a transferFrom by operator."
+            );
         }
     }
 
@@ -2011,26 +2714,33 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories transfer, ownership
     /// @custom:ercx-concerned-function transferFrom, ownerOf
     function testTransferFromToReceiverByOperatorResetsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
-       if (_AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromToSomeone(tokenIdWithOwner, bob, carol)) {
-            assertEq(cut.getApproved(tokenIdWithOwner), address(0x0), "Approved address has not been reset after a transferFrom by operator.");
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
+        if (_AliceSetApprovedForAllCustomerAndCustomerSafeTransfersFromToSomeone(tokenIdWithOwner, bob, carol)) {
+            assertEq(
+                cut.getApproved(tokenIdWithOwner),
+                address(0x0),
+                "Approved address has not been reset after a transferFrom by operator."
+            );
         }
     }
 
-
-    /****************************
-    *
-    * approve(address,uint256) desirable checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * approve(address,uint256) desirable checks.
+     *
+     *
+     */
 
     /// @notice Function `approve(address,uint256)` defines the approved address for an NFT.
     /// @custom:ercx-expected pass
     /// @custom:ercx-feedback After a call to `approve(address,uint256)`, the address was not set as the approved address for the NFT.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function approve, getApproved
-    function testApprovesDefinesApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testApprovesDefinesApprovedAddress() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         vm.assume(cut.getApproved(tokenIdWithOwner) == address(0x0));
         CallResult memory callApprove = _tryAliceApprove(bob, tokenIdWithOwner);
         if (callApprove.success) {
@@ -2044,13 +2754,18 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): approve.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function approve, getApproved
-    function testApprovesCanChangeApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testApprovesCanChangeApprovedAddress() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         vm.assume(cut.getApproved(tokenIdWithOwner) == address(0x0));
         CallResult memory callApprove = _tryAliceApprove(bob, tokenIdWithOwner);
-        conditionalSkip(!(callApprove.success && cut.getApproved(tokenIdWithOwner) ==  bob), "Inconclusive test: It was not possible to define the approved address for a token.");
+        conditionalSkip(
+            !(callApprove.success && cut.getApproved(tokenIdWithOwner) == bob),
+            "Inconclusive test: It was not possible to define the approved address for a token."
+        );
         CallResult memory callApprove2 = _tryAliceApprove(carol, tokenIdWithOwner);
-        conditionalSkip(!callApprove2.success, "Inconclusive test: It was not possible to redefine the approved address for a token.");
+        conditionalSkip(
+            !callApprove2.success,
+            "Inconclusive test: It was not possible to redefine the approved address for a token."
+        );
         assertEq(cut.getApproved(tokenIdWithOwner), carol, "Approved address has not been redefined correctly.");
     }
 
@@ -2061,10 +2776,15 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories approval, zero address
     /// @custom:ercx-concerned-function approve, getApproved
     function testApprovesCanDefineZeroAddressAsApprovedAddress()
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         vm.assume(cut.getApproved(tokenIdWithOwner) == address(0x0));
         CallResult memory callApprove = _tryAliceApprove(address(0x0), tokenIdWithOwner);
-        conditionalSkip(!callApprove.success, "Inconclusive test: It was not possible to approve the zero address for a token.");
+        conditionalSkip(
+            !callApprove.success, "Inconclusive test: It was not possible to approve the zero address for a token."
+        );
         assertEq(cut.getApproved(tokenIdWithOwner), address(0x0), "Approved address has not been set correctly.");
     }
 
@@ -2074,7 +2794,10 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories approval, zero address
     /// @custom:ercx-concerned-function approve, getApproved
     function testWhenZeroAddressIsApprovedTokenOwnerCanTransfer(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         vm.assume(cut.getApproved(tokenIdWithOwner) == address(0x0));
         assertSuccess(_tryAliceSafeTransferFromWithData(alice, bob, tokenIdWithOwner, data));
     }
@@ -2086,9 +2809,15 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories approval, zero address
     /// @custom:ercx-concerned-function approve, getApproved
     function testWhenZeroAddressIsApprovedOperatorCanTransfer(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         CallResult memory approvalCall = _tryAliceSetApprovalForAll(carol, true);
-        conditionalSkip(!(approvalCall.success && cut.getApproved(tokenIdWithOwner) == address(0x0)), "Inconclusive test: Alice could not approve some operator or approved address is not zero address.");
+        conditionalSkip(
+            !(approvalCall.success && cut.getApproved(tokenIdWithOwner) == address(0x0)),
+            "Inconclusive test: Alice could not approve some operator or approved address is not zero address."
+        );
         assertSuccess(_tryCustomerSafeTransferFromWithData(carol, alice, bob, tokenIdWithOwner, data));
     }
 
@@ -2098,10 +2827,13 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories approval, zero address
     /// @custom:ercx-concerned-function approve, getApproved
     function testWhenZeroAddressIsApprovedOneCannotTransferToSelfIfNotOperator(bytes memory data)
-    external withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         vm.assume(cut.getApproved(tokenIdWithOwner) == address(0x0));
         vm.assume(!cut.isApprovedForAll(alice, bob));
-  
+
         assertFail(_tryBobSafeTransferFromWithData(alice, bob, tokenIdWithOwner, data));
     }
 
@@ -2110,8 +2842,11 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-feedback While msg.sender was not the token owner, approving some address was possible by the msg.sender.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function approve
-    function testApproveRevertsWhenMsgSenderIsNotOwner(uint256 amountPaid) external
-    withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testApproveRevertsWhenMsgSenderIsNotOwner(uint256 amountPaid)
+        external
+        withUsers
+        dealAnOwnedTokenToAlice(tokenIdWithOwner)
+    {
         vm.assume(!cut.isApprovedForAll(alice, bob));
         vm.deal(bob, amountPaid);
 
@@ -2120,11 +2855,13 @@ abstract contract ERC721Standard is ERC721Abstract {
         cut.approve{value: amountPaid}(carol, tokenIdWithOwner);
     }
 
-    /****************************
-    *
-    * setApprovalForAll(address,bool) and isApprovedForAll(address,address) checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * setApprovalForAll(address,bool) and isApprovedForAll(address,address) checks.
+     *
+     *
+     */
 
     /// @notice Function setApprovalForAll(address,bool) can enable an operator to manage all of msg.sender's assets. The operator can transfer all assets of the owner.
     /// @custom:ercx-expected pass
@@ -2132,8 +2869,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testCanEnableSomeOneAsOperator() external
-    withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testCanEnableSomeOneAsOperator() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         CallResult memory approvalCall = _tryAliceSetApprovalForAll(bob, true);
         conditionalSkip(!approvalCall.success, "Inconclusive test: Alice could not approve some operator.");
         assertTrue(cut.isApprovedForAll(alice, bob));
@@ -2145,10 +2881,12 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testCanEnableAndDisableSomeOneAsOperator() external
-    withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testCanEnableAndDisableSomeOneAsOperator() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         CallResult memory approvalCall = _tryAliceSetApprovalForAll(bob, true);
-        conditionalSkip(!(approvalCall.success && cut.isApprovedForAll(alice, bob)), "Inconclusive test: it was not possible to set the operator in the first place.");
+        conditionalSkip(
+            !(approvalCall.success && cut.isApprovedForAll(alice, bob)),
+            "Inconclusive test: it was not possible to set the operator in the first place."
+        );
         CallResult memory approvalCall2 = _tryAliceSetApprovalForAll(bob, false);
         conditionalSkip(!approvalCall2.success, "Inconclusive test: Alice could not call.");
         assertFalse(cut.isApprovedForAll(alice, bob));
@@ -2160,8 +2898,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-inconclusive The test is skipped as there is an issue when calling the following function(s): setApprovalForAll.
     /// @custom:ercx-categories approval
     /// @custom:ercx-concerned-function setApprovalForAll
-    function testCanApproveAnyAddressWhenOperator() external
-    withUsers() dealAnOwnedTokenToAlice(tokenIdWithOwner) {
+    function testCanApproveAnyAddressWhenOperator() external withUsers dealAnOwnedTokenToAlice(tokenIdWithOwner) {
         // Define operator
         CallResult memory callApprove = _tryAliceSetApprovalForAll(bob, true);
         conditionalSkip(!callApprove.success, "Inconclusive test: Alice could not setApprovalForAll.");
@@ -2170,11 +2907,13 @@ abstract contract ERC721Standard is ERC721Abstract {
         assertEq(cut.getApproved(tokenIdWithOwner), carol);
     }
 
-    /****************************
-    *
-    * getApproved(uint256) checks.
-    *
-    ****************************/
+    /**
+     *
+     *
+     * getApproved(uint256) checks.
+     *
+     *
+     */
 
     /// @notice Function getApproved(uint256) throws if the parameter is not a valid token id.
     /// @custom:ercx-expected pass
@@ -2194,8 +2933,7 @@ abstract contract ERC721Standard is ERC721Abstract {
     /// @custom:ercx-categories getApproved
     /// @custom:ercx-concerned-function getApproved
     function testQueryApprovedAddressIsPossible() external {
-        (bool success, ) = _tryCustomerGetApproved(bob, tokenIdWithOwner);
+        (bool success,) = _tryCustomerGetApproved(bob, tokenIdWithOwner);
         assertTrue(success, "Call to getApproved() on some token threw.");
     }
-
 }

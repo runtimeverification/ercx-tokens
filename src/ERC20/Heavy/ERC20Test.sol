@@ -6,13 +6,11 @@ import "./ERC20Standard.sol";
 //import "./ERC20AddOn.sol";
 //import "./ERC20Features.sol";
 
-abstract contract ERC20Test is
-    ERC20Standard
-//    ,
-//    ERC20Desirable,
-//    ERC20AddOn,
-//   ERC20Features
-    {
+abstract contract ERC20Test is ERC20Standard {
+    //    ,
+    //    ERC20Desirable,
+    //    ERC20AddOn,
+    //   ERC20Features
 
     function init(address token) internal virtual override {
         ERC20Abstract.init(token);
