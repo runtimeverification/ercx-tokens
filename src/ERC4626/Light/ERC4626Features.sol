@@ -134,7 +134,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
         uint256 totalAssets = cut4626.totalAssets();
         if (totalSupply > 0) {
             // restrict `shares` to force overflow
-            uint256 shares = MAX_UINT256 / totalAssets + 1;
+            uint256 shares = maxShares() / totalAssets + 1;
             (bool success,) = tryCallerCallConvertToAssetsShares(alice, shares);
             assertFalse(
                 success,
@@ -162,7 +162,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
         uint256 totalSupply = cut4626.totalSupply();
         if (totalSupply > 0) {
             // restrict `assets` to force overflow
-            uint256 assets = MAX_UINT256 / totalSupply + 1;
+            uint256 assets = maxAssets() / totalSupply + 1;
             (bool success,) = tryCallerCallConvertToSharesAssets(alice, assets);
             assertFalse(
                 success,
@@ -245,7 +245,7 @@ abstract contract ERC4626Features is ERC4626Abstract {
         uint256 balanceOfShares = cut4626.balanceOf(alice);
         // prevent `balanceOfShares` from integer overflow
         if (cut4626.totalSupply() > 0) {
-            vm.assume(balanceOfShares < MAX_UINT256 / (cut4626.totalAssets() + 1));
+            vm.assume(balanceOfShares < maxShares() / (cut4626.totalAssets() + 1));
         }
         assertEq(
             cut4626.maxWithdraw(alice),

@@ -22,8 +22,8 @@ abstract contract ERC4626Security is ERC4626Abstract {
     /// (b) the presence of fees from the asset's `transfer` function.
     /// @custom:ercx-categories assets
     function testDealIntendedAssetsToDummyUsers(uint256 aliceAssetsBalance, uint256 bobAssetsBalance) public virtual {
-        vm.assume(aliceAssetsBalance <= MAX_UINT256 - bobAssetsBalance);
-        vm.assume(asset.totalSupply() <= MAX_UINT256 - aliceAssetsBalance - bobAssetsBalance);
+        vm.assume(aliceAssetsBalance <= Math.saturatingSub(maxAssets(), bobAssetsBalance));
+        vm.assume(asset.totalSupply() <= Math.saturatingSub(maxAssets(), aliceAssetsBalance + bobAssetsBalance));
         // Give aliceAssetsBalance tokens to Alice
         (bool dealAlice, string memory reasonAlice) = _dealERC20Token(assetAddress, alice, aliceAssetsBalance);
         assertTrue(dealAlice, reasonAlice);
@@ -44,13 +44,13 @@ abstract contract ERC4626Security is ERC4626Abstract {
     /// (c) the presence of fees in the asset's `transfer` function or the vault's `mint` function.
     /// @custom:ercx-categories shares
     function testDealIntendedSharesToDummyUsers(uint256 aliceSharesBalance, uint256 bobSharesBalance) public virtual {
-        vm.assume(aliceSharesBalance <= MAX_UINT256 - bobSharesBalance);
-        vm.assume(cut4626.totalSupply() <= MAX_UINT256 - aliceSharesBalance - bobSharesBalance);
+        vm.assume(aliceSharesBalance <= Math.saturatingSub(maxShares(), bobSharesBalance));
+        vm.assume(cut4626.totalSupply() <= Math.saturatingSub(maxShares(), aliceSharesBalance + bobSharesBalance));
         // Exchange some of Alice's assets for shares
         if (aliceSharesBalance != 0) {
             // shares overflow restriction on aliceSharesBalance
             if (cut4626.totalSupply() > 0) {
-                vm.assume(aliceSharesBalance < MAX_UINT256 / (cut4626.totalAssets() + 1));
+                vm.assume(aliceSharesBalance < maxShares() / (cut4626.totalAssets() + 1));
             }
             // Make sure Alice has enough assets to burn
             uint256 aliceAssets = cut4626.previewMint(aliceSharesBalance);
@@ -68,7 +68,7 @@ abstract contract ERC4626Security is ERC4626Abstract {
         if (bobSharesBalance != 0) {
             // shares overflow restriction on bobSharesBalance
             if (cut4626.totalSupply() > 0) {
-                vm.assume(bobSharesBalance < MAX_UINT256 / (cut4626.totalAssets() + 1));
+                vm.assume(bobSharesBalance < maxShares() / (cut4626.totalAssets() + 1));
             }
             // Make sure Bob has enough assets to burn
             uint256 bobAssets = cut4626.previewMint(bobSharesBalance);
