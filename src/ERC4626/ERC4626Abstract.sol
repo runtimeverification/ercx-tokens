@@ -3,6 +3,7 @@ pragma solidity >=0.6.2 <0.9.0;
 
 import "../ERCAbstract.sol";
 import "openzeppelin-contracts/interfaces/IERC4626.sol";
+import "openzeppelin-contracts/utils/math/Math.sol";
 
 /// @notice Abstract contract that defines internal functions that are used in ERC4626 test suite
 abstract contract ERC4626Abstract is ERCAbstract {
@@ -48,6 +49,21 @@ abstract contract ERC4626Abstract is ERCAbstract {
     /**
      *
      *
+     * Maximum values
+     *
+     *
+     */
+    function maxShares() internal view virtual returns (uint256) {
+        return MAX_UINT256;
+    }
+
+    function maxAssets() internal view virtual returns (uint256) {
+        return MAX_UINT256;
+    }
+
+    /**
+     *
+     *
      * Additional assertions
      *
      *
@@ -87,8 +103,8 @@ abstract contract ERC4626Abstract is ERCAbstract {
     /// @notice Parameterized initialization of the underlying assets of two dummy users,
     /// `aliceAssetsBalance` -> `alice` and `bobAssetsBalance` -> `bob`.
     modifier initializeAssetsTwoUsers(uint256 aliceAssetsBalance, uint256 bobAssetsBalance) {
-        vm.assume(aliceAssetsBalance <= MAX_UINT256 - bobAssetsBalance);
-        vm.assume(asset.totalSupply() <= MAX_UINT256 - aliceAssetsBalance - bobAssetsBalance);
+        vm.assume(aliceAssetsBalance <= Math.saturatingSub(maxAssets(), bobAssetsBalance));
+        vm.assume(asset.totalSupply() <= Math.saturatingSub(maxAssets(), aliceAssetsBalance + bobAssetsBalance));
         // Give aliceAssetsBalance tokens to Alice
         (bool dealSuccessAlice,) = _dealERC20Token(assetAddress, alice, aliceAssetsBalance);
         // Skip the test if we cannot deal assets to Alice
@@ -103,8 +119,8 @@ abstract contract ERC4626Abstract is ERCAbstract {
     /// @notice Parameterized initialization of the shares of two dummy users,
     /// `aliceSharesBalance` -> `alice` and `bobSharesBalance` -> `bob`.
     modifier initializeSharesTwoUsers(uint256 aliceSharesBalance, uint256 bobSharesBalance) {
-        vm.assume(aliceSharesBalance <= MAX_UINT256 - bobSharesBalance);
-        vm.assume(cut4626.totalSupply() <= MAX_UINT256 - aliceSharesBalance - bobSharesBalance);
+        vm.assume(aliceSharesBalance <= Math.saturatingSub(maxShares(), bobSharesBalance));
+        vm.assume(cut4626.totalSupply() <= Math.saturatingSub(maxShares(), aliceSharesBalance + bobSharesBalance));
         // Deal Alice enough assets to self mint shares' balance
         dealAssetsAndMintShares(alice, aliceSharesBalance);
         // Deal Bob enough assets to self mint shares' balance
@@ -116,7 +132,7 @@ abstract contract ERC4626Abstract is ERCAbstract {
     /// `userAssetsBalance` -> `user`.
     modifier initializeAssetsOneNonZeroAddress(address user, uint256 userAssetsBalance) {
         vm.assume(user != address(0x0));
-        vm.assume(userAssetsBalance <= MAX_UINT256 - asset.totalSupply());
+        vm.assume(userAssetsBalance <= Math.saturatingSub(maxAssets(), asset.totalSupply()));
         // Give user1AssetsBalance tokens to user
         (bool dealSuccess,) = _dealERC20Token(assetAddress, user, userAssetsBalance);
         // Skip the test if we cannot deal assets to user
@@ -135,8 +151,8 @@ abstract contract ERC4626Abstract is ERCAbstract {
         vm.assume(user1 != address(0x0));
         vm.assume(user2 != address(0x0));
         vm.assume(user1 != user2);
-        vm.assume(user1AssetsBalance <= MAX_UINT256 - user2AssetsBalance);
-        vm.assume(asset.totalSupply() <= MAX_UINT256 - user1AssetsBalance - user2AssetsBalance);
+        vm.assume(user1AssetsBalance <= Math.saturatingSub(maxAssets(), user2AssetsBalance));
+        vm.assume(asset.totalSupply() <= Math.saturatingSub(maxAssets(), user1AssetsBalance + user2AssetsBalance));
         // Give user1AssetsBalance tokens to user 1
         (bool dealSuccess1,) = _dealERC20Token(assetAddress, user1, user1AssetsBalance);
         // Skip the test if we cannot deal assets to user 1
@@ -152,7 +168,7 @@ abstract contract ERC4626Abstract is ERCAbstract {
     /// `userSharesBalance` -> `user`.
     modifier initializeSharesOneNonZeroAddress(address user, uint256 userSharesBalance) {
         vm.assume(user != address(0x0));
-        vm.assume(userSharesBalance <= MAX_UINT256 - cut4626.totalSupply());
+        vm.assume(userSharesBalance <= Math.saturatingSub(maxShares(), cut4626.totalSupply()));
         // Deal user enough assets to self mint shares' balance
         dealAssetsAndMintShares(user, userSharesBalance);
         _;
@@ -169,8 +185,8 @@ abstract contract ERC4626Abstract is ERCAbstract {
         vm.assume(user1 != address(0x0));
         vm.assume(user2 != address(0x0));
         vm.assume(user1 != user2);
-        vm.assume(user1SharesBalance <= MAX_UINT256 - user2SharesBalance);
-        vm.assume(cut4626.totalSupply() <= MAX_UINT256 - user1SharesBalance - user2SharesBalance);
+        vm.assume(user1SharesBalance <= Math.saturatingSub(maxShares(), user2SharesBalance));
+        vm.assume(cut4626.totalSupply() <= Math.saturatingSub(maxShares(), user1SharesBalance + user2SharesBalance));
         // Deal user 1 enough assets to self mint shares' balance
         dealAssetsAndMintShares(user1, user1SharesBalance);
         // Deal user 2 enough assets to self mint shares' balance
@@ -189,7 +205,7 @@ abstract contract ERC4626Abstract is ERCAbstract {
         if (userSharesBalance != 0) {
             // shares overflow restriction on userSharesBalance
             if (cut4626.totalSupply() > 0) {
-                vm.assume(userSharesBalance < MAX_UINT256 / (cut4626.totalAssets() + 1));
+                vm.assume(userSharesBalance < maxShares() / (cut4626.totalAssets() + 1));
             }
             // Give user assets to exchange for shares
             (bool dealSuccess,) = _dealERC20Token(assetAddress, user, cut4626.previewMint(userSharesBalance));
@@ -204,11 +220,11 @@ abstract contract ERC4626Abstract is ERCAbstract {
 
     /// @notice To prevent assets overflow in functions such as `convertToShares`
     /// When converting from assets to shares, the amount of assets is multipled by the totalSupply.
-    /// Hence, to avoid integer overflow, we need to make sure assets < MAX_UINT256 / totalSupply.
+    /// Hence, to avoid integer overflow, we need to make sure assets < maxAssets() / totalSupply.
     /// @dev Limit for overflow is reference from Solmate EIP-4626 and OZ ERC4626.sol.
     modifier assetsOverflowRestriction(uint256 assets) {
         if (cut4626.totalSupply() > 0) {
-            vm.assume(assets < MAX_UINT256 / cut4626.totalSupply());
+            vm.assume(assets < maxAssets() / cut4626.totalSupply());
         }
         _;
     }
@@ -216,12 +232,12 @@ abstract contract ERC4626Abstract is ERCAbstract {
     /// @notice To prevent shares overflow in functions such as `convertToAssets`
     /// When converting from shares to assets, the amount of shares is multipled by the totalAssets + 1
     /// (OZ implementation). Hence, to avoid integer overflow, we need to make sure
-    /// shares < MAX_UINT256 / (totalAssets + 1).
+    /// shares < maxShares() / (totalAssets + 1).
     /// @dev Limit for overflow is reference from OZ ERC4626.sol
-    /// NOTE: Limit for overflow from Solmate EIP-4626 is shares < MAX_UINT256 / totalAssets instead
+    /// NOTE: Limit for overflow from Solmate EIP-4626 is shares < maxShares() / totalAssets instead
     modifier sharesOverflowRestriction(uint256 shares) {
         if (cut4626.totalSupply() > 0) {
-            vm.assume(shares < MAX_UINT256 / (cut4626.totalAssets() + 1));
+            vm.assume(shares < maxShares() / (cut4626.totalAssets() + 1));
         }
         _;
     }
@@ -839,7 +855,7 @@ abstract contract ERC4626Abstract is ERCAbstract {
         uint256 ownerShares = cut4626.balanceOf(owner);
         // sharesOverflowRestriction on vault.balance[owner]
         if (cut4626.totalSupply() > 0) {
-            vm.assume(ownerShares < MAX_UINT256 / (cut4626.totalAssets() + 1));
+            vm.assume(ownerShares < maxShares() / (cut4626.totalAssets() + 1));
         }
         vm.assume(cut4626.previewWithdraw(assets) <= ownerShares);
         (bool callApprove,) = tryCallerApproveApproveeShares(owner, caller, ownerShares);
@@ -867,7 +883,7 @@ abstract contract ERC4626Abstract is ERCAbstract {
         uint256 ownerShares = cut4626.balanceOf(owner);
         // sharesOverflowRestriction on vault.balance[owner]
         if (cut4626.totalSupply() > 0) {
-            vm.assume(ownerShares < MAX_UINT256 / (cut4626.totalAssets() + 1));
+            vm.assume(ownerShares < maxShares() / (cut4626.totalAssets() + 1));
         }
         vm.assume(cut4626.previewWithdraw(assets) <= ownerShares);
         vm.startPrank(owner);
